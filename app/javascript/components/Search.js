@@ -20,6 +20,7 @@ class Search extends React.Component{
     this.accountID = '';
     this.apiKey = '?api_key=RGAPI-578489f7-2901-4af7-8b7c-2d788ea2e25f';
     this.textInput = React.createRef();
+    this.bannChampion = new Array(1);
   }
   // getters and setters
   getUrl(){
@@ -66,10 +67,8 @@ class Search extends React.Component{
     const {data} = this.getUserData();
     const url = this.getUrl();
     var username = this.setUsername(data,url);
-    console.log(username);
     this.fetchUserApi(username);
   }
-
 
 fetchMatchApi(accountID){
     var startUrl = 'https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/';
@@ -80,7 +79,7 @@ fetchMatchApi(accountID){
       axios.get(urlAPI)
         .then((response) => {
           console.log(response.data.matches[0].champion);
-          console.log(response.data.matches[0]);
+          this.fetchMatchStats(response.data.matches[0].gameId);
           for (var i = 0; i < response.data.matches.length; i++){
             //this.getChampionName(response.data.matches[i].champion);
           }
@@ -96,7 +95,6 @@ fetchMatchApi(accountID){
     var startUrl = 'https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/';
     var username = this.username;
     var urlAPI = startUrl + username + this.apiKey;
-    console.log("2")
     axios.get(urlAPI)
       .then((response) => {
         console.log(response.data);
@@ -112,17 +110,40 @@ fetchMatchApi(accountID){
       });
   }
 
-  getChampionName(id){
-    var url = 'http://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion.json'
-    axios.get(url).then((response) => {
-      var length1 = Object.keys(response.data.data).length
-      Object.values(response.data.data).forEach((val) => {
-        if(id == val.key){
-          console.log(val);
-        }
+  getChampionName(id, filler){
+      var url = 'http://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion.json'
+      axios.get(url).then((response) => {
+        var length1 = Object.keys(response.data.data).length
+        Object.values(response.data.data).forEach((val) => {
+          if(id == val.key){
+            if(filler == 2){
+              console.log(val.name);
+              this.bannChampion.push(val.name);
+            }
+          }
+        });
       });
+}
 
-    })
+fetchMatchStats(matchid){
+      const nameArray = new Array(1);
+      const bannNumArray = new Array(1);
+      const bannStrArray = new Array(1);
+      var url = 'https://na1.api.riotgames.com/lol/match/v4/matches/' + matchid + this.apiKey;
+      console.log(matchid);
+      axios.get(url)
+        .then((response) => {
+          Object.values(response.data.participantIdentities).forEach((val) =>{
+            nameArray.push(val.player.summonerName);
+          });
+          console.log(nameArray);
+          for(var i = 0; i < 2; i++){
+            Object.values(response.data.teams[i].bans).forEach((champBans) =>{
+              bannNumArray.push(champBans.championId);
+            });
+          }
+          console.log(bannNumArray);
+        });
   }
 
   render(){
