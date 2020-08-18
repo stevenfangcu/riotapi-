@@ -12,7 +12,7 @@ import './Search.css'
 
 class Search extends React.Component{
   state={
-    post:null
+    champs:null
   }
   constructor(props) {
     super(props);
@@ -21,7 +21,7 @@ class Search extends React.Component{
     this.username = "";
     this.playerLV = '';
     this.accountID = '';
-    this.apiKey = '?api_key=RGAPI-9fe43dbb-d3ef-42af-8d4a-e13ff8764c40';
+    this.apiKey = '?api_key=RGAPI-1f5f7806-61a8-4c30-8fc5-34651d172ef0';
     this.textInput = React.createRef();
     this.bannChampion = new Array(1);
   }
@@ -76,7 +76,7 @@ class Search extends React.Component{
 async aChampName(){
   const res = await axios.get('http://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion.json')
   this.setState({
-    post: res.data
+    champs: res.data
   });
 }
 
@@ -118,29 +118,64 @@ fetchMatchApi(accountID){
 
 fetchMatchStats(matchid){
       const nameArray = new Array(1);
-      const bannNumArray = new Array(1);
+      const bannChampArray = new Array(1);
+      const teamArray0 = new Map();
+      const teamArray1 = new Map();
+      var gameMode = '';
       var url = 'https://na1.api.riotgames.com/lol/match/v4/matches/' + matchid + this.apiKey;
       axios.get(url)
         .then((response) => {
+          //duration of the game
+          var gameTime = ((response.data.gameDuration-(response.data.gameDuration%=60))/60+(9<response.data.gameDuration?':':':0')+response.data.gameDuration);
+          //playes summoners name
           Object.values(response.data.participantIdentities).forEach((val) =>{
             nameArray.push(val.player.summonerName);
           });
-          console.log(nameArray);
-          for(var i = 0; i < 2; i++){
-            Object.values(response.data.teams[i].bans).forEach((champBans) =>{
-              //var numberOfTotalChampions = (Object.keys(this.state.post.data).length);
-              bannNumArray.push(champBans.championId);
-              Object.values(this.state.post.data).forEach((champion) =>{
+          //banned champions
+          for(var i = 0; i < 2; i++){ // 2 teams
+            Object.values(response.data.teams[i].bans).forEach((champBans) =>{ // for each team
+              Object.values(this.state.champs.data).forEach((champion) =>{ //champion banns for each team
               if(champion.key == champBans.championId){
-                console.log("it worked! " + champion.id);
+                bannChampArray.push(champion.id);
               }
               });
             });
+            if (i == 0){
+              teamArray0.set('baronKills',response.data.teams[i].baronKills);
+              teamArray0.set('win', response.data.teams[i].win);
+              // might be irrelevant might take out
+              teamArray0.set('firstBaron', response.data.teams[i].firstBaron);
+              teamArray0.set('dragonKills', response.data.teams[i].dragonKills);
+              teamArray0.set('inhibs', response.data.teams[i].inhibitorKills);
+              teamArray0.set('towers', response.data.teams[i].towerKills);
+              teamArray0.set('rifts', response.data.teams[i].riftHeraldKills);
+            }else{
+              teamArray1.set('baronKills',response.data.teams[i].baronKills);
+              teamArray1.set('win', response.data.teams[i].win);
+              // might be irrelevant might take out
+              teamArray1.set('firstBaron', response.data.teams[i].firstBaron);
+              teamArray1.set('dragonKills', response.data.teams[i].dragonKills);
+              teamArray1.set('inhibs', response.data.teams[i].inhibitorKills);
+              teamArray1.set('towers', response.data.teams[i].towerKills);
+              teamArray1.set('rifts', response.data.teams[i].riftHeraldKills);
+            }
           }
-          console.log(bannNumArray);
-          console.log(this.state.post.data);
-
+          //getting champpion picks and turn it was picked
+          console.log(teamArray0);
+          console.log(teamArray1);
+          console.log(nameArray);
+          console.log(bannChampArray);
+          console.log(response.data);
+          gameMode = response.data.gameMode;
+          console.log(gameMode);
+          this.spawnGame(nameArray,bannChampArray,gameMode);
+          console.log(gameTime);
         });
+  }
+
+
+
+  spawnGame(x,y,z){
 
   }
 
