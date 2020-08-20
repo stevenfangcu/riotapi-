@@ -12,7 +12,15 @@ import './Search.css'
 
 class Search extends React.Component{
   state={
-    champs:null
+    champs:null,
+    information: {
+      baronKills: "",
+      win: "",
+      dragonKills: "",
+      inhibs: "",
+      towers: "",
+      rifts: ""
+    }
   }
   constructor(props) {
     super(props);
@@ -21,9 +29,18 @@ class Search extends React.Component{
     this.username = "";
     this.playerLV = '';
     this.accountID = '';
-    this.apiKey = '?api_key=RGAPI-1f5f7806-61a8-4c30-8fc5-34651d172ef0';
+    this.apiKey = '?api_key=RGAPI-cfe96606-c31b-4bf3-9441-de516b8ce874';
     this.textInput = React.createRef();
     this.bannChampion = new Array(1);
+    this.state = {
+
+    };
+  }
+  Child(props){
+    const {caption} = props;
+  }
+  Parent(props){
+
   }
   // getters and setters
   getUrl(){
@@ -168,15 +185,18 @@ fetchMatchStats(matchid){
           console.log(response.data);
           gameMode = response.data.gameMode;
           console.log(gameMode);
-          this.spawnGame(nameArray,bannChampArray,gameMode);
+          this.appendGame(nameArray,bannChampArray,gameMode);
           console.log(gameTime);
         });
   }
 
 
 
-  spawnGame(x,y,z){
-
+  appendGame(x,y,z){
+    this.setState({
+      informationArray: [x,y,z]
+    });
+    console.log(this.state);
   }
 
   render(){
@@ -197,32 +217,32 @@ fetchMatchStats(matchid){
       }
     }
     return(
-      <div>
+      <div className="background">
+        <InputGroup className="mb-3" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+          <FormControl
+            placeholder="Username...."
+            aria-label="Username"
+            aria-describedby="basic-addon2"
+            ref={this.textInput}
+            onKeyPress={event => { //Enter key event
+                if (event.key === "Enter") {
+                  this.onButtonClick()
+                }
+              }}
+          />
+          <InputGroup.Append>
+            <Button variant="outline-secondary" onClick={this.onButtonClick}>Search</Button>
+          </InputGroup.Append>
+        </InputGroup>
 
-      <InputGroup className="mb-3" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-        <FormControl
-          placeholder="Username...."
-          aria-label="Username"
-          aria-describedby="basic-addon2"
-          ref={this.textInput}
-          onKeyPress={event => { //Enter key event
-              if (event.key === "Enter") {
-                this.onButtonClick()
-              }
-            }}
-        />
-        <InputGroup.Append>
-          <Button variant="outline-secondary" onClick={this.onButtonClick}>Search</Button>
-        </InputGroup.Append>
-      </InputGroup>
-
-        <img src={logo} alt="Logo" />
-      <br></br>
-
-      <br></br>
-      Username: {this.pageMessage}
-      <br></br>
-       Level: {this.playerLV}
+          <img src={logo} alt="Logo" />
+        <br></br><br></br>
+        Username: {this.pageMessage}
+        <br></br>
+         Level: {this.playerLV}
+         <>
+          {}
+         </>
       </div>
     )
   }

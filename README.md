@@ -5,7 +5,9 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby version  
+ruby 2.7.1p83  
+Rails 6.0.3.2  
 
 * System dependencies
 
@@ -19,6 +21,7 @@ Things you may want to cover:
 
 * Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
-
+* Deployment instructions  
+rails s  
+localhost:3000  
 * ...
