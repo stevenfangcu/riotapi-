@@ -29,7 +29,7 @@ class Search extends React.Component{
     this.username = "";
     this.playerLV = '';
     this.accountID = '';
-    this.apiKey = '?api_key=RGAPI-cfe96606-c31b-4bf3-9441-de516b8ce874';
+    this.apiKey = '?api_key=';
     this.textInput = React.createRef();
     this.bannChampion = new Array(1);
     this.state = {
@@ -193,10 +193,36 @@ fetchMatchStats(matchid){
 
 
   appendGame(x,y,z){
+    /* TO-DO LIST
+      - make a counter so we dont have duplicataes from componentDidMount
+      - get icons and better organization (more divs for each player and champion)
+    */
+    var information = '';
     this.setState({
       informationArray: [x,y,z]
     });
-    console.log(this.state);
+    console.log(this.state.informationArray);
+    information = this.state.informationArray;
+    var node = document.getElementById("riotGameWrapper");
+    //summonernames
+    var nameText = document.createElement("div");
+    nameText.setAttribute("id","summonerNameDiv");
+    //setting Style of first dive
+    nameText.style.cssText = '  border-radius: 1px;border-width: medium;border-style: solid;border-color: gray;'
+    nameText.innerHTML = information[0];
+
+    var lineBreak = document.createElement("br");
+    node.appendChild(nameText);
+    node.appendChild(lineBreak);
+
+    var appendNode = document.getElementById("summonerNameDiv");
+
+    //champion banns
+    var bannText = document.createElement("div");
+    bannText.setAttribute("id", "bannChampionDiv");
+    bannText.innerHTML = information[1];
+
+    appendNode.appendChild(bannText);
   }
 
   render(){
@@ -235,14 +261,13 @@ fetchMatchStats(matchid){
           </InputGroup.Append>
         </InputGroup>
 
-          <img src={logo} alt="Logo" />
+        //<img src={logo} alt="Logo" />
         <br></br><br></br>
         Username: {this.pageMessage}
         <br></br>
          Level: {this.playerLV}
-         <>
-          {}
-         </>
+         <div className="riotGameWrapper" id="riotGameWrapper">
+         </div>
       </div>
     )
   }

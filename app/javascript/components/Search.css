@@ -12,3 +12,15 @@ body {
 #input-group-append button[disabled="disabled"]{
   background-color: blue;
 }
+.riotGameWrapper{
+  background: white;
+  border-width: medium;
+  border-style: solid;
+  border-color: black;
+}
+.innerRiotGameWrapper{
+  border-radius: 1px;
+  border-width: medium;
+  border-style: solid;
+  border-color: gray;
+}
