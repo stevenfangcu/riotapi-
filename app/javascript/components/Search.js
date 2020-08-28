@@ -29,7 +29,7 @@ class Search extends React.Component{
     this.username = "";
     this.playerLV = '';
     this.accountID = '';
-    this.apiKey = '?api_key=RGAPI-f91448b6-0dde-4ca8-abb4-c6f0fc505c16';
+    this.apiKey = '?api_key=';
     this.textInput = React.createRef();
     this.bannChampion = new Array(1);
     this.gameID = 0;
