@@ -29,12 +29,10 @@ class Search extends React.Component{
     this.username = "";
     this.playerLV = '';
     this.accountID = '';
-    this.apiKey = '?api_key=';
+    this.apiKey = '?api_key=RGAPI-f91448b6-0dde-4ca8-abb4-c6f0fc505c16';
     this.textInput = React.createRef();
     this.bannChampion = new Array(1);
-    this.state = {
-
-    };
+    this.gameID = 0;
   }
   Child(props){
     const {caption} = props;
@@ -181,48 +179,71 @@ fetchMatchStats(matchid){
           console.log(teamArray0);
           console.log(teamArray1);
           console.log(nameArray);
-          console.log(bannChampArray);
+          console.log("banns: " + bannChampArray);
           console.log(response.data);
           gameMode = response.data.gameMode;
           console.log(gameMode);
-          this.appendGame(nameArray,bannChampArray,gameMode);
+          this.appendGame(nameArray,bannChampArray,gameMode,matchid);
           console.log(gameTime);
         });
   }
 
 
 
-  appendGame(x,y,z){
+  appendGame(nameArray,bannChampArray,gameMode,matchid){
     /* TO-DO LIST
       - make a counter so we dont have duplicataes from componentDidMount
       - get icons and better organization (more divs for each player and champion)
     */
+    if(matchid == this.gameID){
+      return;
+    }
     var information = '';
     this.setState({
-      informationArray: [x,y,z]
+      informationArray: [nameArray,bannChampArray,gameMode]
     });
+    this.gameID = matchid;
     console.log(this.state.informationArray);
     information = this.state.informationArray;
     var node = document.getElementById("riotGameWrapper");
     //summonernames
-    var nameText = document.createElement("div");
-    nameText.setAttribute("id","summonerNameDiv");
-    //setting Style of first dive
-    nameText.style.cssText = '  border-radius: 1px;border-width: medium;border-style: solid;border-color: gray;'
-    nameText.innerHTML = information[0];
+    var gameText = document.createElement("div");
+    gameText.setAttribute("id",matchid);
+    //setting Style of first div
+    gameText.style.cssText = '  border-radius: 1px;border-width: medium;border-style: solid;border-color: gray;'
+    node.appendChild(gameText);
+    // spawn summoner name divs on both sides of the div
+    var appendNode = document.getElementById(matchid);
 
-    var lineBreak = document.createElement("br");
-    node.appendChild(nameText);
-    node.appendChild(lineBreak);
+    var gameMode = document.createElement("div");
+    gameMode.setAttribute("id","gameMode");
+    gameMode.style.cssText = 'width: 100%; text-align:center;font-size:175%';
+    gameMode.innerHTML = information[2];
+    appendNode.appendChild(gameMode);
 
-    var appendNode = document.getElementById("summonerNameDiv");
-
-    //champion banns
+    //summoners names
+    for(var i = 1; i < 6; i++){
+      //first team (on the right)
+      var summonerNameTextTeam1 = document.createElement("div");
+      summonerNameTextTeam1.innerHTML = information[0][i];
+      summonerNameTextTeam1.setAttribute("id", "team1");
+      summonerNameTextTeam1.style.cssText = 'width: 50%; float: left;';
+      appendNode.appendChild(summonerNameTextTeam1);
+      //second team (on the left)
+      var summonerNameTextTeam2 = document.createElement("div");
+      summonerNameTextTeam2.setAttribute("id","team2");
+      summonerNameTextTeam2.innerHTML = information[0][i+5];
+      appendNode.appendChild(summonerNameTextTeam2);
+    }
+    //champion banns (null if none)
     var bannText = document.createElement("div");
     bannText.setAttribute("id", "bannChampionDiv");
     bannText.innerHTML = information[1];
 
     appendNode.appendChild(bannText);
+
+    var lineBreak = document.createElement("br");
+    node.appendChild(lineBreak);
   }
 
   render(){
