@@ -33,6 +33,8 @@ class Search extends React.Component{
     this.textInput = React.createRef();
     this.bannChampion = new Array(1);
     this.gameID = 0;
+    this.numberOfGamesSpawned = 0;
+    this.noBanIdArray = [875,876,235,523];
   }
   Child(props){
     const {caption} = props;
@@ -102,9 +104,9 @@ fetchMatchApi(accountID){
       var urlAPI = startUrl + accountID + this.apiKey;
       axios.get(urlAPI)
         .then((response) => {
-          this.fetchMatchStats(response.data.matches[0].gameId);
-          for (var i = 0; i < response.data.matches.length; i++){
-
+          for (var i = 0; i < 5; i++){
+            console.log(response.data.matches[i].gameId);
+            this.fetchMatchStats(response.data.matches[i].gameId);
           }
         });
     }else{
@@ -149,10 +151,15 @@ fetchMatchStats(matchid){
           //banned champions
           for(var i = 0; i < 2; i++){ // 2 teams
             Object.values(response.data.teams[i].bans).forEach((champBans) =>{ // for each team
-              Object.values(this.state.champs.data).forEach((champion) =>{ //champion banns for each team
-              if(champion.key == champBans.championId){
-                bannChampArray.push(champion.id);
+              console.log(champBans);
+              if(this.noBanIdArray.includes(champBans.championId)){
+                bannChampArray.push("None");
               }
+              Object.values(this.state.champs.data).forEach((champion) =>{ //champion banns for each team
+                if(champion.key == champBans.championId){
+                  bannChampArray.push(champion.id);
+                  console.log(champion.id);
+                }
               });
             });
             if (i == 0){
@@ -217,7 +224,6 @@ fetchMatchStats(matchid){
 
     var gameMode = document.createElement("div");
     gameMode.setAttribute("id","gameMode");
-    gameMode.style.cssText = 'width: 100%; text-align:center;font-size:175%';
     gameMode.innerHTML = information[2];
     appendNode.appendChild(gameMode);
 
@@ -227,7 +233,6 @@ fetchMatchStats(matchid){
       var summonerNameTextTeam1 = document.createElement("div");
       summonerNameTextTeam1.innerHTML = information[0][i];
       summonerNameTextTeam1.setAttribute("id", "team1");
-      summonerNameTextTeam1.style.cssText = 'width: 50%; float: left;';
       appendNode.appendChild(summonerNameTextTeam1);
       //second team (on the left)
       var summonerNameTextTeam2 = document.createElement("div");
@@ -236,11 +241,18 @@ fetchMatchStats(matchid){
       appendNode.appendChild(summonerNameTextTeam2);
     }
     //champion banns (null if none)
-    var bannText = document.createElement("div");
-    bannText.setAttribute("id", "bannChampionDiv");
-    bannText.innerHTML = information[1];
+    var bannTeam1Text = document.createElement("div");
+    bannTeam1Text.setAttribute("id", "team1");
+    var team1Banns = information[1][1] + "," + information[1][2] + "," + information[1][3]+ "," + information[1][4]+ "," + information[1][5];
+    bannTeam1Text.innerHTML = team1Banns;
 
-    appendNode.appendChild(bannText);
+    var bannTeam2Text = document.createElement("div");
+    bannTeam2Text.setAttribute("id", "team2");
+    var team2Banns = information[1][6] + "," + information[1][7] + "," + information[1][8]+ "," + information[1][9]+ "," + information[1][10];
+    bannTeam2Text.innerHTML = team2Banns;
+
+    appendNode.appendChild(bannTeam1Text);
+    appendNode.appendChild(bannTeam2Text);
 
     var lineBreak = document.createElement("br");
     node.appendChild(lineBreak);
@@ -282,7 +294,7 @@ fetchMatchStats(matchid){
           </InputGroup.Append>
         </InputGroup>
 
-        //<img src={logo} alt="Logo" />
+        <img src={logo} alt="Logo" />
         <br></br><br></br>
         Username: {this.pageMessage}
         <br></br>

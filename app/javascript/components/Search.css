@@ -23,5 +23,13 @@ body {
   border-width: medium;
   border-style: solid;
   border-color: gray;
-  
+}
+#team1{
+  width: 50%;
+  float: left;
+}
+#gameMode{
+  width: 100%;
+   text-align:center;
+   font-size:175%;
 }
