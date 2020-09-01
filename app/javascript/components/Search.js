@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
@@ -29,10 +28,10 @@ class Search extends React.Component{
     this.username = "";
     this.playerLV = '';
     this.accountID = '';
-    this.apiKey = '?api_key=';
+    this.apiKey = '?api_key=HERE';
     this.textInput = React.createRef();
     this.bannChampion = new Array(1);
-    this.gameID = 0;
+    this.gameID = new Array();
     this.numberOfGamesSpawned = 0;
     this.noBanIdArray = [875,876,235,523];
   }
@@ -91,9 +90,12 @@ class Search extends React.Component{
     this.aChampName()
   }
 async aChampName(){
-  const res = await axios.get('http://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion.json')
-  this.setState({
-    champs: res.data
+  fetch('http://ddragon.leagueoflegends.com/cdn/9.18.1/data/en_US/champion.json')
+  .then(response => response.json())
+  .then(data => {
+    this.setState({
+      champs: data
+    })
   });
 }
 
@@ -102,13 +104,16 @@ fetchMatchApi(accountID){
     var accountID = this.accountID;
     if(accountID != ''){
       var urlAPI = startUrl + accountID + this.apiKey;
-      axios.get(urlAPI)
-        .then((response) => {
-          for (var i = 0; i < 5; i++){
-            console.log(response.data.matches[i].gameId);
-            this.fetchMatchStats(response.data.matches[i].gameId);
-          }
-        });
+      fetch(urlAPI)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        for (var i = 0; i < 5; i++){
+          console.log(data.matches[i].gameId);
+          this.fetchMatchStats(data.matches[i].gameId);
+        }
+      }
+      );
     }else{
       console.log("empty :c")
     }
@@ -119,17 +124,15 @@ fetchMatchApi(accountID){
     var startUrl = 'https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/';
     var username = this.username;
     var urlAPI = startUrl + username + this.apiKey;
-    axios.get(urlAPI)
-      .then((response) => {
-        this.playerLV = response.data.summonerLevel;
-        this.pageMessage = response.data.name;
-        this.forceUpdate()
-        this.accountID = response.data.accountId;
-        this.fetchMatchApi(this.accountID);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    fetch(urlAPI)
+    .then(response => response.json())
+    .then(data => {
+      this.playerLV = data.summonerLevel;
+      this.pageMessage = data.name;
+      this.forceUpdate()
+      this.accountID = data.accountId;
+      this.fetchMatchApi(this.accountID);
+    });
   }
 
 
@@ -140,59 +143,60 @@ fetchMatchStats(matchid){
       const teamArray1 = new Map();
       var gameMode = '';
       var url = 'https://na1.api.riotgames.com/lol/match/v4/matches/' + matchid + this.apiKey;
-      axios.get(url)
-        .then((response) => {
-          //duration of the game
-          var gameTime = ((response.data.gameDuration-(response.data.gameDuration%=60))/60+(9<response.data.gameDuration?':':':0')+response.data.gameDuration);
-          //playes summoners name
-          Object.values(response.data.participantIdentities).forEach((val) =>{
-            nameArray.push(val.player.summonerName);
-          });
-          //banned champions
-          for(var i = 0; i < 2; i++){ // 2 teams
-            Object.values(response.data.teams[i].bans).forEach((champBans) =>{ // for each team
-              console.log(champBans);
-              if(this.noBanIdArray.includes(champBans.championId)){
-                bannChampArray.push("None");
-              }
-              Object.values(this.state.champs.data).forEach((champion) =>{ //champion banns for each team
-                if(champion.key == champBans.championId){
-                  bannChampArray.push(champion.id);
-                  console.log(champion.id);
-                }
-              });
-            });
-            if (i == 0){
-              teamArray0.set('baronKills',response.data.teams[i].baronKills);
-              teamArray0.set('win', response.data.teams[i].win);
-              // might be irrelevant might take out
-              teamArray0.set('firstBaron', response.data.teams[i].firstBaron);
-              teamArray0.set('dragonKills', response.data.teams[i].dragonKills);
-              teamArray0.set('inhibs', response.data.teams[i].inhibitorKills);
-              teamArray0.set('towers', response.data.teams[i].towerKills);
-              teamArray0.set('rifts', response.data.teams[i].riftHeraldKills);
-            }else{
-              teamArray1.set('baronKills',response.data.teams[i].baronKills);
-              teamArray1.set('win', response.data.teams[i].win);
-              // might be irrelevant might take out
-              teamArray1.set('firstBaron', response.data.teams[i].firstBaron);
-              teamArray1.set('dragonKills', response.data.teams[i].dragonKills);
-              teamArray1.set('inhibs', response.data.teams[i].inhibitorKills);
-              teamArray1.set('towers', response.data.teams[i].towerKills);
-              teamArray1.set('rifts', response.data.teams[i].riftHeraldKills);
-            }
-          }
-          //getting champpion picks and turn it was picked
-          console.log(teamArray0);
-          console.log(teamArray1);
-          console.log(nameArray);
-          console.log("banns: " + bannChampArray);
-          console.log(response.data);
-          gameMode = response.data.gameMode;
-          console.log(gameMode);
-          this.appendGame(nameArray,bannChampArray,gameMode,matchid);
-          console.log(gameTime);
+      fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        //duration of the game
+        var gameTime = ((data.gameDuration-(data.gameDuration%=60))/60+(9<data.gameDuration?':':':0')+data.gameDuration);
+        //playes summoners name
+        Object.values(data.participantIdentities).forEach((val) =>{
+          nameArray.push(val.player.summonerName);
         });
+        //banned champions
+        for(var i = 0; i < 2; i++){ // 2 teams
+          Object.values(data.teams[i].bans).forEach((champBans) =>{ // for each team
+            //console.log(champBans);
+            if(this.noBanIdArray.includes(champBans.championId)){
+              bannChampArray.push("None");
+            }
+            Object.values(this.state.champs.data).forEach((champion) =>{ //champion banns for each team
+              if(champion.key == champBans.championId){
+                bannChampArray.push(champion.id);
+                console.log(champion.id);
+              }
+            });
+          });
+          if (i == 0){
+            teamArray0.set('baronKills',data.teams[i].baronKills);
+            teamArray0.set('win', data.teams[i].win);
+            // might be irrelevant might take out
+            teamArray0.set('firstBaron', data.teams[i].firstBaron);
+            teamArray0.set('dragonKills', data.teams[i].dragonKills);
+            teamArray0.set('inhibs', data.teams[i].inhibitorKills);
+            teamArray0.set('towers', data.teams[i].towerKills);
+            teamArray0.set('rifts', data.teams[i].riftHeraldKills);
+          }else{
+            teamArray1.set('baronKills',data.teams[i].baronKills);
+            teamArray1.set('win', data.teams[i].win);
+            // might be irrelevant might take out
+            teamArray1.set('firstBaron', data.teams[i].firstBaron);
+            teamArray1.set('dragonKills', data.teams[i].dragonKills);
+            teamArray1.set('inhibs', data.teams[i].inhibitorKills);
+            teamArray1.set('towers', data.teams[i].towerKills);
+            teamArray1.set('rifts', data.teams[i].riftHeraldKills);
+          }
+        }
+        //getting champpion picks and turn it was picked
+        console.log(teamArray0);
+        console.log(teamArray1);
+        console.log(nameArray);
+        console.log("banns: " + bannChampArray);
+        console.log(data);
+        gameMode = data.gameMode;
+        console.log(gameMode);
+        this.appendGame(nameArray,bannChampArray,gameMode,matchid);
+        console.log(gameTime);
+      });
   }
 
 
@@ -202,14 +206,19 @@ fetchMatchStats(matchid){
       - make a counter so we dont have duplicataes from componentDidMount
       - get icons and better organization (more divs for each player and champion)
     */
-    if(matchid == this.gameID){
+    //return, do not do this gameid
+    if(this.gameID.includes(matchid)){
+      console.log(matchid);
+      console.log(this.gameID);
       return;
     }
     var information = '';
     this.setState({
       informationArray: [nameArray,bannChampArray,gameMode]
     });
-    this.gameID = matchid;
+
+    this.gameID.push(matchid);
+
     console.log(this.state.informationArray);
     information = this.state.informationArray;
     var node = document.getElementById("riotGameWrapper");
