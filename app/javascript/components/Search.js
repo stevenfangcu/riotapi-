@@ -28,12 +28,13 @@ class Search extends React.Component{
     this.username = "";
     this.playerLV = '';
     this.accountID = '';
-    this.apiKey = '?api_key=HERE';
+    this.apiKey = '?api_key=';
     this.textInput = React.createRef();
     this.bannChampion = new Array(1);
     this.gameID = new Array();
     this.numberOfGamesSpawned = 0;
     this.noBanIdArray = [875,876,235,523];
+    this.matchArrays = new Array(1);
   }
   Child(props){
     const {caption} = props;
@@ -108,6 +109,8 @@ fetchMatchApi(accountID){
       .then(response => response.json())
       .then(data => {
         console.log(data)
+        this.matchArrays = data.matches.map((x)=>x);
+        console.log(this.matchArrays);
         for (var i = 0; i < 5; i++){
           console.log(data.matches[i].gameId);
           this.fetchMatchStats(data.matches[i].gameId);
@@ -225,6 +228,7 @@ fetchMatchStats(matchid){
     //summonernames
     var gameText = document.createElement("div");
     gameText.setAttribute("id",matchid);
+    gameText.setAttribute("class","gameText");
     //setting Style of first div
     gameText.style.cssText = '  border-radius: 1px;border-width: medium;border-style: solid;border-color: gray;'
     node.appendChild(gameText);
@@ -265,7 +269,33 @@ fetchMatchStats(matchid){
 
     var lineBreak = document.createElement("br");
     node.appendChild(lineBreak);
+
+    //delete previous expandbutton
+    try{
+      var deleteButton = document.getElementById("expandButton");
+      node.removeChild(deleteButton);
+    }catch(err){
+      console.log(err);
+    }
+
+    //creates expandButton
+    var expandButton = document.createElement("button");
+    expandButton.innerHTML = "load more...";
+    expandButton.setAttribute("id","expandButton");
+    //shallow copy of the array
+    var passMatchArrays = this.matchArrays.map((x)=>x);
+    //onclick
+    expandButton.addEventListener('click', function(){
+      console.log(passMatchArrays);
+      var matchesShown = document.getElementsByClassName('gameText').length;
+      for(var i = matchesShown; i < (matchesShown+5); i++){
+        fetchMatchStats(passMatchArrays[i].gameId);
+      }
+    });
+    node.appendChild(expandButton);
   }
+
+
 
   render(){
     let message;

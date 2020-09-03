@@ -33,3 +33,12 @@ body {
    text-align:center;
    font-size:175%;
 }
+#expandButton{
+  width: 100%;
+  text-align: center;
+  background-color: white;
+  border-radius: 1px;
+  border-width: medium;
+  border-style: solid;
+  border-color: gray;
+}
