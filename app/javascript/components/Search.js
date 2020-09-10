@@ -28,7 +28,7 @@
       this.username = "";
       this.playerLV = '';
       this.accountID = '';
-      this.apiKey = '?api_key=RGAPI-8258de05-28ee-4658-a46f-cc830547707d';
+      this.apiKey = '?api_key='//your api key goes here ;
       this.textInput = React.createRef();
       this.bannChampion = new Array(1);
       this.gameID = new Array();
@@ -155,6 +155,13 @@
           //playes summoners name
           Object.values(data.participantIdentities).forEach((val) =>{
             nameArray.push(val.player.summonerName);
+            if(val.player.summonerName.toUpperCase() == this.username.toUpperCase()){ // which team the user is on
+                if(nameArray.length > 5){
+                  teamArray0.set('username',this.username);
+                }else{
+                  teamArray1.set('username',this.username);
+                }
+            }
           });
           //banned champions
           for(var i = 0; i < 2; i++){ // 2 teams
@@ -166,7 +173,6 @@
               Object.values(this.state.champs.data).forEach((champion) =>{ //champion banns for each team
                 if(champion.key == champBans.championId){
                   bannChampArray.push(champion.id);
-                  console.log(champion.id);
                 }
               });
             });
@@ -198,22 +204,22 @@
           console.log(data);
           gameMode = data.gameMode;
           console.log(gameMode);
-          this.appendGame(nameArray,bannChampArray,gameMode,matchid);
+          this.appendGame(nameArray,bannChampArray,gameMode,matchid, teamArray0, teamArray1,gameTime);
           console.log(gameTime);
         });
     }
 
+    wonMatch(teamArray0,teamArray1){
 
+    }
 
-    appendGame(nameArray,bannChampArray,gameMode,matchid){
+    appendGame(nameArray,bannChampArray,gameMode,matchid,teamArray0, teamArray1,gameTime){
       /* TO-DO LIST
         - make a counter so we dont have duplicataes from componentDidMount
         - get icons and better organization (more divs for each player and champion)
       */
       //return, do not do this gameid
       if(this.gameID.includes(matchid)){
-        console.log(matchid);
-        console.log(this.gameID);
         return;
       }
       var information = '';
@@ -223,15 +229,31 @@
 
       this.gameID.push(matchid);
 
+      this.wonMatch(teamArray0,teamArray1);
+
       console.log(this.state.informationArray);
       information = this.state.informationArray;
       var node = document.getElementById("riotGameWrapper");
       //summonernames
       var gameText = document.createElement("div");
+
+      if(teamArray0.get("username") == this.username){//background colour
+        if(teamArray0.get("win") == "Fail"){
+          gameText.style.cssText = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
+        }else if(teamArray0.get("win") == "Win"){
+          gameText.style.cssText = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#99ff99;'
+        }
+      }else if(teamArray1.get("username") == this.username){
+        if(teamArray1.get("win") == "Fail"){
+          gameText.style.cssText = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
+        }else if(teamArray1.get("win") == "Win"){
+          gameText.style.cssText = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#99ff99;'
+        }
+      }
+
       gameText.setAttribute("id",matchid);
       gameText.setAttribute("class","gameText");
       //setting Style of first div
-      gameText.style.cssText = '  border-radius: 1px;border-width: medium;border-style: solid;border-color: gray;'
       node.appendChild(gameText);
       // spawn summoner name divs on both sides of the div
       var appendNode = document.getElementById(matchid);
@@ -241,32 +263,37 @@
       gameMode.innerHTML = information[2];
       appendNode.appendChild(gameMode);
 
+      var gameDuration = document.createElement("div");
+      gameDuration.setAttribute("id","gameTime");
+      gameDuration.innerHTML = gameTime;
+      appendNode.appendChild(gameDuration);
+
       //summoners names
       for(var i = 1; i < 6; i++){
         //first team (on the right)
-        var summonerNameTextTeam1 = document.createElement("div");
-        summonerNameTextTeam1.innerHTML = information[0][i];
-        summonerNameTextTeam1.setAttribute("id", "team1");
-        appendNode.appendChild(summonerNameTextTeam1);
+        var summonerNameTextTeam0 = document.createElement("div");
+        summonerNameTextTeam0.innerHTML = information[0][i];
+        summonerNameTextTeam0.setAttribute("id", "team1");
+        appendNode.appendChild(summonerNameTextTeam0);
         //second team (on the left)
-        var summonerNameTextTeam2 = document.createElement("div");
-        summonerNameTextTeam2.setAttribute("id","team2");
-        summonerNameTextTeam2.innerHTML = information[0][i+5];
-        appendNode.appendChild(summonerNameTextTeam2);
+        var summonerNameTextTeam1 = document.createElement("div");
+        summonerNameTextTeam1.setAttribute("id","team2");
+        summonerNameTextTeam1.innerHTML = information[0][i+5];
+        appendNode.appendChild(summonerNameTextTeam1);
       }
       //champion banns (null if none)
-      var bannTeam1Text = document.createElement("div");
-      bannTeam1Text.setAttribute("id", "team1");
-      var team1Banns = information[1][1] + "," + information[1][2] + "," + information[1][3]+ "," + information[1][4]+ "," + information[1][5];
-      bannTeam1Text.innerHTML = team1Banns;
-
-      var bannTeam2Text = document.createElement("div");
-      bannTeam2Text.setAttribute("id", "team2");
-      var team2Banns = information[1][6] + "," + information[1][7] + "," + information[1][8]+ "," + information[1][9]+ "," + information[1][10];
-      bannTeam2Text.innerHTML = team2Banns;
-
-      appendNode.appendChild(bannTeam1Text);
-      appendNode.appendChild(bannTeam2Text);
+      var bannTeam0Text = document.createElement("div");
+      bannTeam0Text.setAttribute("id", "team1");
+      if(information[1][1] != undefined){
+        var team0Banns = information[1][1] + "," + information[1][2] + "," + information[1][3]+ "," + information[1][4]+ "," + information[1][5];
+        bannTeam0Text.innerHTML = team0Banns;
+        var bannTeam1Text = document.createElement("div");
+        bannTeam1Text.setAttribute("id", "team2");
+        var team1Banns = information[1][6] + "," + information[1][7] + "," + information[1][8]+ "," + information[1][9]+ "," + information[1][10];
+        bannTeam1Text.innerHTML = team1Banns;
+        appendNode.appendChild(bannTeam0Text);
+        appendNode.appendChild(bannTeam1Text);
+      }
 
       var lineBreak = document.createElement("br");
       node.appendChild(lineBreak);
