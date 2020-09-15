@@ -283,13 +283,13 @@
       for(var i = 1; i < 6; i++){
         //first team (on the right)
         var summonerNameTextTeam0 = document.createElement("div");
-        summonerNameTextTeam0.innerHTML = information[0][i];
+        summonerNameTextTeam0.innerHTML = (this.getChampion(championArray[i])) + ' ' + information[0][i];
         summonerNameTextTeam0.setAttribute("id", "team1");
         appendNode.appendChild(summonerNameTextTeam0);
         //second team (on the left)
         var summonerNameTextTeam1 = document.createElement("div");
         summonerNameTextTeam1.setAttribute("id","team2");
-        summonerNameTextTeam1.innerHTML = information[0][i+5];
+        summonerNameTextTeam1.innerHTML = (this.getChampion(championArray[i+5])) + ' ' + information[0][i+5];
         appendNode.appendChild(summonerNameTextTeam1);
       }
       //champion banns (null if none)
@@ -305,9 +305,14 @@
         appendNode.appendChild(bannTeam0Text);
         appendNode.appendChild(bannTeam1Text);
       }
+      //more information button
+      var moreInformationButt = document.createElement("button");
+      moreInformationButt.setAttribute("id", "moreInformationButt")
+      appendNode.appendChild(moreInformationButt);
 
       var lineBreak = document.createElement("br");
       node.appendChild(lineBreak);
+
 
       //delete previous expandbutton
       try{
@@ -316,24 +321,6 @@
       }catch(err){
         console.log(err);
       }
-
-      //creates expandButton
-      /*
-      var expandButton = document.createElement("button");
-      expandButton.innerHTML = "load more...";
-      expandButton.setAttribute("id","expandButton");
-      //shallow copy of the array
-      var passMatchArrays = this.matchArrays.map((x)=>x);
-      //onclick
-      expandButton.addEventListener('click', async function(){
-        console.log(passMatchArrays);
-        var matchesShown = document.getElementsByClassName('gameText').length;
-        for(var i = matchesShown; i < (matchesShown+5); i++){
-          //fetchUserApi(this.username);
-          //await fetchMatchStats(passMatchArrays[i].gameId);
-        }
-      });
-      node.appendChild(expandButton);*/
     }
 
     addMore(){
@@ -381,12 +368,13 @@
               <Button variant="outline-secondary" onClick={this.onButtonClick}>Search</Button>
             </InputGroup.Append>
           </InputGroup>
-
-          <img src={logo} id="logo" alt="Logo" />
+          <img src={logo} alt="Logo" className="summonerIcon"/>
           <br></br><br></br>
-          Username: {this.pageMessage}
+          <div className="summonerIcon">Username: {this.pageMessage}</div>
           <br></br>
-           Level: {this.playerLV}
+           <div className="summonerIcon">Level: {this.playerLV}</div>
+           <br></br>
+           <br></br>
            <div className="riotGameWrapper" id="riotGameWrapper">
            </div>
            <button onClick={this.addMore.bind(this)} id = "expandButton">

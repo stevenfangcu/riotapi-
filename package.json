@@ -12,6 +12,7 @@
     "axois": "^0.0.1-security",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "bootstrap": "^4.5.1",
+    "node-forge": "^0.10.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-alert": "^7.0.2",

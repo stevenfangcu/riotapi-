@@ -17,12 +17,23 @@ body {
   border-width: medium;
   border-style: solid;
   border-color: black;
+  width: 100%;
+  float: right;
 }
 .innerRiotGameWrapper{
   border-radius: 1px;
   border-width: medium;
   border-style: solid;
   border-color: gray;
+}
+.summonerIcon{
+  text-align: left;
+  display: block;
+  justify-content: left;
+  align-items: left;
+}
+.summonerStats{
+  float:right;
 }
 #team1{
   width: 50%;
@@ -34,6 +45,19 @@ body {
    font-size:175%;
 }
 #expandButton{
+  text-align: center;
+  background-color: white;
+  border-radius: 1px;
+  border-width: medium;
+  border-style: solid;
+  border-color: gray;
+  width: 100%;
+  float: right;
+}
+#gameTime{
+    text-align: center;
+}
+#moreInformationButt{
   width: 100%;
   text-align: center;
   background-color: white;
@@ -41,10 +65,4 @@ body {
   border-width: medium;
   border-style: solid;
   border-color: gray;
-}
-#gameTime{
-    text-align: center;
-}
-#logo{
-  text-align: center;
 }
