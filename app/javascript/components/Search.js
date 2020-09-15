@@ -113,7 +113,6 @@
           this.matchArrays = data.matches.map((x)=>x);
           console.log(this.matchArrays);
           for (var i = 0; i < 5; i++){
-            console.log(data.matches[i].gameId);
             this.fetchMatchStats(data.matches[i].gameId);
           }
         }
@@ -139,10 +138,19 @@
       });
     }
 
-
+  getChampion(champid){
+    var ans = 'None';
+    Object.values(this.state.champs.data).forEach((champion) =>{
+      if(champion.key == champid){
+        ans = champion.id;
+      }
+    });
+    return ans;
+  }
   fetchMatchStats(matchid){
         const nameArray = new Array(1);
         const bannChampArray = new Array(1);
+        const championArray = new Array(1);
         const teamArray0 = new Map();
         const teamArray1 = new Map();
         var gameMode = '';
@@ -163,18 +171,20 @@
                 }
             }
           });
+          Object.values(data.participants).forEach((val) =>{
+            championArray.push(val.championId);
+          });
           //banned champions
           for(var i = 0; i < 2; i++){ // 2 teams
             Object.values(data.teams[i].bans).forEach((champBans) =>{ // for each team
               //console.log(champBans);
-              if(this.noBanIdArray.includes(champBans.championId)){
+              if(this.noBanIdArray.includes(champBans.championId)){ // if none
                 bannChampArray.push("None");
               }
-              Object.values(this.state.champs.data).forEach((champion) =>{ //champion banns for each team
-                if(champion.key == champBans.championId){
-                  bannChampArray.push(champion.id);
-                }
-              });
+
+              var championPush = this.getChampion(champBans.championId); //get champ banns
+              bannChampArray.push(championPush);
+
             });
             if (i == 0){
               teamArray0.set('baronKills',data.teams[i].baronKills);
@@ -204,7 +214,7 @@
           console.log(data);
           gameMode = data.gameMode;
           console.log(gameMode);
-          this.appendGame(nameArray,bannChampArray,gameMode,matchid, teamArray0, teamArray1,gameTime);
+          this.appendGame(nameArray,bannChampArray,gameMode,matchid, teamArray0, teamArray1,gameTime, championArray);
           console.log(gameTime);
         });
     }
@@ -213,12 +223,13 @@
 
     }
 
-    appendGame(nameArray,bannChampArray,gameMode,matchid,teamArray0, teamArray1,gameTime){
+    appendGame(nameArray,bannChampArray,gameMode,matchid,teamArray0, teamArray1,gameTime,championArray){
       /* TO-DO LIST
         - make a counter so we dont have duplicataes from componentDidMount
         - get icons and better organization (more divs for each player and champion)
       */
       //return, do not do this gameid
+      console.log(championArray);
       if(this.gameID.includes(matchid)){
         return;
       }
@@ -371,7 +382,7 @@
             </InputGroup.Append>
           </InputGroup>
 
-          <img src={logo} alt="Logo" />
+          <img src={logo} id="logo" alt="Logo" />
           <br></br><br></br>
           Username: {this.pageMessage}
           <br></br>
