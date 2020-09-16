@@ -28,7 +28,7 @@
       this.username = "";
       this.playerLV = '';
       this.accountID = '';
-      this.apiKey = '?api_key='//your api key goes here ;
+      this.apiKey = '?api_key=RGAPI-3922bdab-21e7-4d26-a446-9be376c32baf'//your api key goes here ;
       this.textInput = React.createRef();
       this.bannChampion = new Array(1);
       this.gameID = new Array();
@@ -223,6 +223,24 @@
 
     }
 
+    checkUserWinGame(teamArray0,teamArray1){
+      var ans = '';
+      if(teamArray0.get("username") == this.username){//background colour
+        if(teamArray0.get("win") == "Fail"){
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
+        }else if(teamArray0.get("win") == "Win"){
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#99ff99;'
+        }
+      }else if(teamArray1.get("username") == this.username){
+        if(teamArray1.get("win") == "Fail"){
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
+        }else if(teamArray1.get("win") == "Win"){
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#99ff99;'
+        }
+      }
+      return ans;
+    }
+
     appendGame(nameArray,bannChampArray,gameMode,matchid,teamArray0, teamArray1,gameTime,championArray){
       /* TO-DO LIST
         - make a counter so we dont have duplicataes from componentDidMount
@@ -248,21 +266,19 @@
       //summonernames
       var gameText = document.createElement("div");
 
-      if(teamArray0.get("username") == this.username){//background colour
-        if(teamArray0.get("win") == "Fail"){
-          gameText.style.cssText = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
-        }else if(teamArray0.get("win") == "Win"){
-          gameText.style.cssText = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#99ff99;'
-        }
-      }else if(teamArray1.get("username") == this.username){
-        if(teamArray1.get("win") == "Fail"){
-          gameText.style.cssText = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
-        }else if(teamArray1.get("win") == "Win"){
-          gameText.style.cssText = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#99ff99;'
-        }
-      }
+      gameText.style.cssText = this.checkUserWinGame(teamArray0,teamArray1);
 
       gameText.setAttribute("id",matchid);
+      gameText.onclick = function(){
+
+      };
+      gameText.onmouseout = function(checkUserWinGame){
+        gameText.style.cssText = checkUserWinGame(teamArray0,teamArray1);
+      };
+      gameText.onmouseover = function(){
+        gameText.style.cssText += 'font-style:italic;';
+      };
+
       gameText.setAttribute("class","gameText");
       //setting Style of first div
       node.appendChild(gameText);
@@ -370,7 +386,7 @@
           </InputGroup>
           <img src={logo} alt="Logo" className="summonerIcon"/>
           <br></br><br></br>
-          <div className="summonerIcon">Username: {this.pageMessage}</div>
+          <div className="summonerIcon">Username: <mark>{this.pageMessage}</mark></div>
           <br></br>
            <div className="summonerIcon">Level: {this.playerLV}</div>
            <br></br>

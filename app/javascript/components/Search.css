@@ -66,3 +66,9 @@ body {
   border-style: solid;
   border-color: gray;
 }
+.italicFont{
+  font-style: italic;
+}
+.normalFont{
+  font-size: normal;
+}
