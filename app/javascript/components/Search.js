@@ -151,8 +151,8 @@
         const nameArray = new Array(1);
         const bannChampArray = new Array(1);
         const championArray = new Array(1);
-        const teamArray0 = new Map();
-        const teamArray1 = new Map();
+        const teamMap0 = new Map();
+        const teamMap1 = new Map();
         var gameMode = '';
         var url = 'https://na1.api.riotgames.com/lol/match/v4/matches/' + matchid + this.apiKey;
         fetch(url)
@@ -165,9 +165,9 @@
             nameArray.push(val.player.summonerName);
             if(val.player.summonerName.toUpperCase() == this.username.toUpperCase()){ // which team the user is on
                 if(nameArray.length > 5){
-                  teamArray0.set('username',this.username);
+                  teamMap0.set('username',this.username);
                 }else{
-                  teamArray1.set('username',this.username);
+                  teamMap1.set('username',this.username);
                 }
             }
           });
@@ -187,61 +187,65 @@
 
             });
             if (i == 0){
-              teamArray0.set('baronKills',data.teams[i].baronKills);
-              teamArray0.set('win', data.teams[i].win);
+              teamMap0.set('baronKills',data.teams[i].baronKills);
+              teamMap0.set('win', data.teams[i].win);
               // might be irrelevant might take out
-              teamArray0.set('firstBaron', data.teams[i].firstBaron);
-              teamArray0.set('dragonKills', data.teams[i].dragonKills);
-              teamArray0.set('inhibs', data.teams[i].inhibitorKills);
-              teamArray0.set('towers', data.teams[i].towerKills);
-              teamArray0.set('rifts', data.teams[i].riftHeraldKills);
+              teamMap0.set('firstBaron', data.teams[i].firstBaron);
+              teamMap0.set('dragonKills', data.teams[i].dragonKills);
+              teamMap0.set('inhibs', data.teams[i].inhibitorKills);
+              teamMap0.set('towers', data.teams[i].towerKills);
+              teamMap0.set('rifts', data.teams[i].riftHeraldKills);
             }else{
-              teamArray1.set('baronKills',data.teams[i].baronKills);
-              teamArray1.set('win', data.teams[i].win);
+              teamMap1.set('baronKills',data.teams[i].baronKills);
+              teamMap1.set('win', data.teams[i].win);
               // might be irrelevant might take out
-              teamArray1.set('firstBaron', data.teams[i].firstBaron);
-              teamArray1.set('dragonKills', data.teams[i].dragonKills);
-              teamArray1.set('inhibs', data.teams[i].inhibitorKills);
-              teamArray1.set('towers', data.teams[i].towerKills);
-              teamArray1.set('rifts', data.teams[i].riftHeraldKills);
+              teamMap1.set('firstBaron', data.teams[i].firstBaron);
+              teamMap1.set('dragonKills', data.teams[i].dragonKills);
+              teamMap1.set('inhibs', data.teams[i].inhibitorKills);
+              teamMap1.set('towers', data.teams[i].towerKills);
+              teamMap1.set('rifts', data.teams[i].riftHeraldKills);
             }
           }
           //getting champpion picks and turn it was picked
-          console.log(teamArray0);
-          console.log(teamArray1);
+          console.log(teamMap0);
+          console.log(teamMap1);
           console.log(nameArray);
           console.log("banns: " + bannChampArray);
           console.log(data);
           gameMode = data.gameMode;
           console.log(gameMode);
-          this.appendGame(nameArray,bannChampArray,gameMode,matchid, teamArray0, teamArray1,gameTime, championArray);
+          this.appendGame(nameArray,bannChampArray,gameMode,matchid, teamMap0, teamMap1,gameTime, championArray);
           console.log(gameTime);
         });
     }
 
-    wonMatch(teamArray0,teamArray1){
+    wonMatch(teamMap0,teamMap1){
 
     }
 
-    checkUserWinGame(teamArray0,teamArray1){
+    checkUserWinGame(teamMap0,teamMap1){
       var ans = '';
-      if(teamArray0.get("username") == this.username){//background colour
-        if(teamArray0.get("win") == "Fail"){
+      if(teamMap0.get("username") == this.username){//background colour
+        if(teamMap0.get("win") == "Fail"){
           ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
-        }else if(teamArray0.get("win") == "Win"){
+        }else if(teamMap0.get("win") == "Win"){
           ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#99ff99;'
         }
-      }else if(teamArray1.get("username") == this.username){
-        if(teamArray1.get("win") == "Fail"){
+      }else if(teamMap1.get("username") == this.username){
+        if(teamMap1.get("win") == "Fail"){
           ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
-        }else if(teamArray1.get("win") == "Win"){
+        }else if(teamMap1.get("win") == "Win"){
           ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#99ff99;'
         }
       }
       return ans;
     }
 
-    appendGame(nameArray,bannChampArray,gameMode,matchid,teamArray0, teamArray1,gameTime,championArray){
+    spawnDetails(teamMap0,teamMap1,gameText){
+
+    }
+
+    appendGame(nameArray,bannChampArray,gameMode,matchid,teamMap0, teamMap1,gameTime,championArray){
       /* TO-DO LIST
         - make a counter so we dont have duplicataes from componentDidMount
         - get icons and better organization (more divs for each player and champion)
@@ -258,7 +262,7 @@
 
       this.gameID.push(matchid);
 
-      this.wonMatch(teamArray0,teamArray1);
+      this.wonMatch(teamMap0,teamMap1);
 
       console.log(this.state.informationArray);
       information = this.state.informationArray;
@@ -266,19 +270,18 @@
       //summonernames
       var gameText = document.createElement("div");
 
-      gameText.style.cssText = this.checkUserWinGame(teamArray0,teamArray1);
+      gameText.style.cssText = this.checkUserWinGame(teamMap0,teamMap1);
 
       gameText.setAttribute("id",matchid);
-      gameText.onclick = function(){
-
-      };
-      gameText.onmouseout = function(checkUserWinGame){
-        gameText.style.cssText = checkUserWinGame(teamArray0,teamArray1);
+      gameText.onmouseout = function(){
+        gameText.style.fontStyle = "normal";
       };
       gameText.onmouseover = function(){
-        gameText.style.cssText += 'font-style:italic;';
+        gameText.style.fontStyle = "italic";
       };
-
+      gameText.onclick = (function() {
+        window.alert(teamMap0.get("dragonKills") + ' ' + teamMap0.get("win"));
+      });
       gameText.setAttribute("class","gameText");
       //setting Style of first div
       node.appendChild(gameText);
@@ -321,10 +324,6 @@
         appendNode.appendChild(bannTeam0Text);
         appendNode.appendChild(bannTeam1Text);
       }
-      //more information button
-      var moreInformationButt = document.createElement("button");
-      moreInformationButt.setAttribute("id", "moreInformationButt")
-      appendNode.appendChild(moreInformationButt);
 
       var lineBreak = document.createElement("br");
       node.appendChild(lineBreak);
