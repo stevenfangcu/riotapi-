@@ -279,14 +279,39 @@
       gameText.onmouseover = function(){
         gameText.style.fontStyle = "italic";
       };
-      gameText.onclick = (function() {
-        window.alert(teamMap0.get("dragonKills") + ' ' + teamMap0.get("win"));
-      });
       gameText.setAttribute("class","gameText");
       //setting Style of first div
       node.appendChild(gameText);
       // spawn summoner name divs on both sides of the div
       var appendNode = document.getElementById(matchid);
+
+      gameText.onclick = (function() {
+        var gameDetailsTextTeam0 = document.createElement("div");
+        gameDetailsTextTeam0.setAttribute("id","team0");
+        gameDetailsTextTeam0.style.fontSize = "10px";
+        gameDetailsTextTeam0.innerHTML = "Dragons: " + teamMap0.get("dragonKills");
+        var linebreak = document.createElement("br");
+        gameDetailsTextTeam0.append(linebreak);
+        gameDetailsTextTeam0.innerHTML += "Towers: " + teamMap0.get("towers");
+        gameDetailsTextTeam0.append(linebreak);
+        gameDetailsTextTeam0.innerHTML += "Inhibs: " + teamMap0.get("inhibs");
+        gameDetailsTextTeam0.append(linebreak);
+        gameDetailsTextTeam0.innerHTML += "Heralds: " + teamMap0.get("rifts");
+        appendNode.appendChild(gameDetailsTextTeam0);
+
+        var gameDetailsTextTeam1 = document.createElement("div");
+        gameDetailsTextTeam1.style.fontSize = "10px";
+        gameDetailsTextTeam1.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
+        var linebreak = document.createElement("br");
+        gameDetailsTextTeam1.append(linebreak);
+        gameDetailsTextTeam1.innerHTML += "Towers: " + teamMap1.get("towers");
+        gameDetailsTextTeam1.append(linebreak);
+        gameDetailsTextTeam1.innerHTML += "Inhibs: " + teamMap1.get("inhibs");
+        gameDetailsTextTeam1.append(linebreak);
+        gameDetailsTextTeam1.innerHTML += "Heralds: " + teamMap1.get("rifts");
+        appendNode.appendChild(gameDetailsTextTeam1);
+
+      });
 
       var gameMode = document.createElement("div");
       gameMode.setAttribute("id","gameMode");

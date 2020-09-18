@@ -35,6 +35,10 @@ body {
 .summonerStats{
   float:right;
 }
+#team0{
+  width:50%;
+  float: right;
+}
 #team1{
   width: 50%;
   float: left;
