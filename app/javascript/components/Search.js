@@ -195,6 +195,7 @@
               teamMap0.set('inhibs', data.teams[i].inhibitorKills);
               teamMap0.set('towers', data.teams[i].towerKills);
               teamMap0.set('rifts', data.teams[i].riftHeraldKills);
+              teamMap0.set('firstBlood',data.teams[i].firstBlood);
             }else{
               teamMap1.set('baronKills',data.teams[i].baronKills);
               teamMap1.set('win', data.teams[i].win);
@@ -204,6 +205,7 @@
               teamMap1.set('inhibs', data.teams[i].inhibitorKills);
               teamMap1.set('towers', data.teams[i].towerKills);
               teamMap1.set('rifts', data.teams[i].riftHeraldKills);
+              teamMap1.set('firstBlood',data.teams[i].firstBlood);
             }
           }
           //getting champpion picks and turn it was picked
@@ -285,34 +287,6 @@
       // spawn summoner name divs on both sides of the div
       var appendNode = document.getElementById(matchid);
 
-      gameText.onclick = (function() {
-        var gameDetailsTextTeam0 = document.createElement("div");
-        gameDetailsTextTeam0.setAttribute("id","team0");
-        gameDetailsTextTeam0.style.fontSize = "10px";
-        gameDetailsTextTeam0.innerHTML = "Dragons: " + teamMap0.get("dragonKills");
-        var linebreak = document.createElement("br");
-        gameDetailsTextTeam0.append(linebreak);
-        gameDetailsTextTeam0.innerHTML += "Towers: " + teamMap0.get("towers");
-        gameDetailsTextTeam0.append(linebreak);
-        gameDetailsTextTeam0.innerHTML += "Inhibs: " + teamMap0.get("inhibs");
-        gameDetailsTextTeam0.append(linebreak);
-        gameDetailsTextTeam0.innerHTML += "Heralds: " + teamMap0.get("rifts");
-        appendNode.appendChild(gameDetailsTextTeam0);
-
-        var gameDetailsTextTeam1 = document.createElement("div");
-        gameDetailsTextTeam1.style.fontSize = "10px";
-        gameDetailsTextTeam1.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
-        var linebreak = document.createElement("br");
-        gameDetailsTextTeam1.append(linebreak);
-        gameDetailsTextTeam1.innerHTML += "Towers: " + teamMap1.get("towers");
-        gameDetailsTextTeam1.append(linebreak);
-        gameDetailsTextTeam1.innerHTML += "Inhibs: " + teamMap1.get("inhibs");
-        gameDetailsTextTeam1.append(linebreak);
-        gameDetailsTextTeam1.innerHTML += "Heralds: " + teamMap1.get("rifts");
-        appendNode.appendChild(gameDetailsTextTeam1);
-
-      });
-
       var gameMode = document.createElement("div");
       gameMode.setAttribute("id","gameMode");
       gameMode.innerHTML = information[2];
@@ -329,6 +303,9 @@
         var summonerNameTextTeam0 = document.createElement("div");
         summonerNameTextTeam0.innerHTML = (this.getChampion(championArray[i])) + ' ' + information[0][i];
         summonerNameTextTeam0.setAttribute("id", "team1");
+        summonerNameTextTeam0.onClick =(function(){
+          window.alert(information[0][i]);
+        });
         appendNode.appendChild(summonerNameTextTeam0);
         //second team (on the left)
         var summonerNameTextTeam1 = document.createElement("div");
@@ -350,10 +327,47 @@
         appendNode.appendChild(bannTeam1Text);
       }
 
-      var lineBreak = document.createElement("br");
-      node.appendChild(lineBreak);
+      var gameDetailsButton = document.createElement("Button");
+      gameDetailsButton.setAttribute("id","expandButton");
+      gameDetailsButton.innerHTML = "V";
 
+      gameDetailsButton.onclick = (function() {
+        if(document.getElementById("team0Details") || document.getElementById("team1Details")){
+          gameText.removeChild(document.getElementById("team1Details"));
+          gameText.removeChild(document.getElementById("team0Details"));
+        }else{
+          var gameDetailsTextTeam0 = document.createElement("div");
+          gameDetailsTextTeam0.setAttribute("id","team0Details");
+          gameDetailsTextTeam0.style.fontSize = "10px";
+          gameDetailsTextTeam0.innerHTML = "Dragons: " + teamMap0.get("dragonKills");
+          var linebreak = document.createElement("br");
+          gameDetailsTextTeam0.append(linebreak);
+          gameDetailsTextTeam0.innerHTML += "Towers: " + teamMap0.get("towers");
+          gameDetailsTextTeam0.append(linebreak);
+          gameDetailsTextTeam0.innerHTML += "Inhibs: " + teamMap0.get("inhibs");
+          gameDetailsTextTeam0.append(linebreak);
+          gameDetailsTextTeam0.innerHTML += "Heralds: " + teamMap0.get("rifts");
+          gameDetailsButton.before(gameDetailsTextTeam0);
 
+          var gameDetailsTextTeam1 = document.createElement("div");
+          gameDetailsTextTeam1.setAttribute("id","team1Details");
+          gameDetailsTextTeam1.style.fontSize = "10px";
+          gameDetailsTextTeam1.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
+          var linebreak = document.createElement("br");
+          gameDetailsTextTeam1.append(linebreak);
+          gameDetailsTextTeam1.innerHTML += "Towers: " + teamMap1.get("towers");
+          gameDetailsTextTeam1.append(linebreak);
+          gameDetailsTextTeam1.innerHTML += "Inhibs: " + teamMap1.get("inhibs");
+          gameDetailsTextTeam1.append(linebreak);
+          gameDetailsTextTeam1.innerHTML += "Heralds: " + teamMap1.get("rifts");
+          gameDetailsButton.before(gameDetailsTextTeam1);
+        }
+      });
+        gameText.append(gameDetailsButton);
+        var lineBreak = document.createElement("br");
+        node.appendChild(lineBreak);
+        node.appendChild(lineBreak);
+        node.appendChild(lineBreak);
       //delete previous expandbutton
       try{
         var deleteButton = document.getElementById("expandButton");

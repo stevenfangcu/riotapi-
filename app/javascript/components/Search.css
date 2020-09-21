@@ -35,11 +35,11 @@ body {
 .summonerStats{
   float:right;
 }
-#team0{
+#team0,#team0Details{
   width:50%;
   float: right;
 }
-#team1{
+#team1,#team1Details{
   width: 50%;
   float: left;
 }
@@ -49,14 +49,9 @@ body {
    font-size:175%;
 }
 #expandButton{
-  text-align: center;
-  background-color: white;
-  border-radius: 1px;
   border-width: medium;
-  border-style: solid;
   border-color: gray;
-  width: 100%;
-  float: right;
+  width:100%;
 }
 #gameTime{
     text-align: center;
