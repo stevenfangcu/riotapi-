@@ -109,7 +109,7 @@
         fetch(urlAPI)
         .then(response => response.json())
         .then(data => {
-          console.log(data)
+          console.log("match ids: " + data);
           this.matchArrays = data.matches.map((x)=>x);
           console.log(this.matchArrays);
           for (var i = 0; i < 5; i++){
@@ -196,6 +196,11 @@
               teamMap0.set('towers', data.teams[i].towerKills);
               teamMap0.set('rifts', data.teams[i].riftHeraldKills);
               teamMap0.set('firstBlood',data.teams[i].firstBlood);
+              teamMap0.set('Summoner1',data.participants[0]);
+              teamMap0.set('Summoner2',data.participants[1]);
+              teamMap0.set('Summoner3',data.participants[2]);
+              teamMap0.set('Summoner4',data.participants[3]);
+              teamMap0.set('Summoner5',data.participants[4]);
             }else{
               teamMap1.set('baronKills',data.teams[i].baronKills);
               teamMap1.set('win', data.teams[i].win);
@@ -206,6 +211,11 @@
               teamMap1.set('towers', data.teams[i].towerKills);
               teamMap1.set('rifts', data.teams[i].riftHeraldKills);
               teamMap1.set('firstBlood',data.teams[i].firstBlood);
+              teamMap1.set('Summoner1',data.participants[5]);
+              teamMap1.set('Summoner2',data.participants[6]);
+              teamMap1.set('Summoner3',data.participants[7]);
+              teamMap1.set('Summoner4',data.participants[8]);
+              teamMap1.set('Summoner5',data.participants[9]);
             }
           }
           //getting champpion picks and turn it was picked
@@ -266,7 +276,6 @@
 
       this.wonMatch(teamMap0,teamMap1);
 
-      console.log(this.state.informationArray);
       information = this.state.informationArray;
       var node = document.getElementById("riotGameWrapper");
       //summonernames
@@ -275,12 +284,13 @@
       gameText.style.cssText = this.checkUserWinGame(teamMap0,teamMap1);
 
       gameText.setAttribute("id",matchid);
-      gameText.onmouseout = function(){
+
+      /*gameText.onmouseout = function(){
         gameText.style.fontStyle = "normal";
       };
       gameText.onmouseover = function(){
         gameText.style.fontStyle = "italic";
-      };
+      };*/
       gameText.setAttribute("class","gameText");
       //setting Style of first div
       node.appendChild(gameText);
@@ -302,25 +312,26 @@
         //first team (on the right)
         var summonerNameTextTeam0 = document.createElement("div");
         summonerNameTextTeam0.innerHTML = (this.getChampion(championArray[i])) + ' ' + information[0][i];
-        summonerNameTextTeam0.setAttribute("id", "team1");
-        summonerNameTextTeam0.onClick =(function(){
-          window.alert(information[0][i]);
-        });
+        summonerNameTextTeam0.setAttribute("id", i);
+        summonerNameTextTeam0.className = "team0";
+        console.log(summonerNameTextTeam0);
         appendNode.appendChild(summonerNameTextTeam0);
+      }
+      for(var x = 6; x < 11; x++){
         //second team (on the left)
         var summonerNameTextTeam1 = document.createElement("div");
-        summonerNameTextTeam1.setAttribute("id","team2");
-        summonerNameTextTeam1.innerHTML = (this.getChampion(championArray[i+5])) + ' ' + information[0][i+5];
+        summonerNameTextTeam1.setAttribute("id","team1");
+        summonerNameTextTeam1.innerHTML = (this.getChampion(championArray[x])) + ' ' + information[0][x];
         appendNode.appendChild(summonerNameTextTeam1);
       }
       //champion banns (null if none)
       var bannTeam0Text = document.createElement("div");
-      bannTeam0Text.setAttribute("id", "team1");
+      bannTeam0Text.setAttribute("id", "team0");
       if(information[1][1] != undefined){
         var team0Banns = information[1][1] + "," + information[1][2] + "," + information[1][3]+ "," + information[1][4]+ "," + information[1][5];
         bannTeam0Text.innerHTML = team0Banns;
         var bannTeam1Text = document.createElement("div");
-        bannTeam1Text.setAttribute("id", "team2");
+        bannTeam1Text.setAttribute("id", "team1");
         var team1Banns = information[1][6] + "," + information[1][7] + "," + information[1][8]+ "," + information[1][9]+ "," + information[1][10];
         bannTeam1Text.innerHTML = team1Banns;
         appendNode.appendChild(bannTeam0Text);
@@ -397,8 +408,6 @@
         this.componentDidMount();
         this.counter = this.counter + 1;
         if(!this.pageMessage){
-          console.log("not null");
-          console.log(message);
         }else {
           console.log(this.pageMessage + " owo.");
           //message = this.username;
