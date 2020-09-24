@@ -253,10 +253,6 @@
       return ans;
     }
 
-    spawnDetails(teamMap0,teamMap1,gameText){
-
-    }
-
     appendGame(nameArray,bannChampArray,gameMode,matchid,teamMap0, teamMap1,gameTime,championArray){
       /* TO-DO LIST
         - make a counter so we dont have duplicataes from componentDidMount
@@ -315,13 +311,38 @@
         summonerNameTextTeam0.setAttribute("id", i);
         summonerNameTextTeam0.className = "team0";
         console.log(summonerNameTextTeam0);
+
+        summonerNameTextTeam0.onclick = (function(){
+          console.log('hi');
+          if(document.getElementById("team0Details") || document.getElementById("team1Details")){
+            gameText.removeChild(document.getElementById("team1Details"));
+            gameText.removeChild(document.getElementById("team0Details"));
+            console.log('1');
+          }else if(document.getElementById("team0PlayerDetails")){
+            try{
+              gameText.removeChild(document.getElementById("team0PlayerDetails"));
+            }catch(err){
+              console.log(err);
+            }
+            console.log('3');
+          }else if (document.getElementById("team1PlayerDetails")){
+            gameText.removeChild(document.getElementById("team1PlayerDetails"));
+            console.log('2');
+          }
+          var gameDetailsTextPlayerTeam0 = document.createElement("div");
+          gameDetailsTextPlayerTeam0.setAttribute("id","team0PlayerDetails");
+          gameDetailsTextPlayerTeam0.style.fontSize = "10px";
+          gameDetailsTextPlayerTeam0.innerHTML = document.getElementById(this.id).innerHTML;
+          console.log(this.id);
+          gameDetailsButton.before(gameDetailsTextPlayerTeam0);
+        });
+
         appendNode.appendChild(summonerNameTextTeam0);
-      }
-      for(var x = 6; x < 11; x++){
-        //second team (on the left)
+
         var summonerNameTextTeam1 = document.createElement("div");
-        summonerNameTextTeam1.setAttribute("id","team1");
-        summonerNameTextTeam1.innerHTML = (this.getChampion(championArray[x])) + ' ' + information[0][x];
+        summonerNameTextTeam1.setAttribute("id",i);
+        summonerNameTextTeam1.className = "team1";
+        summonerNameTextTeam1.innerHTML = (this.getChampion(championArray[i+5])) + ' ' + information[0][i+5];
         appendNode.appendChild(summonerNameTextTeam1);
       }
       //champion banns (null if none)
