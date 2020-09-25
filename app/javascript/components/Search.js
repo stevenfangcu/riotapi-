@@ -28,7 +28,7 @@
       this.username = "";
       this.playerLV = '';
       this.accountID = '';
-      this.apiKey = '?api_key='//your api key goes here ;
+      this.apiKey = '?api_key=RGAPI-b30fa84a-545d-440d-8efe-2c88df66cad6'//your api key goes here ;
       this.textInput = React.createRef();
       this.bannChampion = new Array(1);
       this.gameID = new Array();
@@ -211,18 +211,16 @@
               teamMap1.set('towers', data.teams[i].towerKills);
               teamMap1.set('rifts', data.teams[i].riftHeraldKills);
               teamMap1.set('firstBlood',data.teams[i].firstBlood);
-              teamMap1.set('Summoner1',data.participants[5]);
-              teamMap1.set('Summoner2',data.participants[6]);
-              teamMap1.set('Summoner3',data.participants[7]);
-              teamMap1.set('Summoner4',data.participants[8]);
-              teamMap1.set('Summoner5',data.participants[9]);
+              teamMap1.set('Summoner5',data.participants[5]);
+              teamMap1.set('Summoner6',data.participants[6]);
+              teamMap1.set('Summoner7',data.participants[7]);
+              teamMap1.set('Summoner8',data.participants[8]);
+              teamMap1.set('Summoner9',data.participants[9]);
             }
           }
           //getting champpion picks and turn it was picked
           console.log(teamMap0);
           console.log(teamMap1);
-          console.log(nameArray);
-          console.log("banns: " + bannChampArray);
           console.log(data);
           gameMode = data.gameMode;
           console.log(gameMode);
@@ -237,17 +235,18 @@
 
     checkUserWinGame(teamMap0,teamMap1){
       var ans = '';
-      if(teamMap0.get("username") == this.username){//background colour
-        if(teamMap0.get("win") == "Fail"){
-          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
-        }else if(teamMap0.get("win") == "Win"){
-          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#99ff99;'
-        }
-      }else if(teamMap1.get("username") == this.username){
+      console.log(this.username);
+      if(teamMap1.get("username") == this.username){//background colour
         if(teamMap1.get("win") == "Fail"){
-          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
-        }else if(teamMap1.get("win") == "Win"){
           ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#99ff99;'
+        }else if(teamMap1.get("win") == "Win"){
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
+        }
+      }else if(teamMap0.get("username") == this.username){
+        if(teamMap0.get("win") == "Fail"){
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#99ff99;'
+        }else if(teamMap0.get("win") == "Win"){
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
         }
       }
       return ans;
@@ -259,7 +258,6 @@
         - get icons and better organization (more divs for each player and champion)
       */
       //return, do not do this gameid
-      console.log(championArray);
       if(this.gameID.includes(matchid)){
         return;
       }
@@ -310,37 +308,63 @@
         summonerNameTextTeam0.innerHTML = (this.getChampion(championArray[i])) + ' ' + information[0][i];
         summonerNameTextTeam0.setAttribute("id", i);
         summonerNameTextTeam0.className = "team0";
-        console.log(summonerNameTextTeam0);
-
         summonerNameTextTeam0.onclick = (function(){
-          console.log('hi');
+          console.log(document.getElementById(i).parentNode.id);
+          console.log(summonerNameTextTeam0.parentNode.id);
+          if(document.getElementById(i).parentNode.id != summonerNameTextTeam0.parentNode.id){
+            return;
+          }
           if(document.getElementById("team0Details") || document.getElementById("team1Details")){
             gameText.removeChild(document.getElementById("team1Details"));
             gameText.removeChild(document.getElementById("team0Details"));
-            console.log('1');
+            console.log('statement 1');
           }else if(document.getElementById("team0PlayerDetails")){
             try{
               gameText.removeChild(document.getElementById("team0PlayerDetails"));
+              gameText.removeChild(document.getElementById("team1PlayerDetails"));
             }catch(err){
               console.log(err);
             }
-            console.log('3');
+            console.log('statement 2 ');
           }else if (document.getElementById("team1PlayerDetails")){
             gameText.removeChild(document.getElementById("team1PlayerDetails"));
-            console.log('2');
+            console.log('statement 3');
           }
-          var gameDetailsTextPlayerTeam0 = document.createElement("div");
-          gameDetailsTextPlayerTeam0.setAttribute("id","team0PlayerDetails");
-          gameDetailsTextPlayerTeam0.style.fontSize = "10px";
-          gameDetailsTextPlayerTeam0.innerHTML = document.getElementById(this.id).innerHTML;
-          console.log(this.id);
-          gameDetailsButton.before(gameDetailsTextPlayerTeam0);
+          var lane = teamMap0.get('Summoner'+this.id).timeline.lane;
+          var role = teamMap0.get('Summoner'+this.id).timeline.role;
+          //entity that was clicked
+          var clickedEntityDiv = document.createElement("div");
+          clickedEntityDiv.setAttribute("id","team0PlayerDetails");
+          clickedEntityDiv.className = "team0";
+          clickedEntityDiv.style.fontSize = "10px";
+          clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
+          if(this.className == 'team0'){
+            console.log(teamMap0.get('Summoner'+this.id));
+            clickedEntityDiv.innerHTML += " " + lane + " " + role;
+          }
+          gameDetailsButton.before(clickedEntityDiv);
+          // matching div to compare role to role
+
+          var matchEntityDiv = document.createElement("div");
+          matchEntityDiv.setAttribute("id","team1PlayerDetails");
+          matchEntityDiv.style.fontSize = "10px";
+          matchEntityDiv.className = "team1";
+          var matchEntityDivID = '';
+          for(var xp = 5; xp < 10; xp++){
+            var matchedEntityRole = teamMap1.get('Summoner'+xp).timeline.role;
+            if((teamMap1.get('Summoner'+xp).timeline.role) == role && (teamMap1.get('Summoner'+xp).timeline.lane) == lane){
+              console.log(document.getElementById(xp));
+              matchEntityDiv.innerHTML = document.getElementById(xp).innerHTML;
+              matchEntityDiv.innerHTML += " " + (teamMap1.get('Summoner'+xp).timeline.lane + " " + teamMap1.get('Summoner'+xp).timeline.role);
+            }
+          }
+          gameDetailsButton.before(matchEntityDiv);
         });
 
         appendNode.appendChild(summonerNameTextTeam0);
 
         var summonerNameTextTeam1 = document.createElement("div");
-        summonerNameTextTeam1.setAttribute("id",i);
+        summonerNameTextTeam1.setAttribute("id",(i+5));
         summonerNameTextTeam1.className = "team1";
         summonerNameTextTeam1.innerHTML = (this.getChampion(championArray[i+5])) + ' ' + information[0][i+5];
         appendNode.appendChild(summonerNameTextTeam1);
