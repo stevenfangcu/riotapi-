@@ -28,7 +28,7 @@
       this.username = "";
       this.playerLV = '';
       this.accountID = '';
-      this.apiKey = '?api_key=RGAPI-b30fa84a-545d-440d-8efe-2c88df66cad6'//your api key goes here ;
+      this.apiKey = '?api_key='//your api key goes here ;
       this.textInput = React.createRef();
       this.bannChampion = new Array(1);
       this.gameID = new Array();
@@ -306,56 +306,68 @@
         //first team (on the right)
         var summonerNameTextTeam0 = document.createElement("div");
         summonerNameTextTeam0.innerHTML = (this.getChampion(championArray[i])) + ' ' + information[0][i];
-        summonerNameTextTeam0.setAttribute("id", i);
+        summonerNameTextTeam0.setAttribute("id", (matchid+i));
         summonerNameTextTeam0.className = "team0";
         summonerNameTextTeam0.onclick = (function(){
-          console.log(document.getElementById(i).parentNode.id);
-          console.log(summonerNameTextTeam0.parentNode.id);
-          if(document.getElementById(i).parentNode.id != summonerNameTextTeam0.parentNode.id){
+
+          console.log(document.getElementById(this.id));
+          var parentNodeID = document.getElementById(this.id).parentNode.id;
+
+          if(document.getElementById(this.id).parentNode.id != summonerNameTextTeam0.parentNode.id){
             return;
           }
+          console.log(this.id);
+          console.log(document.getElementById(("team0PlayerDetails"+parentNodeID)));
+          try{
+            document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
+            document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
+          }catch(err){
+            console.log(err);
+          }
+          /*
           if(document.getElementById("team0Details") || document.getElementById("team1Details")){
-            gameText.removeChild(document.getElementById("team1Details"));
-            gameText.removeChild(document.getElementById("team0Details"));
+            parentNodeID.removeChild(document.getElementById("team1Details"));
+            parentNodeID.removeChild(document.getElementById("team0Details"));
             console.log('statement 1');
           }else if(document.getElementById("team0PlayerDetails")){
             try{
-              gameText.removeChild(document.getElementById("team0PlayerDetails"));
-              gameText.removeChild(document.getElementById("team1PlayerDetails"));
+              parentNodeID.removeChild(document.getElementById("team0PlayerDetails"));
+              gameTparentNodeIDext.removeChild(document.getElementById("team1PlayerDetails"));
             }catch(err){
               console.log(err);
             }
             console.log('statement 2 ');
           }else if (document.getElementById("team1PlayerDetails")){
-            gameText.removeChild(document.getElementById("team1PlayerDetails"));
+            parentNodeID.removeChild(document.getElementById("team1PlayerDetails"));
             console.log('statement 3');
-          }
-          var lane = teamMap0.get('Summoner'+this.id).timeline.lane;
-          var role = teamMap0.get('Summoner'+this.id).timeline.role;
+          }*/
+          var lane = teamMap0.get('Summoner'+(this.id - parentNodeID)).timeline.lane;
+          var role = teamMap0.get('Summoner'+(this.id - parentNodeID)).timeline.role;
           //entity that was clicked
           var clickedEntityDiv = document.createElement("div");
-          clickedEntityDiv.setAttribute("id","team0PlayerDetails");
+          clickedEntityDiv.setAttribute("id",("team0PlayerDetails"+parentNodeID));
           clickedEntityDiv.className = "team0";
           clickedEntityDiv.style.fontSize = "10px";
           clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
           if(this.className == 'team0'){
-            console.log(teamMap0.get('Summoner'+this.id));
+            console.log(teamMap0.get('Summoner'+(this.id - parentNodeID)));
             clickedEntityDiv.innerHTML += " " + lane + " " + role;
           }
           gameDetailsButton.before(clickedEntityDiv);
           // matching div to compare role to role
 
           var matchEntityDiv = document.createElement("div");
-          matchEntityDiv.setAttribute("id","team1PlayerDetails");
+          matchEntityDiv.setAttribute("id",("team1PlayerDetails"+parentNodeID));
           matchEntityDiv.style.fontSize = "10px";
           matchEntityDiv.className = "team1";
           var matchEntityDivID = '';
           for(var xp = 5; xp < 10; xp++){
             var matchedEntityRole = teamMap1.get('Summoner'+xp).timeline.role;
             if((teamMap1.get('Summoner'+xp).timeline.role) == role && (teamMap1.get('Summoner'+xp).timeline.lane) == lane){
-              console.log(document.getElementById(xp));
-              matchEntityDiv.innerHTML = document.getElementById(xp).innerHTML;
-              matchEntityDiv.innerHTML += " " + (teamMap1.get('Summoner'+xp).timeline.lane + " " + teamMap1.get('Summoner'+xp).timeline.role);
+              console.log(this.id+xp);
+              console.log(document.getElementById((matchid+xp)));
+              matchEntityDiv.innerHTML = document.getElementById(xp+matchid).innerHTML;
+              matchEntityDiv.innerHTML += " " + (teamMap1.get('Summoner'+(xp)).timeline.lane + " " + teamMap1.get('Summoner'+(xp)).timeline.role);
             }
           }
           gameDetailsButton.before(matchEntityDiv);
@@ -364,7 +376,7 @@
         appendNode.appendChild(summonerNameTextTeam0);
 
         var summonerNameTextTeam1 = document.createElement("div");
-        summonerNameTextTeam1.setAttribute("id",(i+5));
+        summonerNameTextTeam1.setAttribute("id",(matchid+(i+5)));
         summonerNameTextTeam1.className = "team1";
         summonerNameTextTeam1.innerHTML = (this.getChampion(championArray[i+5])) + ' ' + information[0][i+5];
         appendNode.appendChild(summonerNameTextTeam1);
