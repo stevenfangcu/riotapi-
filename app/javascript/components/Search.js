@@ -6,6 +6,7 @@
   import Resizer from 'react-image-file-resizer';
   import logo from './filler.png'
   import './Search.css'
+  import {HorizontalBar,Line,Pie} from 'react-chartjs-2';
 
   // usage of apis from Riot Games
 
@@ -309,14 +310,12 @@
         summonerNameTextTeam0.setAttribute("id", (matchid+i));
         summonerNameTextTeam0.className = "team0";
         summonerNameTextTeam0.onclick = (function(){
-
           console.log(document.getElementById(this.id));
           var parentNodeID = document.getElementById(this.id).parentNode.id;
 
           if(document.getElementById(this.id).parentNode.id != summonerNameTextTeam0.parentNode.id){
             return;
           }
-          console.log(this.id);
           console.log(document.getElementById(("team0PlayerDetails"+parentNodeID)));
           try{
             document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
@@ -324,35 +323,28 @@
           }catch(err){
             console.log(err);
           }
-          /*
-          if(document.getElementById("team0Details") || document.getElementById("team1Details")){
-            parentNodeID.removeChild(document.getElementById("team1Details"));
-            parentNodeID.removeChild(document.getElementById("team0Details"));
-            console.log('statement 1');
-          }else if(document.getElementById("team0PlayerDetails")){
-            try{
-              parentNodeID.removeChild(document.getElementById("team0PlayerDetails"));
-              gameTparentNodeIDext.removeChild(document.getElementById("team1PlayerDetails"));
-            }catch(err){
-              console.log(err);
-            }
-            console.log('statement 2 ');
-          }else if (document.getElementById("team1PlayerDetails")){
-            parentNodeID.removeChild(document.getElementById("team1PlayerDetails"));
-            console.log('statement 3');
-          }*/
           var lane = teamMap0.get('Summoner'+(this.id - parentNodeID)).timeline.lane;
           var role = teamMap0.get('Summoner'+(this.id - parentNodeID)).timeline.role;
+          var linebreak = document.createElement("br");
+
           //entity that was clicked
           var clickedEntityDiv = document.createElement("div");
           clickedEntityDiv.setAttribute("id",("team0PlayerDetails"+parentNodeID));
           clickedEntityDiv.className = "team0";
           clickedEntityDiv.style.fontSize = "10px";
           clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
+          console.log(teamMap0.get('Summoner'+(this.id - parentNodeID)).timeline.lane);
+          clickedEntityDiv.append(linebreak);
+          clickedEntityDiv.innerHTML += " spells: " + teamMap0.get('Summoner'+(this.id - parentNodeID)).spell1Id;
+          clickedEntityDiv.innerHTML += "&" + teamMap0.get('Summoner'+(this.id - parentNodeID)).spell2Id;
+          clickedEntityDiv.append(linebreak);
+          clickedEntityDiv.innerHTML += "Gold earned: " + teamMap0.get('Summoner'+(this.id - parentNodeID)).stats.goldEarned;
+          clickedEntityDiv.append(linebreak);
           if(this.className == 'team0'){
-            console.log(teamMap0.get('Summoner'+(this.id - parentNodeID)));
+              console.log(teamMap0.get('Summoner'+(this.id - parentNodeID)));
             clickedEntityDiv.innerHTML += " " + lane + " " + role;
           }
+
           gameDetailsButton.before(clickedEntityDiv);
           // matching div to compare role to role
 
@@ -367,6 +359,12 @@
               console.log(this.id+xp);
               console.log(document.getElementById((matchid+xp)));
               matchEntityDiv.innerHTML = document.getElementById(xp+matchid).innerHTML;
+              matchEntityDiv.append(linebreak);
+              matchEntityDiv.innerHTML += " spells: " + teamMap1.get('Summoner'+(xp)).spell1Id;
+              matchEntityDiv.innerHTML += "&" + teamMap1.get('Summoner'+(xp)).spell2Id;
+              matchEntityDiv.append(linebreak);
+              matchEntityDiv.innerHTML += "Gold earned: " + teamMap1.get('Summoner'+(xp)).stats.goldEarned;
+              matchEntityDiv.append(linebreak);
               matchEntityDiv.innerHTML += " " + (teamMap1.get('Summoner'+(xp)).timeline.lane + " " + teamMap1.get('Summoner'+(xp)).timeline.role);
             }
           }
