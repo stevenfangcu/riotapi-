@@ -310,6 +310,9 @@
         summonerNameTextTeam0.setAttribute("id", (matchid+i));
         summonerNameTextTeam0.className = "team0";
         summonerNameTextTeam0.onclick = (function(){
+
+
+          //actual information of summoner and his corresponding opponent
           console.log(document.getElementById(this.id));
           var parentNodeID = document.getElementById(this.id).parentNode.id;
 
@@ -320,28 +323,52 @@
           try{
             document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
             document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
+            document.getElementById(("teamTab"+parentNodeID)).remove();
+            document.getElementById(("personalTab"+parentNodeID)).remove();
           }catch(err){
             console.log(err);
           }
+
+          //Tab links when information is retrieved
+          var personalStatsTab = document.createElement("button");
+          personalStatsTab.innerHTML = "Personal stats";
+          personalStatsTab.className = "tablinks";
+          personalStatsTab.setAttribute("id",("personalTab"+parentNodeID));
+          var backgroundColorOfDiv = document.getElementById(parentNodeID);
+          gameDetailsButton.before(personalStatsTab);
+
+          var teamStatsTab = document.createElement("button");
+          teamStatsTab.innerHTML = "Team stats";
+          teamStatsTab.className = "tablinks";
+          teamStatsTab.setAttribute("id",("teamTab"+parentNodeID));
+          gameDetailsButton.before(teamStatsTab);
+
+
           var lane = teamMap0.get('Summoner'+(this.id - parentNodeID)).timeline.lane;
           var role = teamMap0.get('Summoner'+(this.id - parentNodeID)).timeline.role;
           var linebreak = document.createElement("br");
-
+          var summonerTeam0Clicked = teamMap0.get('Summoner'+(this.id - parentNodeID))
           //entity that was clicked
           var clickedEntityDiv = document.createElement("div");
           clickedEntityDiv.setAttribute("id",("team0PlayerDetails"+parentNodeID));
           clickedEntityDiv.className = "team0";
           clickedEntityDiv.style.fontSize = "10px";
           clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
-          console.log(teamMap0.get('Summoner'+(this.id - parentNodeID)).timeline.lane);
+          console.log(summonerTeam0Clicked.timeline.lane);
           clickedEntityDiv.append(linebreak);
-          clickedEntityDiv.innerHTML += " spells: " + teamMap0.get('Summoner'+(this.id - parentNodeID)).spell1Id;
-          clickedEntityDiv.innerHTML += "&" + teamMap0.get('Summoner'+(this.id - parentNodeID)).spell2Id;
+          clickedEntityDiv.innerHTML += " spells: " + summonerTeam0Clicked.spell1Id;
+          clickedEntityDiv.innerHTML += "&" + summonerTeam0Clicked.spell2Id;
           clickedEntityDiv.append(linebreak);
-          clickedEntityDiv.innerHTML += "Gold earned: " + teamMap0.get('Summoner'+(this.id - parentNodeID)).stats.goldEarned;
+          clickedEntityDiv.innerHTML += "Gold earned: " + summonerTeam0Clicked.stats.goldEarned;
+          for (var key in summonerTeam0Clicked.stats) {
+              // printing everything in stats
+              if (summonerTeam0Clicked.stats.hasOwnProperty(key)) {
+                  console.log(key, summonerTeam0Clicked.stats[key]);
+              }
+          }
           clickedEntityDiv.append(linebreak);
           if(this.className == 'team0'){
-              console.log(teamMap0.get('Summoner'+(this.id - parentNodeID)));
+            console.log(teamMap0.get('Summoner'+(this.id - parentNodeID)));
             clickedEntityDiv.innerHTML += " " + lane + " " + role;
           }
 
