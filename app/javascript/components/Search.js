@@ -29,7 +29,7 @@
       this.username = "";
       this.playerLV = '';
       this.accountID = '';
-      this.apiKey = '?api_key='//your api key goes here ;
+      this.apiKey = '?api_key=RGAPI-0f4e6b56-caee-4a88-8664-d39680e9c9c7'//your api key goes here ;
       this.textInput = React.createRef();
       this.bannChampion = new Array(1);
       this.gameID = new Array();
@@ -230,9 +230,6 @@
         });
     }
 
-    wonMatch(teamMap0,teamMap1){
-
-    }
 
     checkUserWinGame(teamMap0,teamMap1){
       var ans = '';
@@ -268,8 +265,6 @@
       });
 
       this.gameID.push(matchid);
-
-      this.wonMatch(teamMap0,teamMap1);
 
       information = this.state.informationArray;
       var node = document.getElementById("riotGameWrapper");
@@ -311,7 +306,6 @@
         summonerNameTextTeam0.className = "team0";
         summonerNameTextTeam0.onclick = (function(){
 
-
           //actual information of summoner and his corresponding opponent
           console.log(document.getElementById(this.id));
           var parentNodeID = document.getElementById(this.id).parentNode.id;
@@ -329,6 +323,7 @@
             console.log(err);
           }
 
+          var arr = ['goldEarned'];
           //Tab links when information is retrieved
           var personalStatsTab = document.createElement("button");
           personalStatsTab.innerHTML = "Personal stats";
@@ -348,23 +343,29 @@
           var role = teamMap0.get('Summoner'+(this.id - parentNodeID)).timeline.role;
           var linebreak = document.createElement("br");
           var summonerTeam0Clicked = teamMap0.get('Summoner'+(this.id - parentNodeID))
+          var summonerTeam1Clicked = "";
           //entity that was clicked
           var clickedEntityDiv = document.createElement("div");
           clickedEntityDiv.setAttribute("id",("team0PlayerDetails"+parentNodeID));
           clickedEntityDiv.className = "team0";
           clickedEntityDiv.style.fontSize = "10px";
           clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
-          console.log(summonerTeam0Clicked.timeline.lane);
           clickedEntityDiv.append(linebreak);
-          clickedEntityDiv.innerHTML += " spells: " + summonerTeam0Clicked.spell1Id;
-          clickedEntityDiv.innerHTML += "&" + summonerTeam0Clicked.spell2Id;
-          clickedEntityDiv.append(linebreak);
-          clickedEntityDiv.innerHTML += "Gold earned: " + summonerTeam0Clicked.stats.goldEarned;
-          for (var key in summonerTeam0Clicked.stats) {
-              // printing everything in stats
-              if (summonerTeam0Clicked.stats.hasOwnProperty(key)) {
-                  console.log(key, summonerTeam0Clicked.stats[key]);
-              }
+
+          // matching div to compare role to role
+          var matchEntityDiv = document.createElement("div");
+          matchEntityDiv.setAttribute("id",("team1PlayerDetails"+parentNodeID));
+          matchEntityDiv.style.fontSize = "10px";
+          matchEntityDiv.className = "team1";
+
+          for(var xp = 5; xp < 10; xp++){
+            var matchedEntityRole = teamMap1.get('Summoner'+xp).timeline.role;
+            if((teamMap1.get('Summoner'+xp).timeline.role) == role && (teamMap1.get('Summoner'+xp).timeline.lane) == lane){
+              summonerTeam1Clicked = teamMap1.get('Summoner'+xp);
+              matchEntityDiv.innerHTML = document.getElementById(xp+matchid).innerHTML;
+              matchEntityDiv.append(linebreak);
+              matchEntityDiv.innerHTML += " " + (teamMap1.get('Summoner'+(xp)).timeline.lane + " " + teamMap1.get('Summoner'+(xp)).timeline.role);
+            }
           }
           clickedEntityDiv.append(linebreak);
           if(this.className == 'team0'){
@@ -372,29 +373,20 @@
             clickedEntityDiv.innerHTML += " " + lane + " " + role;
           }
 
-          gameDetailsButton.before(clickedEntityDiv);
-          // matching div to compare role to role
-
-          var matchEntityDiv = document.createElement("div");
-          matchEntityDiv.setAttribute("id",("team1PlayerDetails"+parentNodeID));
-          matchEntityDiv.style.fontSize = "10px";
-          matchEntityDiv.className = "team1";
-          var matchEntityDivID = '';
-          for(var xp = 5; xp < 10; xp++){
-            var matchedEntityRole = teamMap1.get('Summoner'+xp).timeline.role;
-            if((teamMap1.get('Summoner'+xp).timeline.role) == role && (teamMap1.get('Summoner'+xp).timeline.lane) == lane){
-              console.log(this.id+xp);
-              console.log(document.getElementById((matchid+xp)));
-              matchEntityDiv.innerHTML = document.getElementById(xp+matchid).innerHTML;
-              matchEntityDiv.append(linebreak);
-              matchEntityDiv.innerHTML += " spells: " + teamMap1.get('Summoner'+(xp)).spell1Id;
-              matchEntityDiv.innerHTML += "&" + teamMap1.get('Summoner'+(xp)).spell2Id;
-              matchEntityDiv.append(linebreak);
-              matchEntityDiv.innerHTML += "Gold earned: " + teamMap1.get('Summoner'+(xp)).stats.goldEarned;
-              matchEntityDiv.append(linebreak);
-              matchEntityDiv.innerHTML += " " + (teamMap1.get('Summoner'+(xp)).timeline.lane + " " + teamMap1.get('Summoner'+(xp)).timeline.role);
-            }
+          for (var key in summonerTeam0Clicked.stats) {
+              if (summonerTeam0Clicked.stats.hasOwnProperty(key)) {
+                  if(arr.includes(key)){
+                    console.log(key, summonerTeam0Clicked.stats[key]);
+                    console.log(key, summonerTeam1Clicked.stats[key]);
+                    clickedEntityDiv.append(linebreak);
+                    clickedEntityDiv.innerHTML += key.toString() + " " + summonerTeam0Clicked.stats[key];
+                    matchEntityDiv.append(linebreak);
+                    matchEntityDiv.innerHTML += key.toString() + " " + summonerTeam1Clicked.stats[key];
+                  }
+              }
           }
+
+          gameDetailsButton.before(clickedEntityDiv);
           gameDetailsButton.before(matchEntityDiv);
         });
 
