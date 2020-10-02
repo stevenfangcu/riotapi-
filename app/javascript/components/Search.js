@@ -29,7 +29,7 @@
       this.username = "";
       this.playerLV = '';
       this.accountID = '';
-      this.apiKey = '?api_key=RGAPI-0f4e6b56-caee-4a88-8664-d39680e9c9c7'//your api key goes here ;
+      this.apiKey = '?api_key='//your api key goes here ;
       this.textInput = React.createRef();
       this.bannChampion = new Array(1);
       this.gameID = new Array();
@@ -372,22 +372,39 @@
             console.log(teamMap0.get('Summoner'+(this.id - parentNodeID)));
             clickedEntityDiv.innerHTML += " " + lane + " " + role;
           }
+          gameDetailsButton.before(clickedEntityDiv);
+          gameDetailsButton.before(matchEntityDiv);
 
           for (var key in summonerTeam0Clicked.stats) {
               if (summonerTeam0Clicked.stats.hasOwnProperty(key)) {
+                //console.log(key, summonerTeam0Clicked.stats[key]);
                   if(arr.includes(key)){
-                    console.log(key, summonerTeam0Clicked.stats[key]);
-                    console.log(key, summonerTeam1Clicked.stats[key]);
-                    clickedEntityDiv.append(linebreak);
-                    clickedEntityDiv.innerHTML += key.toString() + " " + summonerTeam0Clicked.stats[key];
-                    matchEntityDiv.append(linebreak);
-                    matchEntityDiv.innerHTML += key.toString() + " " + summonerTeam1Clicked.stats[key];
+                    var team0Stat = document.createElement("div");
+                    var team1Stat = document.createElement("div");
+                    var team0bar = document.createElement("div");
+                    team0bar.setAttribute("id","comparsionBar");
+                    var team1bar = document.createElement("div");
+                    team1bar.setAttribute("id","comparsionBar");
+
+                    team0Stat.innerHTML += key.toString() + " " + summonerTeam0Clicked.stats[key] + "      ";
+                    team1Stat.innerHTML += key.toString() + " " + summonerTeam1Clicked.stats[key] + "      ";
+                    team0Stat.append(team0bar);
+                    team1Stat.append(team1bar);
+                    var total = (summonerTeam0Clicked.stats[key] + summonerTeam1Clicked.stats[key])
+                    console.log(total);
+                    team0Stat.style.width = ((summonerTeam0Clicked.stats[key]/total)*100).toString() + "%";
+                    team1Stat.style.width = ((summonerTeam1Clicked.stats[key]/total)*100).toString() + "%";
+                    if(clickedEntityDiv.className == "team1"){
+                      clickedEntityDiv.append(team1Stat);
+                      matchEntityDiv.append(team0Stat);
+                    }else{
+                      clickedEntityDiv.append(team0Stat);
+                      matchEntityDiv.append(team1Stat);
+                    }
+
                   }
               }
           }
-
-          gameDetailsButton.before(clickedEntityDiv);
-          gameDetailsButton.before(matchEntityDiv);
         });
 
         appendNode.appendChild(summonerNameTextTeam0);
