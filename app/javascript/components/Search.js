@@ -323,7 +323,7 @@
             console.log(err);
           }
 
-          var arr = ['goldEarned'];
+          var arr = ['goldEarned','totalDamageDealtToChampions'];
           //Tab links when information is retrieved
           var personalStatsTab = document.createElement("button");
           personalStatsTab.innerHTML = "Personal stats";
@@ -381,19 +381,37 @@
                   if(arr.includes(key)){
                     var team0Stat = document.createElement("div");
                     var team1Stat = document.createElement("div");
+                    team0Stat.append(lineBreak);
+                    team1Stat.append(lineBreak);
+                    team1Stat.style.display = "inline";
+                    team0Stat.style.display = "inline";
                     var team0bar = document.createElement("div");
-                    team0bar.setAttribute("id","comparsionBar");
+                    //team0bar.setAttribute("id","comparsionBar");
+                    team0bar.className = "percentBar";
                     var team1bar = document.createElement("div");
-                    team1bar.setAttribute("id","comparsionBar");
+                    //team1bar.setAttribute("id","comparsionBar");
+                    team1bar.className = "percentBar";
 
                     team0Stat.innerHTML += key.toString() + " " + summonerTeam0Clicked.stats[key] + "      ";
                     team1Stat.innerHTML += key.toString() + " " + summonerTeam1Clicked.stats[key] + "      ";
                     team0Stat.append(team0bar);
                     team1Stat.append(team1bar);
-                    var total = (summonerTeam0Clicked.stats[key] + summonerTeam1Clicked.stats[key])
+                    var total = (summonerTeam0Clicked.stats[key] + summonerTeam1Clicked.stats[key]);
                     console.log(total);
-                    team0Stat.style.width = ((summonerTeam0Clicked.stats[key]/total)*100).toString() + "%";
-                    team1Stat.style.width = ((summonerTeam1Clicked.stats[key]/total)*100).toString() + "%";
+                    var team0StatPercent = (summonerTeam0Clicked.stats[key]/total)*100;
+                    var team1StatPercent = (summonerTeam1Clicked.stats[key]/total)*100;
+                    team0Stat.style.width = team0StatPercent.toString() + "%";
+                    team1Stat.style.width = team1StatPercent.toString() + "%";
+                    console.log(team0StatPercent-team1StatPercent);
+                    if(team0StatPercent > team1StatPercent){
+                      team0bar.style.backgroundColor = "green";
+                      team1bar.style.backgroundColor = "red";
+                      team0bar.innerHtml = (team0StatPercent-team1StatPercent) + "%";
+                    }else{
+                      team0bar.style.backgroundColor = "red";
+                      team1bar.style.backgroundColor = "green";
+                      team1bar.innerHtml = (team1StatPercent-team0StatPercent) + "%";
+                    }
                     if(clickedEntityDiv.className == "team1"){
                       clickedEntityDiv.append(team1Stat);
                       matchEntityDiv.append(team0Stat);
