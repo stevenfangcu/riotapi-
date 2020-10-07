@@ -323,7 +323,7 @@
             console.log(err);
           }
 
-          var arr = ['goldEarned','totalDamageDealtToChampions'];
+          var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced'];
           //Tab links when information is retrieved
           var personalStatsTab = document.createElement("button");
           personalStatsTab.innerHTML = "Personal stats";
@@ -379,10 +379,12 @@
               if (summonerTeam0Clicked.stats.hasOwnProperty(key)) {
                 //console.log(key, summonerTeam0Clicked.stats[key]);
                   if(arr.includes(key)){
+                    var surroundningStatDiv0 = document.createElement("div");
+                    surroundningStatDiv0.setAttribute = ("id",(key.toString()+parentNodeID+"team0"));
+                    var surroundningStatDiv1 = document.createElement("div");
+                    surroundningStatDiv1.setAttribute = ("id",(key.toString()+parentNodeID+"team1"));
                     var team0Stat = document.createElement("div");
                     var team1Stat = document.createElement("div");
-                    team0Stat.append(lineBreak);
-                    team1Stat.append(lineBreak);
                     team1Stat.style.display = "inline";
                     team0Stat.style.display = "inline";
                     var team0bar = document.createElement("div");
@@ -413,11 +415,15 @@
                       team1bar.innerHtml = (team1StatPercent-team0StatPercent) + "%";
                     }
                     if(clickedEntityDiv.className == "team1"){
-                      clickedEntityDiv.append(team1Stat);
-                      matchEntityDiv.append(team0Stat);
+                      surroundningStatDiv1.append(team1Stat);
+                      surroundningStatDiv0.append(team0Stat);
+                      clickedEntityDiv.append(surroundningStatDiv1);
+                      matchEntityDiv.append(surroundningStatDiv0);
                     }else{
-                      clickedEntityDiv.append(team0Stat);
-                      matchEntityDiv.append(team1Stat);
+                      surroundningStatDiv1.append(team1Stat);
+                      surroundningStatDiv0.append(team0Stat);
+                      clickedEntityDiv.append(surroundningStatDiv0);
+                      matchEntityDiv.append(surroundningStatDiv1);
                     }
 
                   }
