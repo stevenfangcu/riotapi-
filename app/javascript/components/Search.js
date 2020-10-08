@@ -305,7 +305,15 @@
         summonerNameTextTeam0.setAttribute("id", (matchid+i));
         summonerNameTextTeam0.className = "team0";
         summonerNameTextTeam0.onclick = (function(){
-
+          var closeDetailButtonWrapper = document.createElement("div");
+          closeDetailButtonWrapper.setAttribute("id","closeDetail"+parentNodeID);
+          var closeDetailButton = document.createElement("button");
+          closeDetailButton.setAttribute("id","closeDetail"+parentNodeID);
+          closeDetailButton.className = "closeButtonMatchDetails";
+          closeDetailButton.innerHTML = "x";
+          closeDetailButtonWrapper.append(closeDetailButton);
+          gameDetailsButton.before(closeDetailButtonWrapper);
+          gameDetailsButton.before(lineBreak);
           //actual information of summoner and his corresponding opponent
           console.log(document.getElementById(this.id));
           var parentNodeID = document.getElementById(this.id).parentNode.id;
@@ -455,7 +463,7 @@
 
       var gameDetailsButton = document.createElement("Button");
       gameDetailsButton.setAttribute("id","expandButton");
-      gameDetailsButton.innerHTML = "V";
+      gameDetailsButton.innerHTML = "~";
 
       gameDetailsButton.onclick = (function() {
         if(document.getElementById("team0Details") || document.getElementById("team1Details")){

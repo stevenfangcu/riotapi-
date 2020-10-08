@@ -49,9 +49,13 @@ body {
    font-size:175%;
 }
 #expandButton{
-  border-width: medium;
-  border-color: gray;
-  width:100%;
+  border-width: thin;
+  border-color: black;
+  width:25%;
+  position:relative;
+  top:37.5%;
+  left:37.5%;
+  opacity: 0.5;
 }
 #gameTime{
     text-align: center;
@@ -62,8 +66,7 @@ body {
   background-color: white;
   border-radius: 1px;
   border-width: medium;
-  border-style: solid;
-  border-color: gray;
+  border-style: dashed;
 }
 .italicFont{
   font-style: italic;
@@ -73,8 +76,19 @@ body {
 }
 
 .tablinks{
-  width: 50%;
-  border-radius: .5px;
+  border-width: thin;
+  border-color: black;
+  width:50%;
+  opacity: 50%;
+  position:relative;
+}
+.closeButtonMatchDetails{
+  border-width: thin;
+  border-color: black;
+  height: 10%;
+  position:relative;
+  top:37.5%;
+  left:95%;
   opacity: 0.5;
 }
 .percentBar{
