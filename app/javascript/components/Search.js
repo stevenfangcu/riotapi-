@@ -306,14 +306,24 @@
         summonerNameTextTeam0.className = "team0";
         summonerNameTextTeam0.onclick = (function(){
           var closeDetailButtonWrapper = document.createElement("div");
-          closeDetailButtonWrapper.setAttribute("id","closeDetail"+parentNodeID);
+          closeDetailButtonWrapper.setAttribute("id","closeDetailWrapper"+(matchid+i));
           var closeDetailButton = document.createElement("button");
           closeDetailButton.setAttribute("id","closeDetail"+parentNodeID);
           closeDetailButton.className = "closeButtonMatchDetails";
           closeDetailButton.innerHTML = "x";
+          closeDetailButton.onclick = (function() {
+            try{
+              document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
+              document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
+              document.getElementById(("teamTab"+parentNodeID)).remove();
+              document.getElementById(("personalTab"+parentNodeID)).remove();
+              document.getElementById(("closeDetailWrapper"+(matchid+i))).remove();
+            }catch(err){
+              console.log(err);
+            }
+          });
           closeDetailButtonWrapper.append(closeDetailButton);
           gameDetailsButton.before(closeDetailButtonWrapper);
-          gameDetailsButton.before(lineBreak);
           //actual information of summoner and his corresponding opponent
           console.log(document.getElementById(this.id));
           var parentNodeID = document.getElementById(this.id).parentNode.id;
