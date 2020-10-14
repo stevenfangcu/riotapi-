@@ -274,13 +274,6 @@
       gameText.style.cssText = this.checkUserWinGame(teamMap0,teamMap1);
 
       gameText.setAttribute("id",matchid);
-
-      /*gameText.onmouseout = function(){
-        gameText.style.fontStyle = "normal";
-      };
-      gameText.onmouseover = function(){
-        gameText.style.fontStyle = "italic";
-      };*/
       gameText.setAttribute("class","gameText");
       //setting Style of first div
       node.appendChild(gameText);
@@ -305,29 +298,6 @@
         summonerNameTextTeam0.setAttribute("id", (matchid+i));
         summonerNameTextTeam0.className = "team0";
         summonerNameTextTeam0.onclick = (function(){
-          var closeDetailButtonWrapper = document.createElement("div");
-          closeDetailButtonWrapper.setAttribute("id","closeDetailWrapper"+(matchid+i));
-          var closeDetailButton = document.createElement("button");
-          closeDetailButton.setAttribute("id","closeDetail"+parentNodeID);
-          closeDetailButton.className = "closeButtonMatchDetails";
-          closeDetailButton.innerHTML = "x";
-          closeDetailButton.onclick = (function() {
-            try{
-              document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
-              document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
-              document.getElementById(("teamTab"+parentNodeID)).remove();
-              document.getElementById(("personalTab"+parentNodeID)).remove();
-              document.getElementById(("closeDetailWrapper"+(matchid+i))).remove();
-              document.getElementById("closeDetail"+parentNodeID).remove();
-            }catch(err){
-              console.log(err);
-            }
-          });
-          if(!(document.getElementById("closeDetail"+parentNodeID))){
-              closeDetailButtonWrapper.append(closeDetailButton);
-              gameDetailsButton.before(closeDetailButtonWrapper);
-          }
-          gameDetailsButton.before(closeDetailButtonWrapper);
           //actual information of summoner and his corresponding opponent
           console.log(document.getElementById(this.id));
           var parentNodeID = document.getElementById(this.id).parentNode.id;
@@ -350,15 +320,15 @@
           var personalStatsTab = document.createElement("button");
           personalStatsTab.innerHTML = "Personal stats";
           personalStatsTab.className = "tablinks";
-          personalStatsTab.setAttribute("id",("personalTab"+parentNodeID));
+          personalStatsTab.setAttribute("id",("personalTab"+matchid));
           personalStatsTab.style.opacity = "0.75";
-          var backgroundColorOfDiv = document.getElementById(parentNodeID);
+          var backgroundColorOfDiv = document.getElementById(matchid);
           gameDetailsButton.before(personalStatsTab);
 
           var teamStatsTab = document.createElement("button");
           teamStatsTab.innerHTML = "Team stats";
           teamStatsTab.className = "tablinks";
-          teamStatsTab.setAttribute("id",("teamTab"+parentNodeID));
+          teamStatsTab.setAttribute("id",("teamTab"+matchid));
           teamStatsTab.onclick = (function() {
             if(document.getElementById("team0Details") || document.getElementById("team1Details")){
               gameText.removeChild(document.getElementById("team1Details"));
@@ -431,6 +401,8 @@
           }
           gameDetailsButton.before(clickedEntityDiv);
           gameDetailsButton.before(matchEntityDiv);
+          //gameText.append(clickedEntityDiv);
+          //gameText.append(matchEntityDiv);
 
           for (var key in summonerTeam0Clicked.stats) {
               if (summonerTeam0Clicked.stats.hasOwnProperty(key)) {
@@ -515,39 +487,20 @@
       gameDetailsButton.innerHTML = "~";
 
       gameDetailsButton.onclick = (function() {
-        if(document.getElementById("team0Details") || document.getElementById("team1Details")){
-          gameText.removeChild(document.getElementById("team1Details"));
-          gameText.removeChild(document.getElementById("team0Details"));
-        }else{
-          var gameDetailsTextTeam0 = document.createElement("div");
-          gameDetailsTextTeam0.setAttribute("id","team0Details");
-          gameDetailsTextTeam0.style.fontSize = "10px";
-          gameDetailsTextTeam0.innerHTML = "Dragons: " + teamMap0.get("dragonKills");
-          var linebreak = document.createElement("br");
-          gameDetailsTextTeam0.append(linebreak);
-          gameDetailsTextTeam0.innerHTML += "Towers: " + teamMap0.get("towers");
-          gameDetailsTextTeam0.append(linebreak);
-          gameDetailsTextTeam0.innerHTML += "Inhibs: " + teamMap0.get("inhibs");
-          gameDetailsTextTeam0.append(linebreak);
-          gameDetailsTextTeam0.innerHTML += "Heralds: " + teamMap0.get("rifts");
-          gameDetailsButton.before(gameDetailsTextTeam0);
-
-          var gameDetailsTextTeam1 = document.createElement("div");
-          gameDetailsTextTeam1.setAttribute("id","team1Details");
-          gameDetailsTextTeam1.style.fontSize = "10px";
-          gameDetailsTextTeam1.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
-          var linebreak = document.createElement("br");
-          gameDetailsTextTeam1.append(linebreak);
-          gameDetailsTextTeam1.innerHTML += "Towers: " + teamMap1.get("towers");
-          gameDetailsTextTeam1.append(linebreak);
-          gameDetailsTextTeam1.innerHTML += "Inhibs: " + teamMap1.get("inhibs");
-          gameDetailsTextTeam1.append(linebreak);
-          gameDetailsTextTeam1.innerHTML += "Heralds: " + teamMap1.get("rifts");
-          gameDetailsButton.before(gameDetailsTextTeam1);
+        try{
+          var parentNodeID = document.getElementById(this.id).parentNode.id;
+          console.log(parentNodeID);//3521711630
+          document.getElementById(("team0PlayerDetails"+matchid)).remove();
+          document.getElementById(("team1PlayerDetails"+matchid)).remove();
+          document.getElementById(("teamTab"+matchid)).remove();
+          document.getElementById(("personalTab"+matchid)).remove();
+          document.getElementById(("closeDetailWrapper"+(matchid+i))).remove();
+        }catch(err){
+            console.log(err);
         }
       });
-        gameText.append(gameDetailsButton);
         var lineBreak = document.createElement("br");
+        gameText.append(gameDetailsButton);
         node.appendChild(lineBreak);
         node.appendChild(lineBreak);
         node.appendChild(lineBreak);
