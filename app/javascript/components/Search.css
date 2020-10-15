@@ -35,11 +35,11 @@ body {
 .summonerStats{
   float:right;
 }
-#team0,#team0Details,.team0{
+#team0,.team0Details,.team0{
   width:50%;
   float: right;
 }
-#team1,#team1Details,.team1{
+#team1,.team1Details,.team1{
   width: 50%;
   float: left;
 }

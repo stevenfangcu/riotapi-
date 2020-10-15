@@ -19,7 +19,8 @@
         dragonKills: "",
         inhibs: "",
         towers: "",
-        rifts: ""
+        rifts: "",
+        clickedEntity: []
       }
     }
     constructor(props) {
@@ -249,7 +250,6 @@
       }
       return ans;
     }
-
     appendGame(nameArray,bannChampArray,gameMode,matchid,teamMap0, teamMap1,gameTime,championArray){
       /* TO-DO LIST
         - make a counter so we dont have duplicataes from componentDidMount
@@ -323,6 +323,52 @@
           personalStatsTab.setAttribute("id",("personalTab"+matchid));
           personalStatsTab.style.opacity = "0.75";
           var backgroundColorOfDiv = document.getElementById(matchid);
+          personalStatsTab.onclick = (function(){
+            if( document.getElementById("team0PlayerDetails"+matchid) || (document.getElementById("team1PlayerDetails"+matchid))){
+              console.log("already exists");
+            }else{
+              console.log(teamMap0);
+              console.log(this.id);
+              console.log(parentNodeID);
+              var lane = teamMap0.get('Summoner'+(1)).timeline.lane;
+              var role = teamMap0.get('Summoner'+(1)).timeline.role;
+              var linebreak = document.createElement("br");
+              var summonerTeam0Clicked = teamMap0.get('Summoner'+(this.id - parentNodeID))
+              var summonerTeam1Clicked = "";
+              //entity that was clicked
+              var clickedEntityDiv = document.createElement("div");
+              clickedEntityDiv.setAttribute("id",("team0PlayerDetails"+matchid));
+              clickedEntityDiv.className = "team0";
+              clickedEntityDiv.style.fontSize = "10px";
+              clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
+              clickedEntityDiv.append(linebreak);
+
+              // matching div to compare role to role
+              var matchEntityDiv = document.createElement("div");
+              matchEntityDiv.setAttribute("id",("team1PlayerDetails"+matchid));
+              matchEntityDiv.style.fontSize = "10px";
+              matchEntityDiv.className = "team1";
+
+              for(var xp = 5; xp < 10; xp++){
+                var matchedEntityRole = teamMap1.get('Summoner'+xp).timeline.role;
+                if((teamMap1.get('Summoner'+xp).timeline.role) == role && (teamMap1.get('Summoner'+xp).timeline.lane) == lane){
+                  summonerTeam1Clicked = teamMap1.get('Summoner'+xp);
+                  matchEntityDiv.innerHTML = document.getElementById(xp+matchid).innerHTML;
+                  matchEntityDiv.append(linebreak);
+                  matchEntityDiv.innerHTML += " " + (teamMap1.get('Summoner'+(xp)).timeline.lane + " " + teamMap1.get('Summoner'+(xp)).timeline.role);
+                }
+              }
+              clickedEntityDiv.append(linebreak);
+              if(this.className == 'team0'){
+                console.log(teamMap0.get('Summoner'+(this.id - parentNodeID)));
+                clickedEntityDiv.innerHTML += " " + lane + " " + role;
+              }
+              gameDetailsButton.before(clickedEntityDiv);
+              gameDetailsButton.before(matchEntityDiv);
+
+            }
+          });
+          //=======
           gameDetailsButton.before(personalStatsTab);
 
           var teamStatsTab = document.createElement("button");
@@ -330,12 +376,18 @@
           teamStatsTab.className = "tablinks";
           teamStatsTab.setAttribute("id",("teamTab"+matchid));
           teamStatsTab.onclick = (function() {
+            if(document.getElementById("team0PlayerDetails"+matchid) || (document.getElementById("team1PlayerDetails"+matchid))){
+              gameText.removeChild(document.getElementById("team0PlayerDetails"+matchid));
+              gameText.removeChild(document.getElementById("team1PlayerDetails"+matchid));
+            }
             if(document.getElementById("team0Details") || document.getElementById("team1Details")){
               gameText.removeChild(document.getElementById("team1Details"));
               gameText.removeChild(document.getElementById("team0Details"));
             }else{
               var gameDetailsTextTeam0 = document.createElement("div");
-              gameDetailsTextTeam0.setAttribute("id","team0Details");
+              gameDetailsTextTeam0.setAttribute("id","team0Details"+matchid);
+              console.log("team0Details"+matchid);
+              gameDetailsTextTeam0.className = "team0Details";
               gameDetailsTextTeam0.style.fontSize = "10px";
               gameDetailsTextTeam0.innerHTML = "Dragons: " + teamMap0.get("dragonKills");
               var linebreak = document.createElement("br");
@@ -348,8 +400,9 @@
               gameDetailsButton.before(gameDetailsTextTeam0);
 
               var gameDetailsTextTeam1 = document.createElement("div");
-              gameDetailsTextTeam1.setAttribute("id","team1Details");
+              gameDetailsTextTeam1.setAttribute("id","team1Details"+matchid);
               gameDetailsTextTeam1.style.fontSize = "10px";
+              gameDetailsTextTeam0.className = "team1Details";
               gameDetailsTextTeam1.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
               var linebreak = document.createElement("br");
               gameDetailsTextTeam1.append(linebreak);
@@ -365,7 +418,7 @@
           });
           gameDetailsButton.before(teamStatsTab);
 
-
+          //playerDetails
           var lane = teamMap0.get('Summoner'+(this.id - parentNodeID)).timeline.lane;
           var role = teamMap0.get('Summoner'+(this.id - parentNodeID)).timeline.role;
           var linebreak = document.createElement("br");
@@ -373,7 +426,7 @@
           var summonerTeam1Clicked = "";
           //entity that was clicked
           var clickedEntityDiv = document.createElement("div");
-          clickedEntityDiv.setAttribute("id",("team0PlayerDetails"+parentNodeID));
+          clickedEntityDiv.setAttribute("id",("team0PlayerDetails"+matchid));
           clickedEntityDiv.className = "team0";
           clickedEntityDiv.style.fontSize = "10px";
           clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
@@ -381,7 +434,7 @@
 
           // matching div to compare role to role
           var matchEntityDiv = document.createElement("div");
-          matchEntityDiv.setAttribute("id",("team1PlayerDetails"+parentNodeID));
+          matchEntityDiv.setAttribute("id",("team1PlayerDetails"+matchid));
           matchEntityDiv.style.fontSize = "10px";
           matchEntityDiv.className = "team1";
 
@@ -401,8 +454,6 @@
           }
           gameDetailsButton.before(clickedEntityDiv);
           gameDetailsButton.before(matchEntityDiv);
-          //gameText.append(clickedEntityDiv);
-          //gameText.append(matchEntityDiv);
 
           for (var key in summonerTeam0Clicked.stats) {
               if (summonerTeam0Clicked.stats.hasOwnProperty(key)) {
@@ -428,12 +479,10 @@
                     team0Stat.append(team0bar);
                     team1Stat.append(team1bar);
                     var total = (summonerTeam0Clicked.stats[key] + summonerTeam1Clicked.stats[key]);
-                    console.log(total);
                     var team0StatPercent = (summonerTeam0Clicked.stats[key]/total)*100;
                     var team1StatPercent = (summonerTeam1Clicked.stats[key]/total)*100;
                     team0Stat.style.width = team0StatPercent.toString() + "%";
                     team1Stat.style.width = team1StatPercent.toString() + "%";
-                    console.log(team0StatPercent-team1StatPercent);
                     if(team0StatPercent > team1StatPercent){
                       team0bar.style.backgroundColor = "green";
                       team1bar.style.backgroundColor = "red";
@@ -489,9 +538,14 @@
       gameDetailsButton.onclick = (function() {
         try{
           var parentNodeID = document.getElementById(this.id).parentNode.id;
-          console.log(parentNodeID);//3521711630
-          document.getElementById(("team0PlayerDetails"+matchid)).remove();
-          document.getElementById(("team1PlayerDetails"+matchid)).remove();
+          console.log(matchid);//3521711630
+          if(document.getElementById(("team0PlayerDetails"+matchid))){
+            document.getElementById(("team0PlayerDetails"+matchid)).remove();
+            document.getElementById(("team1PlayerDetails"+matchid)).remove();
+          }else{
+            document.getElementById(("team0Details"+matchid)).remove();
+            document.getElementById(("team1Details"+matchid)).remove();
+          }
           document.getElementById(("teamTab"+matchid)).remove();
           document.getElementById(("personalTab"+matchid)).remove();
           document.getElementById(("closeDetailWrapper"+(matchid+i))).remove();
