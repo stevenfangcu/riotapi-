@@ -13,6 +13,7 @@
   class Search extends React.Component{
     state={
       champs:null,
+      stats: [],
       information: {
         baronKills: "",
         win: "",
@@ -20,7 +21,6 @@
         inhibs: "",
         towers: "",
         rifts: "",
-        clickedEntity: []
       }
     }
     constructor(props) {
@@ -377,8 +377,10 @@
           teamStatsTab.setAttribute("id",("teamTab"+matchid));
           teamStatsTab.onclick = (function() {
             if(document.getElementById("team0PlayerDetails"+matchid) || (document.getElementById("team1PlayerDetails"+matchid))){
-              gameText.removeChild(document.getElementById("team0PlayerDetails"+matchid));
-              gameText.removeChild(document.getElementById("team1PlayerDetails"+matchid));
+              //gameText.removeChild(document.getElementById("team0PlayerDetails"+matchid));
+              document.getElementById("team0PlayerDetails"+matchid).style.visibility = "hidden";
+              //gameText.removeChild(document.getElementById("team1PlayerDetails"+matchid));
+              document.getElementById("team1PlayerDetails"+matchid).style.visibility = "hidden";
             }
             if(document.getElementById("team0Details") || document.getElementById("team1Details")){
               gameText.removeChild(document.getElementById("team1Details"));
@@ -387,7 +389,7 @@
               var gameDetailsTextTeam0 = document.createElement("div");
               gameDetailsTextTeam0.setAttribute("id","team0Details"+matchid);
               console.log("team0Details"+matchid);
-              gameDetailsTextTeam0.className = "team0Details";
+              gameDetailsTextTeam0.className = "team0DetailsVisibility";
               gameDetailsTextTeam0.style.fontSize = "10px";
               gameDetailsTextTeam0.innerHTML = "Dragons: " + teamMap0.get("dragonKills");
               var linebreak = document.createElement("br");
@@ -399,12 +401,13 @@
               gameDetailsTextTeam0.innerHTML += "Heralds: " + teamMap0.get("rifts");
               gameDetailsButton.before(gameDetailsTextTeam0);
 
+
+
               var gameDetailsTextTeam1 = document.createElement("div");
               gameDetailsTextTeam1.setAttribute("id","team1Details"+matchid);
               gameDetailsTextTeam1.style.fontSize = "10px";
-              gameDetailsTextTeam0.className = "team1Details";
+              gameDetailsTextTeam1.className = "team1DetailsVisibility";
               gameDetailsTextTeam1.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
-              var linebreak = document.createElement("br");
               gameDetailsTextTeam1.append(linebreak);
               gameDetailsTextTeam1.innerHTML += "Towers: " + teamMap1.get("towers");
               gameDetailsTextTeam1.append(linebreak);

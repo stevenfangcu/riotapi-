@@ -43,6 +43,17 @@ body {
   width: 50%;
   float: left;
 }
+.team0DetailsVisibility{
+  width: 50%;
+  float: right;
+  position: absolute;
+}
+.team1DetailsVisibility{
+  width: 50%;
+  float: right;
+  left: 48%;
+  position: absolute;
+}
 #gameMode{
   width: 100%;
    text-align:center;
