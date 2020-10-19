@@ -237,15 +237,15 @@
       console.log(this.username);
       if(teamMap1.get("username") == this.username){//background colour
         if(teamMap1.get("win") == "Fail"){
-          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#99ff99;'
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#99ff99;'
         }else if(teamMap1.get("win") == "Win"){
-          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#ff6666;'
         }
       }else if(teamMap0.get("username") == this.username){
         if(teamMap0.get("win") == "Fail"){
-          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#99ff99;'
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#99ff99;'
         }else if(teamMap0.get("win") == "Win"){
-          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: gray; background-color:#ff6666;'
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#ff6666;'
         }
       }
       return ans;
@@ -324,48 +324,15 @@
           personalStatsTab.style.opacity = "0.75";
           var backgroundColorOfDiv = document.getElementById(matchid);
           personalStatsTab.onclick = (function(){
-            if( document.getElementById("team0PlayerDetails"+matchid) || (document.getElementById("team1PlayerDetails"+matchid))){
-              console.log("already exists");
-            }else{
-              console.log(teamMap0);
-              console.log(this.id);
-              console.log(parentNodeID);
-              var lane = teamMap0.get('Summoner'+(1)).timeline.lane;
-              var role = teamMap0.get('Summoner'+(1)).timeline.role;
-              var linebreak = document.createElement("br");
-              var summonerTeam0Clicked = teamMap0.get('Summoner'+(this.id - parentNodeID))
-              var summonerTeam1Clicked = "";
-              //entity that was clicked
-              var clickedEntityDiv = document.createElement("div");
-              clickedEntityDiv.setAttribute("id",("team0PlayerDetails"+matchid));
-              clickedEntityDiv.className = "team0";
-              clickedEntityDiv.style.fontSize = "10px";
-              clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
-              clickedEntityDiv.append(linebreak);
-
-              // matching div to compare role to role
-              var matchEntityDiv = document.createElement("div");
-              matchEntityDiv.setAttribute("id",("team1PlayerDetails"+matchid));
-              matchEntityDiv.style.fontSize = "10px";
-              matchEntityDiv.className = "team1";
-
-              for(var xp = 5; xp < 10; xp++){
-                var matchedEntityRole = teamMap1.get('Summoner'+xp).timeline.role;
-                if((teamMap1.get('Summoner'+xp).timeline.role) == role && (teamMap1.get('Summoner'+xp).timeline.lane) == lane){
-                  summonerTeam1Clicked = teamMap1.get('Summoner'+xp);
-                  matchEntityDiv.innerHTML = document.getElementById(xp+matchid).innerHTML;
-                  matchEntityDiv.append(linebreak);
-                  matchEntityDiv.innerHTML += " " + (teamMap1.get('Summoner'+(xp)).timeline.lane + " " + teamMap1.get('Summoner'+(xp)).timeline.role);
-                }
-              }
-              clickedEntityDiv.append(linebreak);
-              if(this.className == 'team0'){
-                console.log(teamMap0.get('Summoner'+(this.id - parentNodeID)));
-                clickedEntityDiv.innerHTML += " " + lane + " " + role;
-              }
-              gameDetailsButton.before(clickedEntityDiv);
-              gameDetailsButton.before(matchEntityDiv);
-
+            try{
+              document.getElementById("team0PlayerDetails"+matchid).style.visibility = "visible";
+              //gameText.removeChild(document.getElementById("team1PlayerDetails"+matchid));
+              document.getElementById("team1PlayerDetails"+matchid).style.visibility = "visible";
+              //team off
+              document.getElementById("team1Details"+matchid).remove();
+              document.getElementById("team0Details"+matchid).remove();
+            }catch(err){
+              console.log(err)
             }
           });
           //=======

@@ -14,17 +14,15 @@ body {
 }
 .riotGameWrapper{
   background: white;
-  border-width: medium;
-  border-style: solid;
-  border-color: black;
   width: 100%;
   float: right;
 }
 .innerRiotGameWrapper{
-  border-radius: 1px;
+  border-radius: 5%;
   border-width: medium;
   border-style: solid;
-  border-color: gray;
+  border-color: black;
+  font-size: 6px;
 }
 .summonerIcon{
   text-align: left;
@@ -38,10 +36,12 @@ body {
 #team0,.team0Details,.team0{
   width:50%;
   float: right;
+  font-size: 80%;
 }
 #team1,.team1Details,.team1{
   width: 50%;
   float: left;
+  font-size: 80%;
 }
 .team0DetailsVisibility{
   width: 50%;
