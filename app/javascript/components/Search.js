@@ -149,6 +149,7 @@
     });
     return ans;
   }
+
   fetchMatchStats(matchid){
         const nameArray = new Array(1);
         const bannChampArray = new Array(1);
@@ -299,7 +300,6 @@
         summonerNameTextTeam0.className = "team0";
         summonerNameTextTeam0.onclick = (function(){
           //actual information of summoner and his corresponding opponent
-          console.log(document.getElementById(this.id));
           var parentNodeID = document.getElementById(this.id).parentNode.id;
 
           if(document.getElementById(this.id).parentNode.id != summonerNameTextTeam0.parentNode.id){
@@ -485,6 +485,104 @@
         summonerNameTextTeam1.setAttribute("id",(matchid+(i+5)));
         summonerNameTextTeam1.className = "team1";
         summonerNameTextTeam1.innerHTML = (this.getChampion(championArray[i+5])) + ' ' + information[0][i+5];
+        //function for left side
+        /*
+        =============================================================
+        =============================================================
+        =============================================================
+        */
+        summonerNameTextTeam1.onclick = (function(){
+          //actual information of summoner and his corresponding opponent
+          var parentNodeID = document.getElementById(this.id).parentNode.id;
+
+          if(document.getElementById(this.id).parentNode.id != summonerNameTextTeam1.parentNode.id){
+            return;
+          }
+          console.log(document.getElementById(("team0PlayerDetails"+parentNodeID)));
+          try{
+            document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
+            document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
+            document.getElementById(("teamTab"+parentNodeID)).remove();
+            document.getElementById(("personalTab"+parentNodeID)).remove();
+          }catch(err){
+            console.log(err);
+          }
+
+          var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced'];
+          //Tab links when information is retrieved
+          var personalStatsTab = document.createElement("button");
+          personalStatsTab.innerHTML = "Personal stats";
+          personalStatsTab.className = "tablinks";
+          personalStatsTab.setAttribute("id",("personalTab"+matchid));
+          personalStatsTab.style.opacity = "0.75";
+          var backgroundColorOfDiv = document.getElementById(matchid);
+          personalStatsTab.onclick = (function(){
+            try{
+              document.getElementById("team0PlayerDetails"+matchid).style.visibility = "visible";
+              //gameText.removeChild(document.getElementById("team1PlayerDetails"+matchid));
+              document.getElementById("team1PlayerDetails"+matchid).style.visibility = "visible";
+              //team off
+              document.getElementById("team1Details"+matchid).remove();
+              document.getElementById("team0Details"+matchid).remove();
+            }catch(err){
+              console.log(err)
+            }
+          });
+          //=======
+          gameDetailsButton.before(personalStatsTab);
+
+          var teamStatsTab = document.createElement("button");
+          teamStatsTab.innerHTML = "Team stats";
+          teamStatsTab.className = "tablinks";
+          teamStatsTab.setAttribute("id",("teamTab"+matchid));
+          teamStatsTab.onclick = (function() {
+            if(document.getElementById("team0PlayerDetails"+matchid) || (document.getElementById("team1PlayerDetails"+matchid))){
+              //gameText.removeChild(document.getElementById("team0PlayerDetails"+matchid));
+              document.getElementById("team0PlayerDetails"+matchid).style.visibility = "hidden";
+              //gameText.removeChild(document.getElementById("team1PlayerDetails"+matchid));
+              document.getElementById("team1PlayerDetails"+matchid).style.visibility = "hidden";
+            }
+            if(document.getElementById("team0Details") || document.getElementById("team1Details")){
+              gameText.removeChild(document.getElementById("team1Details"));
+              gameText.removeChild(document.getElementById("team0Details"));
+            }else{
+              var gameDetailsTextTeam0 = document.createElement("div");
+              gameDetailsTextTeam0.setAttribute("id","team0Details"+matchid);
+              console.log("team0Details"+matchid);
+              gameDetailsTextTeam0.className = "team0DetailsVisibility";
+              gameDetailsTextTeam0.style.fontSize = "10px";
+              gameDetailsTextTeam0.innerHTML = "Dragons: " + teamMap0.get("dragonKills");
+              var linebreak = document.createElement("br");
+              gameDetailsTextTeam0.append(linebreak);
+              gameDetailsTextTeam0.innerHTML += "Towers: " + teamMap0.get("towers");
+              gameDetailsTextTeam0.append(linebreak);
+              gameDetailsTextTeam0.innerHTML += "Inhibs: " + teamMap0.get("inhibs");
+              gameDetailsTextTeam0.append(linebreak);
+              gameDetailsTextTeam0.innerHTML += "Heralds: " + teamMap0.get("rifts");
+              gameDetailsButton.before(gameDetailsTextTeam0);
+
+
+
+              var gameDetailsTextTeam1 = document.createElement("div");
+              gameDetailsTextTeam1.setAttribute("id","team1Details"+matchid);
+              gameDetailsTextTeam1.style.fontSize = "10px";
+              gameDetailsTextTeam1.className = "team1DetailsVisibility";
+              gameDetailsTextTeam1.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
+              gameDetailsTextTeam1.append(linebreak);
+              gameDetailsTextTeam1.innerHTML += "Towers: " + teamMap1.get("towers");
+              gameDetailsTextTeam1.append(linebreak);
+              gameDetailsTextTeam1.innerHTML += "Inhibs: " + teamMap1.get("inhibs");
+              gameDetailsTextTeam1.append(linebreak);
+              gameDetailsTextTeam1.innerHTML += "Heralds: " + teamMap1.get("rifts");
+              gameDetailsButton.before(gameDetailsTextTeam1);
+              teamStatsTab.style.opacity = "0.75";
+              personalStatsTab.style.opacity = "0.5";
+            }
+          });
+          gameDetailsButton.before(teamStatsTab);
+
+        });
+
         appendNode.appendChild(summonerNameTextTeam1);
       }
       //champion banns (null if none)
@@ -508,13 +606,17 @@
       gameDetailsButton.onclick = (function() {
         try{
           var parentNodeID = document.getElementById(this.id).parentNode.id;
-          console.log(matchid);//3521711630
+          console.log(matchid);//personalTab3521409469
           if(document.getElementById(("team0PlayerDetails"+matchid))){
             document.getElementById(("team0PlayerDetails"+matchid)).remove();
             document.getElementById(("team1PlayerDetails"+matchid)).remove();
           }else{
-            document.getElementById(("team0Details"+matchid)).remove();
-            document.getElementById(("team1Details"+matchid)).remove();
+            try{
+              document.getElementById(("team0Details"+matchid)).remove();
+              document.getElementById(("team1Details"+matchid)).remove();
+            }catch(err){
+              console.log(err);
+            }
           }
           document.getElementById(("teamTab"+matchid)).remove();
           document.getElementById(("personalTab"+matchid)).remove();
