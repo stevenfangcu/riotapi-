@@ -300,6 +300,8 @@
         summonerNameTextTeam0.className = "team0";
         summonerNameTextTeam0.onclick = (function(){
           //actual information of summoner and his corresponding opponent
+          //personalTab3523034811
+          //personalTab3523034811
           var parentNodeID = document.getElementById(this.id).parentNode.id;
 
           if(document.getElementById(this.id).parentNode.id != summonerNameTextTeam0.parentNode.id){
@@ -307,14 +309,16 @@
           }
           console.log(document.getElementById(("team0PlayerDetails"+parentNodeID)));
           try{
-            document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
-            document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
             document.getElementById(("teamTab"+parentNodeID)).remove();
             document.getElementById(("personalTab"+parentNodeID)).remove();
+            //document.getElementById(("team1Details"+matchid)).remove();
+            //document.getElementById(("team0Details"+matchid)).remove();
+            document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
+            document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
+            console.log(parentNodeID)
           }catch(err){
             console.log(err);
           }
-
           var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced'];
           //Tab links when information is retrieved
           var personalStatsTab = document.createElement("button");
@@ -341,7 +345,7 @@
           var teamStatsTab = document.createElement("button");
           teamStatsTab.innerHTML = "Team stats";
           teamStatsTab.className = "tablinks";
-          teamStatsTab.setAttribute("id",("teamTab"+matchid));
+          teamStatsTab.setAttribute("id",("teamTab1"+matchid));
           teamStatsTab.onclick = (function() {
             if(document.getElementById("team0PlayerDetails"+matchid) || (document.getElementById("team1PlayerDetails"+matchid))){
               //gameText.removeChild(document.getElementById("team0PlayerDetails"+matchid));
@@ -353,6 +357,7 @@
               gameText.removeChild(document.getElementById("team1Details"));
               gameText.removeChild(document.getElementById("team0Details"));
             }else{
+
               var gameDetailsTextTeam0 = document.createElement("div");
               gameDetailsTextTeam0.setAttribute("id","team0Details"+matchid);
               console.log("team0Details"+matchid);
@@ -367,7 +372,6 @@
               gameDetailsTextTeam0.append(linebreak);
               gameDetailsTextTeam0.innerHTML += "Heralds: " + teamMap0.get("rifts");
               gameDetailsButton.before(gameDetailsTextTeam0);
-
 
 
               var gameDetailsTextTeam1 = document.createElement("div");
@@ -504,6 +508,8 @@
             document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
             document.getElementById(("teamTab"+parentNodeID)).remove();
             document.getElementById(("personalTab"+parentNodeID)).remove();
+            document.getElementById(("team1Details"+parentNodeID)).remove();
+            document.getElementById(("team0Details"+parentNodeID)).remove();
           }catch(err){
             console.log(err);
           }
@@ -531,56 +537,20 @@
           //=======
           gameDetailsButton.before(personalStatsTab);
 
-          var teamStatsTab = document.createElement("button");
-          teamStatsTab.innerHTML = "Team stats";
-          teamStatsTab.className = "tablinks";
-          teamStatsTab.setAttribute("id",("teamTab"+matchid));
-          teamStatsTab.onclick = (function() {
-            if(document.getElementById("team0PlayerDetails"+matchid) || (document.getElementById("team1PlayerDetails"+matchid))){
-              //gameText.removeChild(document.getElementById("team0PlayerDetails"+matchid));
-              document.getElementById("team0PlayerDetails"+matchid).style.visibility = "hidden";
-              //gameText.removeChild(document.getElementById("team1PlayerDetails"+matchid));
-              document.getElementById("team1PlayerDetails"+matchid).style.visibility = "hidden";
-            }
-            if(document.getElementById("team0Details") || document.getElementById("team1Details")){
-              gameText.removeChild(document.getElementById("team1Details"));
-              gameText.removeChild(document.getElementById("team0Details"));
-            }else{
-              var gameDetailsTextTeam0 = document.createElement("div");
-              gameDetailsTextTeam0.setAttribute("id","team0Details"+matchid);
-              console.log("team0Details"+matchid);
-              gameDetailsTextTeam0.className = "team0DetailsVisibility";
-              gameDetailsTextTeam0.style.fontSize = "10px";
-              gameDetailsTextTeam0.innerHTML = "Dragons: " + teamMap0.get("dragonKills");
-              var linebreak = document.createElement("br");
-              gameDetailsTextTeam0.append(linebreak);
-              gameDetailsTextTeam0.innerHTML += "Towers: " + teamMap0.get("towers");
-              gameDetailsTextTeam0.append(linebreak);
-              gameDetailsTextTeam0.innerHTML += "Inhibs: " + teamMap0.get("inhibs");
-              gameDetailsTextTeam0.append(linebreak);
-              gameDetailsTextTeam0.innerHTML += "Heralds: " + teamMap0.get("rifts");
-              gameDetailsButton.before(gameDetailsTextTeam0);
+          var teamStatsTab1 = document.createElement("button");
+          teamStatsTab1.innerHTML = "Team stats";
+          teamStatsTab1.className = "tablinks";
+          teamStatsTab1.setAttribute("id",("teamTab"+matchid));
+          teamStatsTab1.onclick = (function() {
+            var gameDetailsTextTeam01 = document.createElement("div");
+            gameDetailsTextTeam01.setAttribute("id","firstteam0Details"+matchid);
+            gameDetailsTextTeam01.className = "team0DetailsVisibility";
+            gameDetailsTextTeam01.style.fontSize = "10px";
+            gameDetailsTextTeam01.innerHTML = "testing";
+            gameDetailsButton.before(gameDetailsTextTeam01);
 
-
-
-              var gameDetailsTextTeam1 = document.createElement("div");
-              gameDetailsTextTeam1.setAttribute("id","team1Details"+matchid);
-              gameDetailsTextTeam1.style.fontSize = "10px";
-              gameDetailsTextTeam1.className = "team1DetailsVisibility";
-              gameDetailsTextTeam1.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
-              gameDetailsTextTeam1.append(linebreak);
-              gameDetailsTextTeam1.innerHTML += "Towers: " + teamMap1.get("towers");
-              gameDetailsTextTeam1.append(linebreak);
-              gameDetailsTextTeam1.innerHTML += "Inhibs: " + teamMap1.get("inhibs");
-              gameDetailsTextTeam1.append(linebreak);
-              gameDetailsTextTeam1.innerHTML += "Heralds: " + teamMap1.get("rifts");
-              gameDetailsButton.before(gameDetailsTextTeam1);
-              teamStatsTab.style.opacity = "0.75";
-              personalStatsTab.style.opacity = "0.5";
-            }
           });
-          gameDetailsButton.before(teamStatsTab);
-
+          gameDetailsButton.before(teamStatsTab1);
         });
 
         appendNode.appendChild(summonerNameTextTeam1);
