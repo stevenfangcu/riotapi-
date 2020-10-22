@@ -542,15 +542,61 @@
           teamStatsTab1.className = "tablinks";
           teamStatsTab1.setAttribute("id",("teamTab"+matchid));
           teamStatsTab1.onclick = (function() {
+            if(document.getElementById("team01DetailsVisibility"+matchid)){
+              document.getElementById("team01DetailsVisibility"+matchid).remove();
+            }
             var gameDetailsTextTeam01 = document.createElement("div");
-            gameDetailsTextTeam01.setAttribute("id","firstteam0Details"+matchid);
-            gameDetailsTextTeam01.className = "team0DetailsVisibility";
+            gameDetailsTextTeam01.setAttribute("id","firstteam01Details"+matchid);
+            gameDetailsTextTeam01.className = "team01DetailsVisibility";
             gameDetailsTextTeam01.style.fontSize = "10px";
-            gameDetailsTextTeam01.innerHTML = "testing";
+            var linebreak = document.createElement("br");
+            gameDetailsTextTeam01.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
+            gameDetailsTextTeam01.append(linebreak);
+            gameDetailsTextTeam01.innerHTML += "Towers: " + teamMap1.get("towers");
+            gameDetailsTextTeam01.append(linebreak);
+            gameDetailsTextTeam01.innerHTML += "Inhibs: " + teamMap1.get("inhibs");
+            gameDetailsTextTeam01.append(linebreak);
+            gameDetailsTextTeam01.innerHTML += "Heralds: " + teamMap1.get("rifts");
+
             gameDetailsButton.before(gameDetailsTextTeam01);
 
           });
           gameDetailsButton.before(teamStatsTab1);
+          console.log(this.id);
+          var lane = teamMap1.get('Summoner'+(this.id - parentNodeID)).timeline.lane;
+          var role = teamMap1.get('Summoner'+(this.id - parentNodeID)).timeline.role;
+          var linebreak = document.createElement("br");
+          var summonerTeam0Clicked = teamMap1.get('Summoner'+(this.id - parentNodeID))
+          var summonerTeam1Clicked = "";
+          var clickedEntityDiv = document.createElement("div");
+          clickedEntityDiv.setAttribute("id",("team1PlayerDetails"+matchid));
+          clickedEntityDiv.className = "team1";
+          clickedEntityDiv.style.fontSize = "10px";
+          clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
+          clickedEntityDiv.append(linebreak);
+
+          var matchEntityDiv = document.createElement("div");
+          matchEntityDiv.setAttribute("id",("team1PlayerDetails"+matchid));
+          matchEntityDiv.style.fontSize = "10px";
+          matchEntityDiv.className = "team1";
+
+          for(var xp = 1; xp < 6; xp++){
+            var matchedEntityRole = teamMap0.get('Summoner'+xp).timeline.role;
+            if((teamMap0.get('Summoner'+xp).timeline.role) == role && (teamMap0.get('Summoner'+xp).timeline.lane) == lane){
+              summonerTeam1Clicked = teamMap0.get('Summoner'+xp);
+              matchEntityDiv.innerHTML = document.getElementById(xp+matchid).innerHTML;
+              matchEntityDiv.append(linebreak);
+              matchEntityDiv.innerHTML += " " + (teamMap0.get('Summoner'+(xp)).timeline.lane + " " + teamMap0.get('Summoner'+(xp)).timeline.role);
+            }
+          }
+          clickedEntityDiv.append(linebreak);
+          if(this.className == 'team1'){
+            console.log(teamMap1.get('Summoner'+(this.id - parentNodeID)));
+            clickedEntityDiv.innerHTML += " " + lane + " " + role;
+          }
+
+          gameDetailsButton.before(clickedEntityDiv);
+          gameDetailsButton.before(matchEntityDiv);
         });
 
         appendNode.appendChild(summonerNameTextTeam1);

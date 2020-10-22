@@ -16,6 +16,10 @@ body {
   background: white;
   width: 100%;
   float: right;
+  overflow: hidden;
+}
+.gameText{
+  overflow: hidden;
 }
 .innerRiotGameWrapper{
   border-radius: 5%;
@@ -47,6 +51,7 @@ body {
   width: 50%;
   float: right;
   position: absolute;
+  overflow: auto;
 }
 .team1DetailsVisibility{
   width: 50%;
@@ -92,6 +97,7 @@ body {
   width:50%;
   opacity: 50%;
   position:relative;
+  overflow: auto;
 }
 .closeButtonMatchDetails{
   border-width: thin;
