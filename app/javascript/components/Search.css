@@ -59,6 +59,11 @@ body {
   left: 48%;
   position: absolute;
 }
+.team11DetailsVisibility{
+  width: 50%;
+  float: right;
+  left: 48%;
+}
 #gameMode{
   width: 100%;
    text-align:center;

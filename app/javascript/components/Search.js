@@ -309,13 +309,26 @@
           }
           console.log(document.getElementById(("team0PlayerDetails"+parentNodeID)));
           try{
-            document.getElementById(("teamTab"+parentNodeID)).remove();
-            document.getElementById(("personalTab"+parentNodeID)).remove();
-            //document.getElementById(("team1Details"+matchid)).remove();
-            //document.getElementById(("team0Details"+matchid)).remove();
-            document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
-            document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
-            console.log(parentNodeID)
+            console.log(parentNodeID + " " + matchid);
+            if(document.getElementById(("teamTab"+parentNodeID))){
+              document.getElementById(("teamTab"+parentNodeID)).remove();
+              document.getElementById(("personalTab"+parentNodeID)).remove();
+              document.getElementById(("team1Details"+matchid)).remove();
+              document.getElementById(("team0Details"+matchid)).remove();
+              document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
+              document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
+            }else if(document.getElementById(("teamTab1"+parentNodeID))){
+              document.getElementById(("teamTab1"+parentNodeID)).remove();
+              document.getElementById(("personalTab"+parentNodeID)).remove();
+              if(document.getElementById(("team0PlayerDetails"+parentNodeID))){
+                document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
+                document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
+              }
+              if(document.getElementById(("team1Details"+matchid))){
+                document.getElementById(("team1Details"+matchid)).remove();
+                document.getElementById(("team0Details"+matchid)).remove();
+              }
+            }
           }catch(err){
             console.log(err);
           }
@@ -558,6 +571,20 @@
             gameDetailsTextTeam01.append(linebreak);
             gameDetailsTextTeam01.innerHTML += "Heralds: " + teamMap1.get("rifts");
 
+            var gameDetailsTextTeam11 = document.createElement("div");
+            gameDetailsTextTeam11.setAttribute("id","team1Details"+matchid);
+            gameDetailsTextTeam11.style.fontSize = "10px";
+            gameDetailsTextTeam11.className = "team11DetailsVisibility";
+            gameDetailsTextTeam11.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
+            gameDetailsTextTeam11.append(linebreak);
+            gameDetailsTextTeam11.innerHTML += "Towers: " + teamMap1.get("towers");
+            gameDetailsTextTeam11.append(linebreak);
+            gameDetailsTextTeam11.innerHTML += "Inhibs: " + teamMap1.get("inhibs");
+            gameDetailsTextTeam11.append(linebreak);
+            gameDetailsTextTeam11.innerHTML += "Heralds: " + teamMap1.get("rifts");
+            gameDetailsButton.before(gameDetailsTextTeam11);
+            teamStatsTab1.style.opacity = "0.75";
+            personalStatsTab.style.opacity = "0.5";
             gameDetailsButton.before(gameDetailsTextTeam01);
 
           });
@@ -597,6 +624,60 @@
 
           gameDetailsButton.before(clickedEntityDiv);
           gameDetailsButton.before(matchEntityDiv);
+          var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced'];
+
+          for (var key in summonerTeam0Clicked.stats) {
+              if (summonerTeam0Clicked.stats.hasOwnProperty(key)) {
+                //console.log(key, summonerTeam0Clicked.stats[key]);
+                  if(arr.includes(key)){
+                    var surroundningStatDiv0 = document.createElement("div");
+                    surroundningStatDiv0.setAttribute = ("id",(key.toString()+parentNodeID+"team0"));
+                    var surroundningStatDiv1 = document.createElement("div");
+                    surroundningStatDiv1.setAttribute = ("id",(key.toString()+parentNodeID+"team1"));
+                    var team0Stat = document.createElement("div");
+                    var team1Stat = document.createElement("div");
+                    team1Stat.style.display = "inline";
+                    team0Stat.style.display = "inline";
+                    var team0bar = document.createElement("div");
+                    //team0bar.setAttribute("id","comparsionBar");
+                    team0bar.className = "percentBar";
+                    var team1bar = document.createElement("div");
+                    //team1bar.setAttribute("id","comparsionBar");
+                    team1bar.className = "percentBar";
+
+                    team0Stat.innerHTML += key.toString() + " " + summonerTeam0Clicked.stats[key] + "      ";
+                    team1Stat.innerHTML += key.toString() + " " + summonerTeam1Clicked.stats[key] + "      ";
+                    team0Stat.append(team0bar);
+                    team1Stat.append(team1bar);
+                    var total = (summonerTeam0Clicked.stats[key] + summonerTeam1Clicked.stats[key]);
+                    var team0StatPercent = (summonerTeam0Clicked.stats[key]/total)*100;
+                    var team1StatPercent = (summonerTeam1Clicked.stats[key]/total)*100;
+                    team0Stat.style.width = team0StatPercent.toString() + "%";
+                    team1Stat.style.width = team1StatPercent.toString() + "%";
+                    if(team0StatPercent > team1StatPercent){
+                      team0bar.style.backgroundColor = "green";
+                      team1bar.style.backgroundColor = "red";
+                      team0bar.innerHtml = (team0StatPercent-team1StatPercent) + "%";
+                    }else{
+                      team0bar.style.backgroundColor = "red";
+                      team1bar.style.backgroundColor = "green";
+                      team1bar.innerHtml = (team1StatPercent-team0StatPercent) + "%";
+                    }
+                    if(clickedEntityDiv.className == "team1"){
+                      surroundningStatDiv1.append(team1Stat);
+                      surroundningStatDiv0.append(team0Stat);
+                      clickedEntityDiv.append(surroundningStatDiv1);
+                      matchEntityDiv.append(surroundningStatDiv0);
+                    }else{
+                      surroundningStatDiv1.append(team1Stat);
+                      surroundningStatDiv0.append(team0Stat);
+                      clickedEntityDiv.append(surroundningStatDiv0);
+                      matchEntityDiv.append(surroundningStatDiv1);
+                    }
+
+                  }
+              }
+          }
         });
 
         appendNode.appendChild(summonerNameTextTeam1);
