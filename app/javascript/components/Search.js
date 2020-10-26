@@ -435,10 +435,7 @@
             }
           }
           clickedEntityDiv.append(linebreak);
-          if(this.className == 'team0'){
-            console.log(teamMap0.get('Summoner'+(this.id - parentNodeID)));
-            clickedEntityDiv.innerHTML += " " + lane + " " + role;
-          }
+
           gameDetailsButton.before(clickedEntityDiv);
           gameDetailsButton.before(matchEntityDiv);
 
@@ -516,6 +513,18 @@
             return;
           }
           console.log(document.getElementById(("team0PlayerDetails"+parentNodeID)));
+          if(document.getElementById("team1PlayerDetails"+matchid)){
+            document.getElementById("team1PlayerDetails"+matchid).remove();
+            document.getElementById("team0PlayerDetails"+matchid).remove();
+            if(document.getElementById("teamTab"+matchid)){
+              document.getElementById("teamTab"+matchid).remove();
+              document.getElementById("personalTab"+matchid).remove()
+            }
+            if(document.getElementById("teamTab1"+matchid)){
+              document.getElementById("teamTab1"+matchid).remove();
+              document.getElementById("personalTab"+matchid).remove()
+            }
+          }
           try{
             document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
             document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
@@ -559,7 +568,7 @@
               document.getElementById("team01DetailsVisibility"+matchid).remove();
             }
             var gameDetailsTextTeam01 = document.createElement("div");
-            gameDetailsTextTeam01.setAttribute("id","firstteam01Details"+matchid);
+            gameDetailsTextTeam01.setAttribute("id","firstteam0Details"+matchid);
             gameDetailsTextTeam01.className = "team01DetailsVisibility";
             gameDetailsTextTeam01.style.fontSize = "10px";
             var linebreak = document.createElement("br");
@@ -572,7 +581,7 @@
             gameDetailsTextTeam01.innerHTML += "Heralds: " + teamMap1.get("rifts");
 
             var gameDetailsTextTeam11 = document.createElement("div");
-            gameDetailsTextTeam11.setAttribute("id","team1Details"+matchid);
+            gameDetailsTextTeam11.setAttribute("id","firstteam1Details"+matchid);
             gameDetailsTextTeam11.style.fontSize = "10px";
             gameDetailsTextTeam11.className = "team11DetailsVisibility";
             gameDetailsTextTeam11.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
@@ -603,7 +612,7 @@
           clickedEntityDiv.append(linebreak);
 
           var matchEntityDiv = document.createElement("div");
-          matchEntityDiv.setAttribute("id",("team1PlayerDetails"+matchid));
+          matchEntityDiv.setAttribute("id",("team0PlayerDetails"+matchid));
           matchEntityDiv.style.fontSize = "10px";
           matchEntityDiv.className = "team1";
 
@@ -703,7 +712,7 @@
       gameDetailsButton.onclick = (function() {
         try{
           var parentNodeID = document.getElementById(this.id).parentNode.id;
-          console.log(matchid);//personalTab3521409469
+          console.log(matchid);
           if(document.getElementById(("team0PlayerDetails"+matchid))){
             document.getElementById(("team0PlayerDetails"+matchid)).remove();
             document.getElementById(("team1PlayerDetails"+matchid)).remove();
@@ -715,9 +724,16 @@
               console.log(err);
             }
           }
-          document.getElementById(("teamTab"+matchid)).remove();
-          document.getElementById(("personalTab"+matchid)).remove();
-          document.getElementById(("closeDetailWrapper"+(matchid+i))).remove();
+          if(document.getElementById(("teamTab"+matchid))){
+            document.getElementById(("teamTab"+matchid)).remove();
+            document.getElementById(("personalTab"+matchid)).remove();
+            document.getElementById(("closeDetailWrapper"+(matchid+i))).remove();
+          }
+          if(document.getElementById("teamTab1"+matchid)){
+            document.getElementById(("teamTab1"+matchid)).remove();
+            document.getElementById(("personalTab"+matchid)).remove();
+            document.getElementById(("closeDetailWrapper"+(matchid+i))).remove();
+          }
         }catch(err){
             console.log(err);
         }
