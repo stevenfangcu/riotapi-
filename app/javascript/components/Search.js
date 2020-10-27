@@ -30,7 +30,7 @@
       this.username = "";
       this.playerLV = '';
       this.accountID = '';
-      this.apiKey = '?api_key='//your api key goes here ;
+      this.apiKey = '?api_key=RGAPI-06dc81a8-cf0c-4dd2-83bf-72a8a79b6f5c'//your api key goes here ;
       this.textInput = React.createRef();
       this.bannChampion = new Array(1);
       this.gameID = new Array();
@@ -313,20 +313,25 @@
             if(document.getElementById(("teamTab"+parentNodeID))){
               document.getElementById(("teamTab"+parentNodeID)).remove();
               document.getElementById(("personalTab"+parentNodeID)).remove();
-              document.getElementById(("team1Details"+matchid)).remove();
-              document.getElementById(("team0Details"+matchid)).remove();
-              document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
-              document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
+              if(document.getElementById(("team1Details"+matchid))){
+                document.getElementById(("team1Details"+matchid)).remove();
+                document.getElementById(("team0Details"+matchid)).remove();
+              }else if(document.getElementById(("team0PlayerDetails"+parentNodeID))){
+                document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
+                document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
+              }
             }else if(document.getElementById(("teamTab1"+parentNodeID))){
               document.getElementById(("teamTab1"+parentNodeID)).remove();
               document.getElementById(("personalTab"+parentNodeID)).remove();
               if(document.getElementById(("team0PlayerDetails"+parentNodeID))){
                 document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
                 document.getElementById(("team1PlayerDetails"+parentNodeID)).remove();
+                console.log("5")
               }
               if(document.getElementById(("team1Details"+matchid))){
                 document.getElementById(("team1Details"+matchid)).remove();
                 document.getElementById(("team0Details"+matchid)).remove();
+                console.log("6")
               }
             }
           }catch(err){
@@ -418,6 +423,10 @@
           clickedEntityDiv.style.fontSize = "10px";
           clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
           clickedEntityDiv.append(linebreak);
+          if(this.className == 'team0'){
+            console.log(teamMap1.get('Summoner'+(this.id - parentNodeID)));
+            clickedEntityDiv.innerHTML += " " + lane + " " + role;
+          }
 
           // matching div to compare role to role
           var matchEntityDiv = document.createElement("div");
