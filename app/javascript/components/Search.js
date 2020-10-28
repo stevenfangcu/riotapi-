@@ -30,7 +30,7 @@
       this.username = "";
       this.playerLV = '';
       this.accountID = '';
-      this.apiKey = '?api_key=RGAPI-06dc81a8-cf0c-4dd2-83bf-72a8a79b6f5c'//your api key goes here ;
+      this.apiKey = '?api_key='//your api key goes here ;
       this.textInput = React.createRef();
       this.bannChampion = new Array(1);
       this.gameID = new Array();
@@ -533,6 +533,10 @@
               document.getElementById("teamTab1"+matchid).remove();
               document.getElementById("personalTab"+matchid).remove()
             }
+            if(document.getElementById("team1Details"+matchid)){
+              document.getElementById("team1Details"+matchid).remove();
+              document.getElementById("team0Details"+matchid).remove();
+            }
           }
           try{
             document.getElementById(("team0PlayerDetails"+parentNodeID)).remove();
@@ -573,12 +577,15 @@
           teamStatsTab1.className = "tablinks";
           teamStatsTab1.setAttribute("id",("teamTab"+matchid));
           teamStatsTab1.onclick = (function() {
-            if(document.getElementById("team01DetailsVisibility"+matchid)){
-              document.getElementById("team01DetailsVisibility"+matchid).remove();
+            if(document.getElementById("firstteam0Details"+matchid)){
+              document.getElementById("firstteam0Details"+matchid).remove();
+              document.getElementById("firstteam1Details"+matchid).remove();
             }
+            document.getElementById("team0PlayerDetails"+matchid).style.visibility = "hidden";
+            document.getElementById("team1PlayerDetails"+matchid).style.visibility = "hidden";
             var gameDetailsTextTeam01 = document.createElement("div");
             gameDetailsTextTeam01.setAttribute("id","firstteam0Details"+matchid);
-            gameDetailsTextTeam01.className = "team01DetailsVisibility";
+            gameDetailsTextTeam01.className = "team0DetailsVisibility";
             gameDetailsTextTeam01.style.fontSize = "10px";
             var linebreak = document.createElement("br");
             gameDetailsTextTeam01.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
@@ -592,7 +599,7 @@
             var gameDetailsTextTeam11 = document.createElement("div");
             gameDetailsTextTeam11.setAttribute("id","firstteam1Details"+matchid);
             gameDetailsTextTeam11.style.fontSize = "10px";
-            gameDetailsTextTeam11.className = "team11DetailsVisibility";
+            gameDetailsTextTeam11.className = "team1DetailsVisibility";
             gameDetailsTextTeam11.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
             gameDetailsTextTeam11.append(linebreak);
             gameDetailsTextTeam11.innerHTML += "Towers: " + teamMap1.get("towers");
