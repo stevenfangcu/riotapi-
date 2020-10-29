@@ -353,6 +353,9 @@
               //team off
               document.getElementById("team1Details"+matchid).remove();
               document.getElementById("team0Details"+matchid).remove();
+
+              document.getElementById("personalTab"+matchid).style.opacity = 0.75;
+              document.getElementById("teamTab1"+matchid).style.opacity = 0.50;
             }catch(err){
               console.log(err)
             }
@@ -563,8 +566,16 @@
               //gameText.removeChild(document.getElementById("team1PlayerDetails"+matchid));
               document.getElementById("team1PlayerDetails"+matchid).style.visibility = "visible";
               //team off
-              document.getElementById("team1Details"+matchid).remove();
-              document.getElementById("team0Details"+matchid).remove();
+              if(document.getElementById("team1Details"+matchid)){
+                document.getElementById("team1Details"+matchid).remove();
+                document.getElementById("team0Details"+matchid).remove();
+              }
+              if(document.getElementById("firstteam1Details"+matchid)){
+                document.getElementById("firstteam0Details"+matchid).remove();
+                document.getElementById("firstteam1Details"+matchid).remove();
+              }
+              document.getElementById("personalTab"+matchid).style.opacity = 0.75;
+              document.getElementById("teamTab"+matchid).style.opacity = 0.50;
             }catch(err){
               console.log(err)
             }
