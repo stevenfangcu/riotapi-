@@ -300,8 +300,6 @@
         summonerNameTextTeam0.className = "team0";
         summonerNameTextTeam0.onclick = (function(){
           //actual information of summoner and his corresponding opponent
-          //personalTab3523034811
-          //personalTab3523034811
           var parentNodeID = document.getElementById(this.id).parentNode.id;
 
           if(document.getElementById(this.id).parentNode.id != summonerNameTextTeam0.parentNode.id){
@@ -503,6 +501,7 @@
                   }
               }
           }
+          gameDetailsButton.style.visibility = "visible";
         });
 
         appendNode.appendChild(summonerNameTextTeam0);
@@ -714,6 +713,7 @@
                   }
               }
           }
+          gameDetailsButton.style.visibility = "visible";
         });
 
         appendNode.appendChild(summonerNameTextTeam1);
@@ -734,36 +734,40 @@
 
       var gameDetailsButton = document.createElement("Button");
       gameDetailsButton.setAttribute("id","expandButton");
-      gameDetailsButton.innerHTML = "~";
+      gameDetailsButton.innerHTML = "x";
+      if(!(document.getElementById("personalStatsTab"+matchid))){
+        gameDetailsButton.style.visibility = "hidden";
+      }
 
       gameDetailsButton.onclick = (function() {
         try{
           var parentNodeID = document.getElementById(this.id).parentNode.id;
           console.log(matchid);
-          if(document.getElementById(("team0PlayerDetails"+matchid))){
-            document.getElementById(("team0PlayerDetails"+matchid)).remove();
-            document.getElementById(("team1PlayerDetails"+matchid)).remove();
-          }else{
-            try{
-              document.getElementById(("team0Details"+matchid)).remove();
-              document.getElementById(("team1Details"+matchid)).remove();
-            }catch(err){
-              console.log(err);
-            }
+          if(document.getElementById("team1Details"+matchid)){
+            document.getElementById("team1Details"+matchid).remove();
+            document.getElementById("team0Details"+matchid).remove();
           }
-          if(document.getElementById(("teamTab"+matchid))){
-            document.getElementById(("teamTab"+matchid)).remove();
-            document.getElementById(("personalTab"+matchid)).remove();
-            document.getElementById(("closeDetailWrapper"+(matchid+i))).remove();
+          if(document.getElementById("personalTab"+matchid)){
+            document.getElementById("personalTab"+matchid).remove();
+          }
+          if(document.getElementById("teamTab"+matchid)){
+            document.getElementById("teamTab"+matchid).remove();
           }
           if(document.getElementById("teamTab1"+matchid)){
-            document.getElementById(("teamTab1"+matchid)).remove();
-            document.getElementById(("personalTab"+matchid)).remove();
-            document.getElementById(("closeDetailWrapper"+(matchid+i))).remove();
+            document.getElementById("teamTab1"+matchid).remove();
+          }
+          if(document.getElementById("team0PlayerDetails"+matchid)){
+            document.getElementById("team0PlayerDetails"+matchid).remove();
+            document.getElementById("team1PlayerDetails"+matchid).remove();
+          }
+          if(document.getElementById("firstteam0Details"+matchid)){
+            document.getElementById("firstteam0Details"+matchid).remove();
+            document.getElementById("firstteam1Details"+matchid).remove();
           }
         }catch(err){
             console.log(err);
         }
+        gameDetailsButton.style.visibility = "hidden";
       });
         var lineBreak = document.createElement("br");
         gameText.append(gameDetailsButton);
