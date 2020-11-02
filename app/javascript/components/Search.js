@@ -335,7 +335,7 @@
           }catch(err){
             console.log(err);
           }
-          var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced'];
+          var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced','totalMinionsKilled'];
           //Tab links when information is retrieved
           var personalStatsTab = document.createElement("button");
           personalStatsTab.innerHTML = "Personal stats";
@@ -424,6 +424,8 @@
           clickedEntityDiv.style.fontSize = "10px";
           clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
           clickedEntityDiv.append(linebreak);
+          clickedEntityDiv.innerHTML += summonerTeam0Clicked.stats['kills'] + "/" + summonerTeam0Clicked.stats['deaths'] + "/" + summonerTeam0Clicked.stats['assists'];
+          clickedEntityDiv.append(linebreak);
           if(this.className == 'team0'){
             console.log(teamMap1.get('Summoner'+(this.id - parentNodeID)));
             clickedEntityDiv.innerHTML += " " + lane + " " + role;
@@ -440,6 +442,8 @@
             if((teamMap1.get('Summoner'+xp).timeline.role) == role && (teamMap1.get('Summoner'+xp).timeline.lane) == lane){
               summonerTeam1Clicked = teamMap1.get('Summoner'+xp);
               matchEntityDiv.innerHTML = document.getElementById(xp+matchid).innerHTML;
+              matchEntityDiv.append(linebreak);
+              matchEntityDiv.innerHTML += summonerTeam1Clicked.stats['kills'] + "/" + summonerTeam1Clicked.stats['deaths'] + "/" + summonerTeam1Clicked.stats['assists'];
               matchEntityDiv.append(linebreak);
               matchEntityDiv.innerHTML += " " + (teamMap1.get('Summoner'+(xp)).timeline.lane + " " + teamMap1.get('Summoner'+(xp)).timeline.role);
             }
@@ -551,7 +555,7 @@
             console.log(err);
           }
 
-          var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced'];
+          var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced','totalMinionsKilled'];
           //Tab links when information is retrieved
           var personalStatsTab = document.createElement("button");
           personalStatsTab.innerHTML = "Personal stats";
@@ -624,17 +628,19 @@
 
           });
           gameDetailsButton.before(teamStatsTab1);
-          console.log(this.id);
-          var lane = teamMap1.get('Summoner'+(this.id - parentNodeID)).timeline.lane;
-          var role = teamMap1.get('Summoner'+(this.id - parentNodeID)).timeline.role;
+          console.log(this.id-parentNodeID);
+          var lane = teamMap1.get('Summoner'+((this.id - parentNodeID)-1)).timeline.lane;
+          var role = teamMap1.get('Summoner'+((this.id - parentNodeID)-1)).timeline.role;
           var linebreak = document.createElement("br");
-          var summonerTeam0Clicked = teamMap1.get('Summoner'+(this.id - parentNodeID))
+          var summonerTeam0Clicked = teamMap1.get('Summoner'+((this.id - parentNodeID)-1))
           var summonerTeam1Clicked = "";
           var clickedEntityDiv = document.createElement("div");
           clickedEntityDiv.setAttribute("id",("team1PlayerDetails"+matchid));
           clickedEntityDiv.className = "team1";
           clickedEntityDiv.style.fontSize = "10px";
           clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
+          clickedEntityDiv.append(linebreak);
+          clickedEntityDiv.innerHTML += summonerTeam0Clicked.stats['kills'] + "/" + summonerTeam0Clicked.stats['deaths'] + "/" + summonerTeam0Clicked.stats['assists'];
           clickedEntityDiv.append(linebreak);
 
           var matchEntityDiv = document.createElement("div");
@@ -647,6 +653,8 @@
             if((teamMap0.get('Summoner'+xp).timeline.role) == role && (teamMap0.get('Summoner'+xp).timeline.lane) == lane){
               summonerTeam1Clicked = teamMap0.get('Summoner'+xp);
               matchEntityDiv.innerHTML = document.getElementById(xp+matchid).innerHTML;
+              matchEntityDiv.append(linebreak);
+              matchEntityDiv.innerHTML += summonerTeam1Clicked.stats['kills'] + "/" + summonerTeam1Clicked.stats['deaths'] + "/" + summonerTeam1Clicked.stats['assists'];
               matchEntityDiv.append(linebreak);
               matchEntityDiv.innerHTML += " " + (teamMap0.get('Summoner'+(xp)).timeline.lane + " " + teamMap0.get('Summoner'+(xp)).timeline.role);
             }
