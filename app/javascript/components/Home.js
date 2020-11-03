@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import './App.css'
 import Search from './Search'
 import {Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 const apiKey = 'RGAPI-6a7601ae-0eb1-43b0-ac7a-3aaacf9ff20e'
 
 class Home extends React.Component{
@@ -62,6 +63,11 @@ class Home extends React.Component{
         </InputGroup.Append>
       </InputGroup>
             <h1 className="classHead">{this.state.name}</h1>
+            <div className="footer">
+              <Link to="/about">
+              about
+              </Link>
+            </div>
       </div>
 
     )

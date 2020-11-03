@@ -335,7 +335,7 @@
           }catch(err){
             console.log(err);
           }
-          var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced','totalMinionsKilled'];
+          var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced','totalMinionsKilled','totalTimeCrowdControlDealt'];
           //Tab links when information is retrieved
           var personalStatsTab = document.createElement("button");
           personalStatsTab.innerHTML = "Personal stats";
@@ -555,7 +555,7 @@
             console.log(err);
           }
 
-          var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced','totalMinionsKilled'];
+          var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced','totalMinionsKilled', 'totalTimeCrowdControlDealt','wardsPlaced','damageSelfMitigated'];
           //Tab links when information is retrieved
           var personalStatsTab = document.createElement("button");
           personalStatsTab.innerHTML = "Personal stats";
@@ -667,7 +667,7 @@
 
           gameDetailsButton.before(clickedEntityDiv);
           gameDetailsButton.before(matchEntityDiv);
-          var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced'];
+          var arr = ['goldEarned','totalDamageDealtToChampions','wardsPlaced','totalMinionsKilled', 'totalTimeCrowdControlDealt','wardsPlaced','damageSelfMitigated'];
 
           for (var key in summonerTeam0Clicked.stats) {
               if (summonerTeam0Clicked.stats.hasOwnProperty(key)) {
