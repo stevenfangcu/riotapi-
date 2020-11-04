@@ -65,7 +65,11 @@ class Home extends React.Component{
             <h1 className="classHead">{this.state.name}</h1>
             <div className="footer">
               <Link to="/about">
-              about
+              About
+              </Link>
+              <div> </div>
+              <Link to="/contact">
+              Contact
               </Link>
             </div>
       </div>
