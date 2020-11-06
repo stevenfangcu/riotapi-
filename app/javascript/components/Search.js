@@ -423,8 +423,7 @@
           clickedEntityDiv.className = "team0";
           clickedEntityDiv.style.fontSize = "10px";
           clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
-          clickedEntityDiv.append(linebreak);
-          clickedEntityDiv.innerHTML += summonerTeam0Clicked.stats['kills'] + "/" + summonerTeam0Clicked.stats['deaths'] + "/" + summonerTeam0Clicked.stats['assists'];
+          clickedEntityDiv.innerHTML += " " + summonerTeam0Clicked.stats['kills'] + "/" + summonerTeam0Clicked.stats['deaths'] + "/" + summonerTeam0Clicked.stats['assists'];
           clickedEntityDiv.append(linebreak);
           if(this.className == 'team0'){
             console.log(teamMap1.get('Summoner'+(this.id - parentNodeID)));
@@ -442,8 +441,7 @@
             if((teamMap1.get('Summoner'+xp).timeline.role) == role && (teamMap1.get('Summoner'+xp).timeline.lane) == lane){
               summonerTeam1Clicked = teamMap1.get('Summoner'+xp);
               matchEntityDiv.innerHTML = document.getElementById(xp+matchid).innerHTML;
-              matchEntityDiv.append(linebreak);
-              matchEntityDiv.innerHTML += summonerTeam1Clicked.stats['kills'] + "/" + summonerTeam1Clicked.stats['deaths'] + "/" + summonerTeam1Clicked.stats['assists'];
+              matchEntityDiv.innerHTML += " " + summonerTeam1Clicked.stats['kills'] + "/" + summonerTeam1Clicked.stats['deaths'] + "/" + summonerTeam1Clicked.stats['assists'];
               matchEntityDiv.append(linebreak);
               matchEntityDiv.innerHTML += " " + (teamMap1.get('Summoner'+(xp)).timeline.lane + " " + teamMap1.get('Summoner'+(xp)).timeline.role);
             }
@@ -472,8 +470,10 @@
                     //team1bar.setAttribute("id","comparsionBar");
                     team1bar.className = "percentBar";
 
-                    team0Stat.innerHTML += key.toString() + " " + summonerTeam0Clicked.stats[key] + "      ";
-                    team1Stat.innerHTML += key.toString() + " " + summonerTeam1Clicked.stats[key] + "      ";
+                    var keyArr = key.toString().match(/[A-Z]+[^A-Z]*|[^A-Z]+/g);
+                    var newKey = keyArr[0][0].toUpperCase() + keyArr[0].slice(1);
+                    team0Stat.innerHTML += newKey + " " + key.toString().match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase() + " " + summonerTeam0Clicked.stats[key] + "      ";
+                    team1Stat.innerHTML += newKey + " " + key.toString().match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase() + " " + summonerTeam1Clicked.stats[key] + "      ";
                     team0Stat.append(team0bar);
                     team1Stat.append(team1bar);
                     var total = (summonerTeam0Clicked.stats[key] + summonerTeam1Clicked.stats[key]);
@@ -639,8 +639,7 @@
           clickedEntityDiv.className = "team1";
           clickedEntityDiv.style.fontSize = "10px";
           clickedEntityDiv.innerHTML = document.getElementById(this.id).innerHTML;
-          clickedEntityDiv.append(linebreak);
-          clickedEntityDiv.innerHTML += summonerTeam0Clicked.stats['kills'] + "/" + summonerTeam0Clicked.stats['deaths'] + "/" + summonerTeam0Clicked.stats['assists'];
+          clickedEntityDiv.innerHTML += " " + summonerTeam0Clicked.stats['kills'] + "/" + summonerTeam0Clicked.stats['deaths'] + "/" + summonerTeam0Clicked.stats['assists'];
           clickedEntityDiv.append(linebreak);
 
           var matchEntityDiv = document.createElement("div");
@@ -653,8 +652,7 @@
             if((teamMap0.get('Summoner'+xp).timeline.role) == role && (teamMap0.get('Summoner'+xp).timeline.lane) == lane){
               summonerTeam1Clicked = teamMap0.get('Summoner'+xp);
               matchEntityDiv.innerHTML = document.getElementById(xp+matchid).innerHTML;
-              matchEntityDiv.append(linebreak);
-              matchEntityDiv.innerHTML += summonerTeam1Clicked.stats['kills'] + "/" + summonerTeam1Clicked.stats['deaths'] + "/" + summonerTeam1Clicked.stats['assists'];
+              matchEntityDiv.innerHTML += " " + summonerTeam1Clicked.stats['kills'] + "/" + summonerTeam1Clicked.stats['deaths'] + "/" + summonerTeam1Clicked.stats['assists'];
               matchEntityDiv.append(linebreak);
               matchEntityDiv.innerHTML += " " + (teamMap0.get('Summoner'+(xp)).timeline.lane + " " + teamMap0.get('Summoner'+(xp)).timeline.role);
             }
@@ -687,9 +685,10 @@
                     var team1bar = document.createElement("div");
                     //team1bar.setAttribute("id","comparsionBar");
                     team1bar.className = "percentBar";
-
-                    team0Stat.innerHTML += key.toString() + " " + summonerTeam0Clicked.stats[key] + "      ";
-                    team1Stat.innerHTML += key.toString() + " " + summonerTeam1Clicked.stats[key] + "      ";
+                    var keyArr = key.toString().match(/[A-Z]+[^A-Z]*|[^A-Z]+/g);
+                    var newKey = keyArr[0][0].toUpperCase() + keyArr[0].slice(1);
+                    team0Stat.innerHTML += newKey + " " + key.toString().match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase() + " " + summonerTeam0Clicked.stats[key] + "      ";
+                    team1Stat.innerHTML += newKey + " " + key.toString().match(/[A-Z][a-z]+|[0-9]+/g).join(" ").toLowerCase() + " " + summonerTeam1Clicked.stats[key] + "      ";
                     team0Stat.append(team0bar);
                     team1Stat.append(team1bar);
                     var total = (summonerTeam0Clicked.stats[key] + summonerTeam1Clicked.stats[key]);
