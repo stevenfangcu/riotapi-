@@ -332,6 +332,10 @@
                 console.log("6")
               }
             }
+            if(document.getElementById("firstteam0Details"+matchid) || document.getElementById("firstteam1Details"+matchid)){
+              document.getElementById("firstteam0Details"+matchid).remove();
+              document.getElementById("firstteam1Details"+matchid).remove();
+            }
           }catch(err){
             console.log(err);
           }
@@ -372,9 +376,8 @@
               //gameText.removeChild(document.getElementById("team1PlayerDetails"+matchid));
               document.getElementById("team1PlayerDetails"+matchid).style.visibility = "hidden";
             }
-            if(document.getElementById("team0Details") || document.getElementById("team1Details")){
-              gameText.removeChild(document.getElementById("team1Details"));
-              gameText.removeChild(document.getElementById("team0Details"));
+            if(document.getElementById("team0Details"+matchid) || document.getElementById("team1Details"+matchid)){
+              return;
             }else{
 
               var gameDetailsTextTeam0 = document.createElement("div");
@@ -382,8 +385,10 @@
               console.log("team0Details"+matchid);
               gameDetailsTextTeam0.className = "team0DetailsVisibility";
               gameDetailsTextTeam0.style.fontSize = "10px";
-              gameDetailsTextTeam0.innerHTML = "Dragons: " + teamMap0.get("dragonKills");
+              gameDetailsTextTeam0.innerHTML = "Barons: " + teamMap0.get("baronKills");
               var linebreak = document.createElement("br");
+              gameDetailsTextTeam0.append(linebreak);
+              gameDetailsTextTeam0.innerHTML += "Dragons: " + teamMap0.get("dragonKills");
               gameDetailsTextTeam0.append(linebreak);
               gameDetailsTextTeam0.innerHTML += "Towers: " + teamMap0.get("towers");
               gameDetailsTextTeam0.append(linebreak);
@@ -397,7 +402,10 @@
               gameDetailsTextTeam1.setAttribute("id","team1Details"+matchid);
               gameDetailsTextTeam1.style.fontSize = "10px";
               gameDetailsTextTeam1.className = "team1DetailsVisibility";
-              gameDetailsTextTeam1.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
+              gameDetailsTextTeam1.innerHTML = "Barons: " + teamMap1.get("baronKills");
+              var linebreak = document.createElement("br");
+              gameDetailsTextTeam1.append(linebreak);
+              gameDetailsTextTeam1.innerHTML += "Dragons: " + teamMap1.get("dragonKills");
               gameDetailsTextTeam1.append(linebreak);
               gameDetailsTextTeam1.innerHTML += "Towers: " + teamMap1.get("towers");
               gameDetailsTextTeam1.append(linebreak);
@@ -602,7 +610,9 @@
             gameDetailsTextTeam01.className = "team0DetailsVisibility";
             gameDetailsTextTeam01.style.fontSize = "10px";
             var linebreak = document.createElement("br");
-            gameDetailsTextTeam01.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
+            gameDetailsTextTeam01.innerHTML = "Barons: " + teamMap1.get("baronKills");
+            gameDetailsTextTeam01.append(linebreak);
+            gameDetailsTextTeam01.innerHTML += "Dragons: " + teamMap1.get("dragonKills");
             gameDetailsTextTeam01.append(linebreak);
             gameDetailsTextTeam01.innerHTML += "Towers: " + teamMap1.get("towers");
             gameDetailsTextTeam01.append(linebreak);
@@ -614,7 +624,9 @@
             gameDetailsTextTeam11.setAttribute("id","firstteam1Details"+matchid);
             gameDetailsTextTeam11.style.fontSize = "10px";
             gameDetailsTextTeam11.className = "team1DetailsVisibility";
-            gameDetailsTextTeam11.innerHTML = "Dragons: " + teamMap1.get("dragonKills");
+            gameDetailsTextTeam11.innerHTML = "Barons: " + teamMap1.get("baronKills");
+            gameDetailsTextTeam11.append(linebreak);
+            gameDetailsTextTeam11.innerHTML += "Dragons: " + teamMap1.get("dragonKills");
             gameDetailsTextTeam11.append(linebreak);
             gameDetailsTextTeam11.innerHTML += "Towers: " + teamMap1.get("towers");
             gameDetailsTextTeam11.append(linebreak);
