@@ -36,7 +36,10 @@
       this.gameID = new Array();
       this.numberOfGamesSpawned = 0;
       this.noBanIdArray = [875,876,235,523];
+<<<<<<< HEAD
       this.newChampArray = ["Lillia","Sett","Senna","Aphelios"];
+=======
+>>>>>>> old_a/master
       this.matchArrays = new Array(1);
     }
     Child(props){
@@ -143,6 +146,7 @@
 
   getChampion(champid){
     var ans = 'None';
+<<<<<<< HEAD
     if(champid == 875){
       ans = "Sett"
     }else if(champid == 876){
@@ -152,6 +156,8 @@
     }else if(champid == 523){
       ans = "Aphelios"
     }
+=======
+>>>>>>> old_a/master
     Object.values(this.state.champs.data).forEach((champion) =>{
       if(champion.key == champid){
         ans = champion.id;
@@ -192,7 +198,11 @@
             Object.values(data.teams[i].bans).forEach((champBans) =>{ // for each team
               //console.log(champBans);
               if(this.noBanIdArray.includes(champBans.championId)){ // if none
+<<<<<<< HEAD
                 //bannChampArray.push(this.getChampion(champBans.championId));
+=======
+                bannChampArray.push("None");
+>>>>>>> old_a/master
               }
 
               var championPush = this.getChampion(champBans.championId); //get champ banns
@@ -300,7 +310,11 @@
       gameDuration.setAttribute("id","gameTime");
       gameDuration.innerHTML = gameTime;
       appendNode.appendChild(gameDuration);
+<<<<<<< HEAD
       console.log(championArray);
+=======
+
+>>>>>>> old_a/master
       //summoners names
       for(var i = 1; i < 6; i++){
         //first team (on the right)
