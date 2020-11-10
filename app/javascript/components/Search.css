@@ -1,0 +1,123 @@
+img.resize {
+    width:540px; /* you can use % */
+    height: auto;
+}
+
+body {
+  padding-left: 5px;
+}
+.background{
+  background-color: white;
+}
+#input-group-append button[disabled="disabled"]{
+  background-color: blue;
+}
+.riotGameWrapper{
+  background: white;
+  width: 100%;
+  float: right;
+  overflow: hidden;
+}
+.gameText{
+  overflow: hidden;
+}
+.innerRiotGameWrapper{
+  border-radius: 5%;
+  border-width: medium;
+  border-style: solid;
+  border-color: black;
+  font-size: 6px;
+}
+.summonerIcon{
+  text-align: left;
+  display: block;
+  justify-content: left;
+  align-items: left;
+}
+.summonerStats{
+  float:right;
+}
+#team0,.team0Details,.team0{
+  width:50%;
+  float: right;
+  font-size: 80%;
+}
+#team1,.team1Details,.team1{
+  width: 50%;
+  float: left;
+  font-size: 80%;
+}
+.team0DetailsVisibility{
+  width: 50%;
+  float: right;
+  position: absolute;
+  overflow: auto;
+}
+.team1DetailsVisibility{
+  width: 50%;
+  float: right;
+  left: 48%;
+  position: absolute;
+}
+.team11DetailsVisibility{
+  width: 50%;
+  float: right;
+  left: 48%;
+}
+#gameMode{
+  width: 100%;
+   text-align:center;
+   font-size:175%;
+}
+#expandButton{
+  border-width: thin;
+  border-color: black;
+  width:25%;
+  position:relative;
+  top:37.5%;
+  left:37.5%;
+  opacity: 0.5;
+}
+#gameTime{
+    text-align: center;
+}
+#moreInformationButt{
+  width: 100%;
+  text-align: center;
+  background-color: white;
+  border-radius: 1px;
+  border-width: medium;
+  border-style: dashed;
+}
+.italicFont{
+  font-style: italic;
+}
+.normalFont{
+  font-size: normal;
+}
+
+.tablinks{
+  border-width: thin;
+  border-color: black;
+  width:50%;
+  opacity: 50%;
+  position:relative;
+  overflow: auto;
+}
+.closeButtonMatchDetails{
+  border-width: thin;
+  border-color: black;
+  height: 8%;
+  position:relative;
+  top:37.5%;
+  left:97%;
+  opacity: 0.5;
+}
+.percentBar{
+  width: 25%;
+  display:inline-block;
+  height: 10px;
+  background-color: black;
+  opacity: 0.5;
+  color: black;
+}

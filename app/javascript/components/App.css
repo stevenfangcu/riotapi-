@@ -1,0 +1,19 @@
+
+
+body {
+  background-color: #282c34;
+  color: white;
+  padding: 40px;
+  font-family: Arial;
+  text-align: left;
+}
+
+.footer{
+  text-align: center;
+  padding: 20px;
+  position:fixed;
+  left: 0;
+  bottom: 0;
+  height: 60px;
+  width: 100%;
+}
