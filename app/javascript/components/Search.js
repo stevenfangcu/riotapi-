@@ -36,11 +36,9 @@
       this.gameID = new Array();
       this.numberOfGamesSpawned = 0;
       this.noBanIdArray = [875,876,235,523];
-<<<<<<< HEAD
       this.newChampArray = ["Lillia","Sett","Senna","Aphelios"];
-=======
->>>>>>> old_a/master
       this.matchArrays = new Array(1);
+      this.winStatistics = new Map();
     }
     Child(props){
       const {caption} = props;
@@ -115,7 +113,6 @@
         fetch(urlAPI)
         .then(response => response.json())
         .then(data => {
-          console.log("match ids: " + data);
           this.matchArrays = data.matches.map((x)=>x);
           console.log(this.matchArrays);
           for (var i = 0; i < 5; i++){
@@ -146,7 +143,7 @@
 
   getChampion(champid){
     var ans = 'None';
-<<<<<<< HEAD
+
     if(champid == 875){
       ans = "Sett"
     }else if(champid == 876){
@@ -156,8 +153,7 @@
     }else if(champid == 523){
       ans = "Aphelios"
     }
-=======
->>>>>>> old_a/master
+
     Object.values(this.state.champs.data).forEach((champion) =>{
       if(champion.key == champid){
         ans = champion.id;
@@ -178,6 +174,7 @@
         .then(response => response.json())
         .then(data => {
           //duration of the game
+          console.log(data);
           var gameTime = ((data.gameDuration-(data.gameDuration%=60))/60+(9<data.gameDuration?':':':0')+data.gameDuration);
           //playes summoners name
           Object.values(data.participantIdentities).forEach((val) =>{
@@ -185,24 +182,31 @@
             if(val.player.summonerName.toUpperCase() == this.username.toUpperCase()){ // which team the user is on
                 if(nameArray.length > 5){
                   teamMap0.set('username',this.username);
+                  if(val.player.summonerName.toUpperCase() == this.username.toUpperCase()){
+                    teamMap0.set('userChampion',data.participants[(val.participantId-1)].championId);
+                  }
                 }else{
+                  console.log(val.player.summonerName == this.username);
                   teamMap1.set('username',this.username);
+                  if(val.player.summonerName.toUpperCase() == this.username.toUpperCase()){
+                    teamMap1.set('userChampion',data.participants[(val.participantId-1)].championId);
+                  }
                 }
             }
           });
+          //champions on each team
           Object.values(data.participants).forEach((val) =>{
             championArray.push(val.championId);
           });
-          //banned champions
+          //banned champions on each team
           for(var i = 0; i < 2; i++){ // 2 teams
             Object.values(data.teams[i].bans).forEach((champBans) =>{ // for each team
               //console.log(champBans);
               if(this.noBanIdArray.includes(champBans.championId)){ // if none
-<<<<<<< HEAD
+
                 //bannChampArray.push(this.getChampion(champBans.championId));
-=======
+
                 bannChampArray.push("None");
->>>>>>> old_a/master
               }
 
               var championPush = this.getChampion(champBans.championId); //get champ banns
@@ -256,19 +260,44 @@
     checkUserWinGame(teamMap0,teamMap1){
       var ans = '';
       console.log(this.username);
+
       if(teamMap1.get("username") == this.username){//background colour
+        var stat = this.winStatistics.get(teamMap1.get("userChampion"));
+        var prevWin = this.winStatistics.win;
+        var prevLose = this.winStatistics.lose;
+        if(isNaN(prevWin)){
+          prevWin = 0;
+        }
+        if(isNaN(prevLose)){
+          prevLose = 0;
+        }
         if(teamMap1.get("win") == "Fail"){
           ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#99ff99;'
+          this.winStatistics.set( (teamMap1.get("userChampion")) , {win: prevWin, lose: (prevLose+1)});
         }else if(teamMap1.get("win") == "Win"){
           ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#ff6666;'
+          this.winStatistics.set( (teamMap1.get("userChampion")) , {win: (prevWin+1), lose: prevLose});
         }
       }else if(teamMap0.get("username") == this.username){
+        var stat = this.winStatistics.get(teamMap0.get("userChampion"));
+        var prevWin = this.winStatistics.win;
+        var prevLose = this.winStatistics.lose;
+        if(isNaN(prevWin)){
+          prevWin = 0;
+        }
+        if(isNaN(prevLose)){
+          prevLose = 0;
+        }
         if(teamMap0.get("win") == "Fail"){
           ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#99ff99;'
+          this.winStatistics.set( (teamMap0.get("userChampion")) , {win: prevWin, lose: (prevLose+1)});
         }else if(teamMap0.get("win") == "Win"){
           ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#ff6666;'
+          this.winStatistics.set( (teamMap0.get("userChampion")) , {win: (prevWin+1), lose: prevLose});
         }
+        console.log(teamMap0);
       }
+      console.log(this.winStatistics);
       return ans;
     }
     appendGame(nameArray,bannChampArray,gameMode,matchid,teamMap0, teamMap1,gameTime,championArray){
@@ -310,11 +339,10 @@
       gameDuration.setAttribute("id","gameTime");
       gameDuration.innerHTML = gameTime;
       appendNode.appendChild(gameDuration);
-<<<<<<< HEAD
-      console.log(championArray);
-=======
 
->>>>>>> old_a/master
+      console.log(championArray);
+
+
       //summoners names
       for(var i = 1; i < 6; i++){
         //first team (on the right)
@@ -386,7 +414,7 @@
               console.log(err)
             }
           });
-          //=======
+          //
           gameDetailsButton.before(personalStatsTab);
 
           var teamStatsTab = document.createElement("button");
@@ -548,9 +576,9 @@
         summonerNameTextTeam1.innerHTML = (this.getChampion(championArray[i+5])) + ' ' + information[0][i+5];
         //function for left side
         /*
-        =============================================================
-        =============================================================
-        =============================================================
+        =====
+        =====
+        =====
         */
         summonerNameTextTeam1.onclick = (function(){
           //actual information of summoner and his corresponding opponent
@@ -615,7 +643,7 @@
               console.log(err)
             }
           });
-          //=======
+          //
           gameDetailsButton.before(personalStatsTab);
 
           var teamStatsTab1 = document.createElement("button");
