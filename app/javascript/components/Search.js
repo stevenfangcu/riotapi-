@@ -35,8 +35,14 @@
       this.bannChampion = new Array(1);
       this.gameID = new Array();
       this.numberOfGamesSpawned = 0;
-      this.noBanIdArray = [875,876,235,523];
-      this.newChampArray = ["Lillia","Sett","Senna","Aphelios"];
+      this.newChampArray = new Map([
+        [875, 'Sett'],
+        [876, 'Lillia'],
+        [235, 'Senna'],
+        [523, 'Aphelios'],
+        [360, 'Samira'],
+        [147, 'Seraphine']
+      ]);
       this.matchArrays = new Array(1);
       this.winStatistics = new Map();
     }
@@ -114,7 +120,6 @@
         .then(response => response.json())
         .then(data => {
           this.matchArrays = data.matches.map((x)=>x);
-          console.log(this.matchArrays);
           for (var i = 0; i < 5; i++){
             this.fetchMatchStats(data.matches[i].gameId);
           }
@@ -143,22 +148,16 @@
 
   getChampion(champid){
     var ans = 'None';
-
-    if(champid == 875){
-      ans = "Sett"
-    }else if(champid == 876){
-      ans = "Lillia"
-    }else if(champid == 235){
-      ans = "Senna"
-    }else if(champid == 523){
-      ans = "Aphelios"
-    }
+    ans = this.newChampArray.get(champid);
 
     Object.values(this.state.champs.data).forEach((champion) =>{
       if(champion.key == champid){
         ans = champion.id;
       }
     });
+    if(ans == undefined){
+      ans = "no bann";
+    }
     return ans;
   }
 
@@ -174,7 +173,6 @@
         .then(response => response.json())
         .then(data => {
           //duration of the game
-          console.log(data);
           var gameTime = ((data.gameDuration-(data.gameDuration%=60))/60+(9<data.gameDuration?':':':0')+data.gameDuration);
           //playes summoners name
           Object.values(data.participantIdentities).forEach((val) =>{
@@ -186,7 +184,6 @@
                     teamMap0.set('userChampion',data.participants[(val.participantId-1)].championId);
                   }
                 }else{
-                  console.log(val.player.summonerName == this.username);
                   teamMap1.set('username',this.username);
                   if(val.player.summonerName.toUpperCase() == this.username.toUpperCase()){
                     teamMap1.set('userChampion',data.participants[(val.participantId-1)].championId);
@@ -202,12 +199,6 @@
           for(var i = 0; i < 2; i++){ // 2 teams
             Object.values(data.teams[i].bans).forEach((champBans) =>{ // for each team
               //console.log(champBans);
-              if(this.noBanIdArray.includes(champBans.championId)){ // if none
-
-                //bannChampArray.push(this.getChampion(champBans.championId));
-
-                bannChampArray.push("None");
-              }
 
               var championPush = this.getChampion(champBans.championId); //get champ banns
               bannChampArray.push(championPush);
@@ -246,13 +237,8 @@
             }
           }
           //getting champpion picks and turn it was picked
-          console.log(teamMap0);
-          console.log(teamMap1);
-          console.log(data);
           gameMode = data.gameMode;
-          console.log(gameMode);
           this.appendGame(nameArray,bannChampArray,gameMode,matchid, teamMap0, teamMap1,gameTime, championArray);
-          console.log(gameTime);
         });
     }
 
@@ -340,7 +326,6 @@
       gameDuration.innerHTML = gameTime;
       appendNode.appendChild(gameDuration);
 
-      console.log(championArray);
 
 
       //summoners names
@@ -852,6 +837,18 @@
       }catch(err){
         console.log(err);
       }
+      console.log(this.winStatistics);
+      var champStats = new Array(1);
+      var champNameStats = "";
+      var statPercent = 0;
+      document.getElementById("statistic").innerHTML = "";
+      for(const [key, stats] of this.winStatistics.entries()){
+        console.log(key + " wins:" + stats.win + " loss:" + stats.lose);
+        champNameStats = this.getChampion(key);
+        statPercent = (stats.win/(stats.win+stats.lose)) * 100;
+        document.getElementById("statistic").innerHTML += " " + champNameStats + ":" + statPercent + "%";
+        document.getElementById("statistic").appendChild(lineBreak);
+      }
     }
 
     addMore(){
@@ -902,6 +899,7 @@
           <div className="summonerIcon">Username: <mark>{this.pageMessage}</mark></div>
           <br></br>
            <div className="summonerIcon">Level: {this.playerLV}</div>
+           <div className="statistic" id="statistic">[statistic goes here]</div>
            <br></br>
            <br></br>
            <div className="riotGameWrapper" id="riotGameWrapper">
