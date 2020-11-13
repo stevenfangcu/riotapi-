@@ -109,6 +109,7 @@
         champs: data
       })
     });
+    //image
   }
 
   fetchMatchApi(accountID){
@@ -258,10 +259,10 @@
           prevLose = 0;
         }
         if(teamMap1.get("win") == "Fail"){
-          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#99ff99;'
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#99ff99; margin-top:​10px; width: 90%'
           this.winStatistics.set( (teamMap1.get("userChampion")) , {win: prevWin, lose: (prevLose+1)});
         }else if(teamMap1.get("win") == "Win"){
-          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#ff6666;'
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#ff6666; margin-top:​10px; width: 90%'
           this.winStatistics.set( (teamMap1.get("userChampion")) , {win: (prevWin+1), lose: prevLose});
         }
       }else if(teamMap0.get("username") == this.username){
@@ -275,10 +276,10 @@
           prevLose = 0;
         }
         if(teamMap0.get("win") == "Fail"){
-          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#99ff99;'
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#99ff99; margin-top:​10px; width: 90%'
           this.winStatistics.set( (teamMap0.get("userChampion")) , {win: prevWin, lose: (prevLose+1)});
         }else if(teamMap0.get("win") == "Win"){
-          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#ff6666;'
+          ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#ff6666; margin-top:​10px; width: 90%'
           this.winStatistics.set( (teamMap0.get("userChampion")) , {win: (prevWin+1), lose: prevLose});
         }
         console.log(teamMap0);
@@ -841,14 +842,23 @@
       var champStats = new Array(1);
       var champNameStats = "";
       var statPercent = 0;
-      document.getElementById("statistic").innerHTML = "";
+      document.getElementById("statisticList").innerHTML = "";
       for(const [key, stats] of this.winStatistics.entries()){
+        var imageUrl = 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/'
         console.log(key + " wins:" + stats.win + " loss:" + stats.lose);
         champNameStats = this.getChampion(key);
         statPercent = (stats.win/(stats.win+stats.lose)) * 100;
-        document.getElementById("statistic").innerHTML += " " + champNameStats + ":" + statPercent + "%";
-        document.getElementById("statistic").appendChild(lineBreak);
+        var champStatNameDiv = document.createElement("div");
+        var champStatImgDiv = document.createElement("img");
+        champStatImgDiv.src = imageUrl + champNameStats + "_0.jpg";
+        champStatNameDiv.innerHTML = champNameStats + ": " + statPercent + "%";
+        //document.getElementById("statisticList").innerHTML += " " + champNameStats + ":" + statPercent + "%";
+        document.getElementById("statisticList").appendChild(champStatImgDiv);
+        document.getElementById("statisticList").appendChild(champStatNameDiv);
+        document.getElementById("statisticList").appendChild(lineBreak);
       }
+      document.getElementById("riotGameWrapper").append(lineBreak);
+
     }
 
     addMore(){
@@ -899,7 +909,8 @@
           <div className="summonerIcon">Username: <mark>{this.pageMessage}</mark></div>
           <br></br>
            <div className="summonerIcon">Level: {this.playerLV}</div>
-           <div className="statistic" id="statistic">[statistic goes here]</div>
+           <br></br>
+           <ul className="statistic" id="statisticList">[statistic goes here]</ul>
            <br></br>
            <br></br>
            <div className="riotGameWrapper" id="riotGameWrapper">
