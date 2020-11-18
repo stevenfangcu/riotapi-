@@ -30,7 +30,7 @@
       this.username = "";
       this.playerLV = '';
       this.accountID = '';
-      this.apiKey = '?api_key='//your api key goes here ;
+      this.apiKey = '?api_key=RGAPI-2ee5131a-1b27-4385-9174-18ea5fd15a0b'//your api key goes here ;
       this.textInput = React.createRef();
       this.bannChampion = new Array(1);
       this.gameID = new Array();
@@ -842,7 +842,9 @@
       var champStats = new Array(1);
       var champNameStats = "";
       var statPercent = 0;
-      document.getElementById("statisticList").innerHTML = "";
+      statisticList = document.getElementById("statisticList");
+      statisticList.innerHTML = "";
+      statisticList.className = "listOfStats";
       for(const [key, stats] of this.winStatistics.entries()){
         var imageUrl = 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/'
         console.log(key + " wins:" + stats.win + " loss:" + stats.lose);
@@ -850,9 +852,11 @@
         statPercent = (stats.win/(stats.win+stats.lose)) * 100;
         var champStatNameDiv = document.createElement("div");
         var champStatImgDiv = document.createElement("img");
+        champStatImgDiv.className = "statisticChampName";
         champStatImgDiv.src = imageUrl + champNameStats + "_0.jpg";
         champStatNameDiv.innerHTML = champNameStats + ": " + statPercent + "%";
         //document.getElementById("statisticList").innerHTML += " " + champNameStats + ":" + statPercent + "%";
+        champStatNameDiv.style.cssText = "display: inline-block;float: right;width:50%"
         document.getElementById("statisticList").appendChild(champStatImgDiv);
         document.getElementById("statisticList").appendChild(champStatNameDiv);
         document.getElementById("statisticList").appendChild(lineBreak);

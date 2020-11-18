@@ -124,14 +124,20 @@ body {
 ul {
   border: 1px solid black;
   text-align: center;
-  width: 20%;
+  width: 30%;
+  height: auto;
   margin: auto;
   padding-left: 0;
+  overflow: auto;
+}
+.statisticChampName{
+  display: inline-block;
+  max-width:828px;
+  max-height:489px;
+  width: 50%;
+  height: auto;
+  text-align: left;
 }
 img{
-  display: block;
-  max-width:230px;
-  max-height:95px;
-  width: auto;
-  height: auto;
+  vertical-align: revert;
 }
