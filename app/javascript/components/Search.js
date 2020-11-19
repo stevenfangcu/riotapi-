@@ -21,7 +21,8 @@
         inhibs: "",
         towers: "",
         rifts: "",
-      }
+      },
+      winStatistics: new Map(),
     }
     constructor(props) {
       super(props);
@@ -44,7 +45,6 @@
         [147, 'Seraphine']
       ]);
       this.matchArrays = new Array(1);
-      this.winStatistics = new Map();
     }
     Child(props){
       const {caption} = props;
@@ -249,42 +249,46 @@
       console.log(this.username);
 
       if(teamMap1.get("username") == this.username){//background colour
-        var stat = this.winStatistics.get(teamMap1.get("userChampion"));
-        var prevWin = this.winStatistics.win;
-        var prevLose = this.winStatistics.lose;
-        if(isNaN(prevWin)){
-          prevWin = 0;
+        var number = teamMap1.get("userChampion");
+        var stat = this.state.winStatistics.get(parseInt(number));
+        console.log(this.state.winStatistics.get(teamMap1.get("userChampion")));
+        var prevWin = 0;
+        var prevLose = 0;
+        if(stat != undefined){
+          prevWin = stat.win;
+          prevLose = stat.lose;
         }
-        if(isNaN(prevLose)){
-          prevLose = 0;
-        }
+
         if(teamMap1.get("win") == "Fail"){
+          console.log( prevLose + " " + (prevLose+1))
           ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#99ff99; margin-top:​10px; width: 90%'
-          this.winStatistics.set( (teamMap1.get("userChampion")) , {win: prevWin, lose: (prevLose+1)});
+          this.state.winStatistics.set( parseInt((teamMap1.get("userChampion"))) , {win: prevWin+1, lose: (prevLose)});
         }else if(teamMap1.get("win") == "Win"){
           ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#ff6666; margin-top:​10px; width: 90%'
-          this.winStatistics.set( (teamMap1.get("userChampion")) , {win: (prevWin+1), lose: prevLose});
+          this.state.winStatistics.set( parseInt((teamMap1.get("userChampion"))), {win: (prevWin), lose: prevLose+1});
         }
       }else if(teamMap0.get("username") == this.username){
-        var stat = this.winStatistics.get(teamMap0.get("userChampion"));
-        var prevWin = this.winStatistics.win;
-        var prevLose = this.winStatistics.lose;
-        if(isNaN(prevWin)){
-          prevWin = 0;
+        var number = teamMap0.get("userChampion");
+        var stat = this.state.winStatistics.get(parseInt(number));
+        console.log(this.state.winStatistics.get(teamMap1.get("userChampion")));
+        var prevWin = 0;
+        var prevLose = 0;
+        if(stat != undefined){
+          prevWin = stat.win;
+          prevLose = stat.lose;
         }
-        if(isNaN(prevLose)){
-          prevLose = 0;
-        }
+        console.log(teamMap0.get("userChampion")+ " " + stat + " " + prevLose  + " " + teamMap0);
+        console.log(teamMap0.get("userChampion") + " " + stat + " " + prevWin + " " + teamMap0);
         if(teamMap0.get("win") == "Fail"){
           ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#99ff99; margin-top:​10px; width: 90%'
-          this.winStatistics.set( (teamMap0.get("userChampion")) , {win: prevWin, lose: (prevLose+1)});
+          this.state.winStatistics.set( parseInt((teamMap0.get("userChampion"))) , {win: prevWin+1, lose: (prevLose)});
         }else if(teamMap0.get("win") == "Win"){
           ans = ' border-radius: 1px;border-width: medium;border-style: solid;border-color: black; background-color:#ff6666; margin-top:​10px; width: 90%'
-          this.winStatistics.set( (teamMap0.get("userChampion")) , {win: (prevWin+1), lose: prevLose});
+          this.state.winStatistics.set( parseInt((teamMap0.get("userChampion"))) , {win: (prevWin), lose: prevLose+1});
         }
         console.log(teamMap0);
       }
-      console.log(this.winStatistics);
+      console.log(this.state.winStatistics);
       return ans;
     }
     appendGame(nameArray,bannChampArray,gameMode,matchid,teamMap0, teamMap1,gameTime,championArray){
@@ -838,16 +842,16 @@
       }catch(err){
         console.log(err);
       }
-      console.log(this.winStatistics);
+      console.log(this.state.winStatistics);
       var champStats = new Array(1);
       var champNameStats = "";
       var statPercent = 0;
       statisticList = document.getElementById("statisticList");
       statisticList.innerHTML = "";
       statisticList.className = "listOfStats";
-      for(const [key, stats] of this.winStatistics.entries()){
+      for(const [key, stats] of this.state.winStatistics.entries()){
         var imageUrl = 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/'
-        console.log(key + " wins:" + stats.win + " loss:" + stats.lose);
+        //console.log(key + " wins:" + stats.win + " loss:" + stats.lose);
         champNameStats = this.getChampion(key);
         statPercent = (stats.win/(stats.win+stats.lose)) * 100;
         var champStatNameDiv = document.createElement("div");

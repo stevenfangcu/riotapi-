@@ -126,7 +126,7 @@ ul {
   text-align: center;
   width: 30%;
   height: auto;
-  margin: auto;
+  float: left;
   padding-left: 0;
   overflow: auto;
 }
@@ -137,6 +137,9 @@ ul {
   width: 50%;
   height: auto;
   text-align: left;
+}
+.statisticList{
+  margin: auto;
 }
 img{
   vertical-align: revert;
