@@ -23,6 +23,7 @@
         rifts: "",
       },
       winStatistics: new Map(),
+      goldDifferenceStatistics: new Map(),
     }
     constructor(props) {
       super(props);
@@ -31,7 +32,7 @@
       this.username = "";
       this.playerLV = '';
       this.accountID = '';
-      this.apiKey = '?api_key=RGAPI-2ee5131a-1b27-4385-9174-18ea5fd15a0b'//your api key goes here ;
+      this.apiKey = '?api_key='//your api key goes here ;
       this.textInput = React.createRef();
       this.bannChampion = new Array(1);
       this.gameID = new Array();
@@ -291,15 +292,39 @@
       console.log(this.state.winStatistics);
       return ans;
     }
+
+    // manipulating gold difference for the user
+    goldDifference(teamMap0, teamMap1, nameArray){
+      console.log(teamMap0, teamMap1, nameArray);
+      var userPositionInArray = 0;
+      var userPositionRole = "";
+      var getUser = '';
+      for(var i = 0; i < nameArray.length; i++){
+        if(nameArray[i] == this.username){
+          userPositionInArray = i+1;
+        }
+      }
+      getUser = 'Summoner'+userPositionInArray;
+      console.log(getUser)
+      if(teamMap0.get('username') == this.username){ // user on team 0
+          console.log(teamMap0.get(getUser.toString()));
+          console.log(userPositionInArray);
+      }else{ // user on team 1
+        console.log(teamMap1.get(getUser));
+        console.log(userPositionInArray);
+      }
+    }
+
     appendGame(nameArray,bannChampArray,gameMode,matchid,teamMap0, teamMap1,gameTime,championArray){
       /* TO-DO LIST
         - make a counter so we dont have duplicataes from componentDidMount
         - get icons and better organization (more divs for each player and champion)
       */
-      //return, do not do this gameid
+      //return, game exists
       if(this.gameID.includes(matchid)){
         return;
       }
+      this.goldDifference(teamMap0, teamMap1, nameArray);
       var information = '';
       this.setState({
         informationArray: [nameArray,bannChampArray,gameMode]
@@ -799,7 +824,7 @@
       if(!(document.getElementById("personalStatsTab"+matchid))){
         gameDetailsButton.style.visibility = "hidden";
       }
-
+      //onclick functionality
       gameDetailsButton.onclick = (function() {
         try{
           var parentNodeID = document.getElementById(this.id).parentNode.id;
@@ -842,6 +867,7 @@
       }catch(err){
         console.log(err);
       }
+      // creating statistics
       console.log(this.state.winStatistics);
       var champStats = new Array(1);
       var champNameStats = "";
@@ -868,7 +894,7 @@
       document.getElementById("riotGameWrapper").append(lineBreak);
 
     }
-
+    //method to add more games to the list
     addMore(){
 
       console.log(this.matchArrays);
@@ -918,7 +944,10 @@
           <br></br>
            <div className="summonerIcon">Level: {this.playerLV}</div>
            <br></br>
-           <ul className="statistic" id="statisticList">[statistic goes here]</ul>
+           <div className="statsWrapper">
+            <ul className="statistic" id="statisticList">[statistic goes here]</ul>
+            <ul className="statisticDifference" id="statisticDifference">[statisticDifference goes here] </ul>
+          </div>
            <br></br>
            <br></br>
            <div className="riotGameWrapper" id="riotGameWrapper">
