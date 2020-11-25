@@ -252,7 +252,6 @@
       if(teamMap1.get("username") == this.username){//background colour
         var number = teamMap1.get("userChampion");
         var stat = this.state.winStatistics.get(parseInt(number));
-        console.log(this.state.winStatistics.get(teamMap1.get("userChampion")));
         var prevWin = 0;
         var prevLose = 0;
         if(stat != undefined){
@@ -295,6 +294,7 @@
 
     // manipulating gold difference for the user
     goldDifference(teamMap0, teamMap1, nameArray){
+      //need to check for aram or rift
       console.log(teamMap0, teamMap1, nameArray);
       var userPositionInArray = 0;
       var userPositionRole = "";
@@ -302,35 +302,42 @@
       for(var i = 0; i < nameArray.length; i++){
         if(nameArray[i] == this.username){
           userPositionInArray = i;
+          break;
         }
       }
       getUser = 'Summoner'+(userPositionInArray);
-      console.log(userPositionInArray);
+      console.log("Position: " + userPositionInArray);
       console.log(teamMap0);
       console.log(teamMap1);
       if(teamMap0.get('username') == this.username){ // user on team 0 // 6 -> 10
-          console.log(teamMap1.get(getUser));
-          console.log(teamMap1.get(getUser).stats.goldEarned);
           var role = teamMap1.get(getUser).timeline.role;
           var lane = teamMap1.get(getUser).timeline.lane;
           console.log(role,lane);
-          for(var y = 1; y < 5; y++){
-            console.log(teamMap0.get('Summoner'+y));
-            var roleMatch = teamMap0.get('Summoner'+y).timeline.lane;
-            var laneMatch = teamMap0.get('Summoner'+y).timeline.lane;
-            console.log(roleMatch,laneMatch)
+          for(var y = 1; y < 6; y++){
+            console.log(teamMap0.get('Summoner'+y).timeline.lane);
+            console.log(teamMap0.get('Summoner'+y).timeline.role);
+            console.log(role == teamMap0.get('Summoner'+y).timeline.role);
+            console.log(lane == teamMap0.get('Summoner'+y).timeline.lane);
+            console.log(role == teamMap0.get('Summoner'+y).timeline.role && lane == teamMap0.get('Summoner'+y).timeline.lane);
+            if(role == teamMap0.get('Summoner'+y).timeline.role && lane == teamMap0.get('Summoner'+y).timeline.lane){
+              console.log(teamMap0.get('Summoner'+y));
+              break;
+            }
           }
       }else{ // user on team 1 // 1 -> 5
-        console.log(teamMap0.get(getUser));
-        console.log(teamMap0.get(getUser).stats.goldEarned);
         var role = teamMap0.get(getUser).timeline.role;
         var lane = teamMap0.get(getUser).timeline.lane;
         console.log(role,lane);
-          for(var y = 6; y < 10; y++){
-            console.log(teamMap1.get('Summoner'+y));
-            var roleMatch = teamMap1.get('Summoner'+y).timeline.lane;
-            var laneMatch = teamMap1.get('Summoner'+y).timeline.lane;
-            console.log(roleMatch,laneMatch)
+          for(var x = 5; x < 10; x++){
+            console.log(teamMap1.get('Summoner'+x).timeline.lane);
+            console.log(teamMap1.get('Summoner'+x).timeline.role);
+            console.log(role == teamMap1.get('Summoner'+x).timeline.role);
+            console.log(lane == teamMap1.get('Summoner'+x).timeline.lane);
+            console.log(teamMap1.get('Summoner'+x).timeline.role == role && teamMap1.get('Summoner'+x).timeline.lane == lane);
+            if(role == teamMap1.get('Summoner'+x).timeline.role && lane == teamMap1.get('Summoner'+x).timeline.lane){
+              console.log(teamMap1.get('Summoner'+x));
+              break;
+            }
           }
       }
     }
