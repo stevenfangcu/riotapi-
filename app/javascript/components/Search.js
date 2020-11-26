@@ -292,6 +292,30 @@
       return ans;
     }
 
+    set_GoldDifference(player, enemy, role, lane){
+      var gold_difference = 0;
+      var playerGold = player.stats.goldEarned;
+      var enemyGold = enemy.stats.goldEarned;
+      gold_difference = playerGold - enemyGold;
+      console.log(gold_difference);
+      console.log(role, lane);
+      console.log(this.state.goldDifferenceStatistics.get(role));
+      if(lane == "BOTTOM"){
+        var prev_goldDifference = 0;
+        if(this.state.goldDifferenceStatistics.get(role) != undefined){
+          prev_goldDifference = this.state.goldDifferenceStatistics.get(role);
+        }
+        this.state.goldDifferenceStatistics.set(role, (prev_goldDifference + gold_difference));
+      }else{
+        var prev_goldDifference = 0;
+        if(this.state.goldDifferenceStatistics.get(role) != undefined){
+          prev_goldDifference = this.state.goldDifferenceStatistics.get(lane);
+        }
+        this.state.goldDifferenceStatistics.set(lane, (prev_goldDifference + gold_difference));
+      }
+      console.log(this.state.goldDifferenceStatistics);
+    }
+
     // manipulating gold difference for the user
     goldDifference(teamMap0, teamMap1, nameArray){
       //need to check for aram or rift
@@ -314,13 +338,9 @@
           var lane = teamMap1.get(getUser).timeline.lane;
           console.log(role,lane);
           for(var y = 1; y < 6; y++){
-            console.log(teamMap0.get('Summoner'+y).timeline.lane);
-            console.log(teamMap0.get('Summoner'+y).timeline.role);
-            console.log(role == teamMap0.get('Summoner'+y).timeline.role);
-            console.log(lane == teamMap0.get('Summoner'+y).timeline.lane);
-            console.log(role == teamMap0.get('Summoner'+y).timeline.role && lane == teamMap0.get('Summoner'+y).timeline.lane);
             if(role == teamMap0.get('Summoner'+y).timeline.role && lane == teamMap0.get('Summoner'+y).timeline.lane){
               console.log(teamMap0.get('Summoner'+y));
+              this.set_GoldDifference(teamMap1.get(getUser), teamMap0.get('Summoner'+y), role, lane);
               break;
             }
           }
@@ -329,13 +349,9 @@
         var lane = teamMap0.get(getUser).timeline.lane;
         console.log(role,lane);
           for(var x = 5; x < 10; x++){
-            console.log(teamMap1.get('Summoner'+x).timeline.lane);
-            console.log(teamMap1.get('Summoner'+x).timeline.role);
-            console.log(role == teamMap1.get('Summoner'+x).timeline.role);
-            console.log(lane == teamMap1.get('Summoner'+x).timeline.lane);
-            console.log(teamMap1.get('Summoner'+x).timeline.role == role && teamMap1.get('Summoner'+x).timeline.lane == lane);
             if(role == teamMap1.get('Summoner'+x).timeline.role && lane == teamMap1.get('Summoner'+x).timeline.lane){
               console.log(teamMap1.get('Summoner'+x));
+              this.set_GoldDifference(teamMap0.get(getUser),teamMap1.get('Summoner'+x), role, lane);
               break;
             }
           }
