@@ -934,6 +934,13 @@
         document.getElementById("statisticList").appendChild(champStatNameDiv);
         document.getElementById("statisticList").appendChild(lineBreak);
       }
+      document.getElementById("statisticDifference").innerHTML = "";
+      for(const [key, goldDiff] of this.state.goldDifferenceStatistics.entries()){
+        var role_goldDiff = document.createElement("div");
+        role_goldDiff.innerHTML = key + ":" + goldDiff;
+        document.getElementById("statisticDifference").append(role_goldDiff);
+        document.getElementById("statisticDifference").append(lineBreak);
+      }
       document.getElementById("riotGameWrapper").append(lineBreak);
 
     }
