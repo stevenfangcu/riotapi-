@@ -141,6 +141,9 @@ ul {
 .statisticList{
   margin: auto;
 }
+.statisticDifference{
+  height: 367px;
+}
 img{
   vertical-align: revert;
 }

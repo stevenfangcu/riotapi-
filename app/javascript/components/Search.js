@@ -300,6 +300,7 @@
       console.log(gold_difference);
       console.log(role, lane);
       console.log(this.state.goldDifferenceStatistics.get(role));
+      console.log(role,lane);
       if(lane == "BOTTOM"){
         var prev_goldDifference = 0;
         if(this.state.goldDifferenceStatistics.get(role) != undefined){
@@ -311,7 +312,14 @@
         if(this.state.goldDifferenceStatistics.get(role) != undefined){
           prev_goldDifference = this.state.goldDifferenceStatistics.get(lane);
         }
-        this.state.goldDifferenceStatistics.set(lane, (prev_goldDifference + gold_difference));
+        if(lane != "NONE"){ // for jungle
+          this.state.goldDifferenceStatistics.set(lane, (prev_goldDifference + gold_difference));
+        }else{ // for support
+          prev_goldDifference = this.state.goldDifferenceStatistics.get(role);
+          console.log(prev_goldDifference);
+          console.log(gold_difference);
+          this.state.goldDifferenceStatistics.set(role, (prev_goldDifference + gold_difference));
+        }
       }
       console.log(this.state.goldDifferenceStatistics);
     }
@@ -937,6 +945,7 @@
       document.getElementById("statisticDifference").innerHTML = "";
       for(const [key, goldDiff] of this.state.goldDifferenceStatistics.entries()){
         var role_goldDiff = document.createElement("div");
+        role_goldDiff.style.cssText = "height: 20%;";
         role_goldDiff.innerHTML = key + ":" + goldDiff;
         document.getElementById("statisticDifference").append(role_goldDiff);
         document.getElementById("statisticDifference").append(lineBreak);
