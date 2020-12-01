@@ -1,3 +1,4 @@
+@import "bootstrap";
 img.resize {
     width:540px; /* you can use % */
     height: auto;

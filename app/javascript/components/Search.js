@@ -981,6 +981,15 @@
       }
       return(
         <div className="background">
+        <nav className="navbar navbar-light bg-light">
+          <a className="navbar-brand" href="/">Our Logo</a>
+            <form className="form-inline">
+            <a class="btn btn-outline-primary" href="/" role="button">
+            Home
+            </a>
+            </form>
+        </nav>
+        <br></br>
           <InputGroup className="mb-3" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
             <FormControl
               placeholder="Username...."
