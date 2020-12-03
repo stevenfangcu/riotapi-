@@ -32,7 +32,7 @@
       this.username = "";
       this.playerLV = '';
       this.accountID = '';
-      this.apiKey = '?api_key='//your api key goes here ;
+      this.apiKey = '?api_key=RGAPI-34586978-34f9-4e0d-aebd-a30e916f04e7'//your api key goes here ;
       this.textInput = React.createRef();
       this.bannChampion = new Array(1);
       this.gameID = new Array();
