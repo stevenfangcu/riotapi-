@@ -148,3 +148,7 @@ ul {
 img{
   vertical-align: revert;
 }
+
+.btn-space{
+  margin-left: 10px;
+}

@@ -6,7 +6,6 @@
   import Resizer from 'react-image-file-resizer';
   import logo from './filler.png'
   import './Search.css'
-  import {HorizontalBar,Line,Pie} from 'react-chartjs-2';
 
   // usage of apis from Riot Games
 
@@ -32,7 +31,7 @@
       this.username = "";
       this.playerLV = '';
       this.accountID = '';
-      this.apiKey = '?api_key=RGAPI-34586978-34f9-4e0d-aebd-a30e916f04e7'//your api key goes here ;
+      this.apiKey = '?api_key='//your api key goes here ;
       this.textInput = React.createRef();
       this.bannChampion = new Array(1);
       this.gameID = new Array();
@@ -986,6 +985,11 @@
             <form className="form-inline">
             <a class="btn btn-outline-primary" href="/" role="button">
             Home
+            </a>
+
+
+            <a class="btn btn-outline-primary btn-space" href="/contact" role="button">
+            Contact
             </a>
             </form>
         </nav>
