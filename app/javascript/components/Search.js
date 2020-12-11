@@ -986,8 +986,9 @@
             <a class="btn btn-outline-primary" href="/" role="button">
             Home
             </a>
-
-
+            <a class="btn btn-outline-primary btn-space" href="/about" role="button">
+            About
+            </a>
             <a class="btn btn-outline-primary btn-space" href="/contact" role="button">
             Contact
             </a>

@@ -46,14 +46,15 @@ class Home extends React.Component{
       <nav className="navbar navbar-light bg-light">
         <a className="navbar-brand" href="/">Our Logo</a>
           <form className="form-inline">
-          <a class="btn btn-outline-primary" href="/" role="button">
-          Home
-          </a>
-
-
-          <a class="btn btn-outline-primary btn-space" href="/contact" role="button">
-          Contact
-          </a>
+            <a class="btn btn-outline-primary btn-space" href="/" role="button">
+            Home
+            </a>
+            <a class="btn btn-outline-primary btn-space" href="/about" role="button">
+            About
+            </a>
+            <a class="btn btn-outline-primary btn-space" href="/contact" role="button">
+            Contact
+            </a>
           </form>
       </nav>
       This is the Home Page.
