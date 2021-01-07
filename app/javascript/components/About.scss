@@ -5,25 +5,36 @@
   font-family: Arial;
   text-align: center;
 }
+.title{
+  font-size: 20px;
+}
+.subTitle{
+  font-size: 15px;
+  display: flex;
+  margin-left: 20%;
+}
 .wrapper{
   font-size: 30px;
   display: flex;
 }
-.schoolDiv{
+.firstInfoDiv{
   display: flex;
   border-style: solid;
-  width: 30%;
+  width: 45%;
   margin-left: 20px;
   margin-right: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   font-size: 15px;
 }
-.workDiv{
-  flex: 1;
+.secondInfoDiv{
   display: flex;
   border-style: solid;
-  width: 30%;
+  width: 45%;
   margin-left: 20px;
   margin-right: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   font-size: 15px;
 }
 @import "~bootstrap/scss/bootstrap";

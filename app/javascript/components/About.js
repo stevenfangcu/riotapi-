@@ -40,11 +40,26 @@ class About extends React.Component{
           About me
         </div>
         <div className="wrapper">
-          <div className ="schoolDiv">
+          <div className ="firstInfoDiv">
+            Hello, I'm Steven Fang, I graduated from Carleton University with a degree in Computer Science. One of the
+            main reasons I went to university for computer is for my love of programmning and data science that I developed
+            in highschool. This love was further enhanced while studying in post secondary school.
+          </div>
+          <div className ="secondInfoDiv">
             Graduated from Carleton University majoring in Computer Science
           </div>
-          <div className ="workDiv">
-            Graduated from Carleton University majoring in Computer Science
+        </div>
+        <div className="title">
+          Work Experience
+        </div>
+        <div className="subTitle">The Source</div>
+        <div className="wrapper">
+          <div className ="firstInfoDiv">
+          </div>
+          <div className ="secondInfoDiv">
+          I have interned for the department of national defence as a data analyst. At the department of national defence
+          I was tasked with reviewing and transforming XML, excel, and text data entries from an informational
+          database.
           </div>
         </div>
       </div>
